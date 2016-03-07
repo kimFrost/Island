@@ -54,6 +54,13 @@ void UIslandGameInstance::NewTurn()
 }
 
 
+/******************** BroadcastSelectedTile *************************/
+void UIslandGameInstance::BroadcastSelectedTile(AIslandTile* Tile)
+{
+	OnTileSelected.Broadcast(Tile);
+}
+
+
 /******************** SetCurrentState *************************/
 void UIslandGameInstance::SetCurrentState(EIslandPlayState NewState)
 {

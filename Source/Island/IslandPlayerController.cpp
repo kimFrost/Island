@@ -14,10 +14,22 @@ AIslandPlayerController::AIslandPlayerController(const FObjectInitializer &Objec
 	ActiveToolType = EToolType::Select;
 	SelectedActor = nullptr;
 	bShowMouseCursor = true;
-	
+	bEnableClickEvents = true;
+	bEnableMouseOverEvents = true;
 }
 
 
+
+
+
+/******************** CenterCameraAt *************************/
+void AIslandPlayerController::CenterCameraAt(FVector WorldPosition)
+{
+	GetPawn()->SetActorLocation(WorldPosition + FVector(0, 0, 500));
+
+
+
+}
 
 
 //~~ Input functions ~~//
@@ -111,7 +123,7 @@ void AIslandPlayerController::Zoom(float Value)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "PC:Zoom" + FString::FromInt(FMath::RoundToInt(Value)));
 		//GetControlledPawn()->AddControllerPitchInput(Value * 10.f);
-		AIslandCharacter* Character = Cast<AIslandCharacter>(GetControlledPawn());
+		AIslandCharacter* Character = Cast<AIslandCharacter>(GetPawn());
 		if (Character)
 		{
 			Character->CameraBoom->TargetArmLength += Value * 100.f; 

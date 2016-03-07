@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Island.h"
+#include "Kismet/GameplayStatics.h"
+#include "IslandGameInstance.h"
+#include "IslandPlayerController.h"
 #include "IslandTile.h"
 
 
@@ -13,7 +16,6 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 	OnClicked.AddDynamic(this, &AIslandTile::TileClicked);
 	//OnReleased
-	
 	OnBeginCursorOver.AddDynamic(this, &AIslandTile::TileHoverBegin);
 	OnEndCursorOver.AddDynamic(this, &AIslandTile::TileHoverEnd);
 
@@ -39,7 +41,18 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 /******************** TileClicked *************************/
 void AIslandTile::TileClicked()
 {
-	
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "IslandTile::TileClicked");
+	//UIslandGameInstance GameInstance = Cast<UIslandGameInstance>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	AIslandPlayerController* PlayerController = Cast<AIslandPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (PlayerController)
+	{
+		PlayerController->CenterCameraAt(GetActorLocation());
+	}
+	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		GameInstance->OnTileSelected.Broadcast(this);
+	}
 }
 
 
@@ -63,7 +76,7 @@ void AIslandTile::TileHoverEnd()
 void AIslandTile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

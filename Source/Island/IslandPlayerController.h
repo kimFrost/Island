@@ -29,7 +29,7 @@ enum class EToolType : uint8
 
 
 //~~~~~ Delegates/Event dispatcher ~~~~~//
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileSelected, AIslandTile*, Tile);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileSelected, AIslandTile*, Tile);
 
 
 
@@ -57,6 +57,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tool")
 	AActor* SelectedActor;
 
+	//~~ Camera ~~//
+
+
+
 	//~~ Inputs ~~//
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
@@ -64,6 +68,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	bool RightMouseButtonDown;
+
+	/*********** FUNCTIONS **************/
+
+	//~~ Camera ~~//
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void CenterCameraAt(FVector WorldPosition);
 
 
 protected:
@@ -97,9 +108,6 @@ public:
 
 
 	/*********** DELEGATES **************/
-
-	UPROPERTY(BlueprintAssignable, Category = "Input")
-	FTileSelected OnTileSelected;
 
 
 	/*********** OVERRIDES **************/

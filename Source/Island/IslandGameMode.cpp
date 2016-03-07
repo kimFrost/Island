@@ -30,10 +30,17 @@ AIslandGameMode::AIslandGameMode(const FObjectInitializer &ObjectInitializer) : 
 	{
 		HUDClass = AIslandHUD::StaticClass();
 	}
-	
-	//~~ Set the default PlayerController ~~ //
-	PlayerControllerClass = AIslandPlayerController::StaticClass();
 
+	//~~ Set the default PlayerController ~~ //
+	static ConstructorHelpers::FClassFinder<AIslandPlayerController> PlayerControllerBPClass(TEXT("/Game/Blueprints/PlayerController/BP_PlayerController"));
+	if (PlayerControllerBPClass.Class)
+	{
+		PlayerControllerClass = PlayerControllerBPClass.Class;
+	}
+	else
+	{
+		PlayerControllerClass = AIslandPlayerController::StaticClass();
+	}
 
 	//~~ Set the default Character ~~ //
 	static ConstructorHelpers::FClassFinder<AIslandCharacter> CharacterBPClass(TEXT("/Game/Blueprints/Characters/BP_Character"));

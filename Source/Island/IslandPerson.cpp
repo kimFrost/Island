@@ -21,6 +21,8 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 void AIslandPerson::PersonClicked() {
 	//UE_LOG(LogTemp, Log, TEXT("pawn clicked"));
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "AIslandPerson:PersonClicked");
+
+
 }
 
 /*

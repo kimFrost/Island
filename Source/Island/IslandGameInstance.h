@@ -20,14 +20,14 @@ enum class EIslandPlayState : uint8 //** you can replace short with uint8 */
 
 
 //~~~~~ Forward Declarations ~~~~~//
-//class APOTLStructure;
+class AIslandTile;
 
 
 
 //~~~~~ Delegates/Event dispatcher ~~~~~//
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTurnSwitched, float, Turn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNewTurn, float, Turn);
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStructurePlanted, APOTLStructure*, Structure);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileSelected, AIslandTile*, Tile);
 
 
 
@@ -77,6 +77,12 @@ public:
 	void NewTurn();
 
 
+	//~~ Broadcasts ~~//
+
+	UFUNCTION(BlueprintCallable, Category = "Turn")
+	void BroadcastSelectedTile(AIslandTile* Tile);
+
+
 	//~~ Cards ~~//
 
 	// GetNewCard
@@ -107,6 +113,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Turn")
 	FNewTurn OnNewTurn;
+
+	UPROPERTY(BlueprintAssignable, Category = "Input")
+	FTileSelected OnTileSelected;
 
 	//UPROPERTY(BlueprintAssignable, Category = "Structure")
 	//FStructurePlanted OnStructurePlanted;

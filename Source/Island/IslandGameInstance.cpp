@@ -40,6 +40,20 @@ void UIslandGameInstance::ReadTables()
 }
 
 
+/******************** SwitchTurn *************************/
+void UIslandGameInstance::SwitchTurn()
+{
+
+}
+
+
+/******************** SwitchTurn *************************/
+void UIslandGameInstance::NewTurn()
+{
+
+}
+
+
 /******************** SetCurrentState *************************/
 void UIslandGameInstance::SetCurrentState(EIslandPlayState NewState)
 {

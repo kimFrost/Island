@@ -74,7 +74,7 @@ public:
 	void SwitchTurn();
 
 	UFUNCTION(BlueprintCallable, Category = "Turn")
-	void NewTurn(float WaitTime);
+	void NewTurn();
 
 
 	//~~ Cards ~~//

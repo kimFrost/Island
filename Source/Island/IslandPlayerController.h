@@ -5,7 +5,14 @@
 #include "GameFramework/PlayerController.h"
 #include "IslandHUD.h"
 #include "IslandCharacter.h"
+#include "IslandTile.h"
+#include "IslandPerson.h"
 #include "IslandPlayerController.generated.h"
+
+
+
+//~~~~~ Forward Declarations ~~~~~//
+//class AIslandTile;
 
 
 
@@ -18,6 +25,13 @@ enum class EToolType : uint8
 	Select UMETA(DisplayName = "Select"),
 	Move UMETA(DisplayName = "Move")
 };
+
+
+
+//~~~~~ Delegates/Event dispatcher ~~~~~//
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileSelected, AIslandTile*, Tile);
+
+
 
 
 
@@ -80,6 +94,15 @@ protected:
 
 
 public:
+
+
+	/*********** DELEGATES **************/
+
+	UPROPERTY(BlueprintAssignable, Category = "Input")
+	FTileSelected OnTileSelected;
+
+
+	/*********** OVERRIDES **************/
 
 	virtual void BeginPlay() override;
 

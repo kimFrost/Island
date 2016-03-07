@@ -33,6 +33,54 @@ void AIslandPlayerController::LeftClickPressed()
 void AIslandPlayerController::LeftClickReleased()
 {
 	LeftMouseButtonDown = false;
+
+	if (!GetWorld())
+	{
+		return;
+	}
+	
+	// Trace
+	FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, this);
+	RV_TraceParams.bTraceComplex = true;
+	RV_TraceParams.bTraceAsyncScene = true;
+	RV_TraceParams.bReturnPhysicalMaterial = false;
+	//RV_TraceParams.TraceTag = TraceTag;
+
+	//~~ Re-initialize hit info ~~//
+	FHitResult RV_Hit(ForceInit);
+
+	FVector WorldLocation;
+	FVector WorldDirection;
+	this->DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
+
+	//FRotator currentCharacterRotation = this->GetActorRotation();
+	//FRotator targetRotation = mouseDirection.Rotation();
+
+	//WorldLocation = WorldLocation + LandscapeLocation;
+
+	FVector LineTraceFrom = WorldLocation + FVector{ 1.f, 1.f, 0.f };
+	FVector LineTraceTo = WorldDirection * 50000 + WorldLocation + FVector{ 1.f, 1.f, 0.f };
+
+	//ECC_GameTraceChannel1
+	
+	//this->GetWorld()->LineTraceSingleByChannel(RV_Hit, LineTraceFrom, LineTraceTo, ChannelLandscape, RV_TraceParams);
+	this->GetWorld()->LineTraceSingleByChannel(RV_Hit, LineTraceFrom, LineTraceTo, ECC_Pawn, RV_TraceParams);
+	if (RV_Hit.bBlockingHit)
+	{
+		if (RV_Hit.GetActor())
+		{
+			AIslandTile* HitTile = Cast<AIslandTile>(RV_Hit.GetActor());
+			if (HitTile)
+			{
+
+			}
+			AIslandPerson* HitPerson = Cast<AIslandPerson>(RV_Hit.GetActor());
+			if (HitPerson)
+			{
+
+			}
+		}
+	}
 }
 
 
@@ -93,7 +141,21 @@ void AIslandPlayerController::SetupInputComponent()
 
 	//InputComponent->BindAxis
 	//InputComponent->BindKey(EKeys::A, IE_Released, this, &AIslandPlayerController::TestFunction);
-	//InputComponent->BindKey(EMouseButtons::Left, IE_Released, this, &AIslandPlayerController::TestFunction);
+
+
+
+
+	//const FInputChord Chord,
+	//const EInputEvent KeyEvent,
+	//UserClass * Object,
+	//typename FInputActionHandlerSignature::TUObjectMethodDelegate< UserClass >::FMethodPtr Func
+
+	/*
+	InputComponent->BindKey(EMouseButtons::Left, IE_Pressed, this, &AIslandPlayerController::LeftClickPressed);
+	InputComponent->BindKey(EMouseButtons::Left, IE_Released, this, &AIslandPlayerController::LeftClickReleased);
+	InputComponent->BindKey(EMouseButtons::Right, IE_Pressed, this, &AIslandPlayerController::RightClickPressed);
+	InputComponent->BindKey(EMouseButtons::Right, IE_Released, this, &AIslandPlayerController::RightClickReleased);
+	*/
 }
 
 

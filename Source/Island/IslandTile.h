@@ -30,12 +30,26 @@ public:
 
 	// Cards that fit
 
+
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void TileClicked();
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void TileHoverBegin();
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void TileHoverEnd();
+
+
+public:
+
+	/*********** OVERRIDES **************/
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	
-	
 };

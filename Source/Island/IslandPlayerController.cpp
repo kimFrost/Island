@@ -72,12 +72,18 @@ void AIslandPlayerController::LeftClickReleased()
 			AIslandTile* HitTile = Cast<AIslandTile>(RV_Hit.GetActor());
 			if (HitTile)
 			{
+				if (ActiveToolType == EToolType::Select)
+				{
 
+				}
 			}
 			AIslandPerson* HitPerson = Cast<AIslandPerson>(RV_Hit.GetActor());
 			if (HitPerson)
 			{
+				if (ActiveToolType == EToolType::Select)
+				{
 
+				}
 			}
 		}
 	}

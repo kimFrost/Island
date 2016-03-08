@@ -19,7 +19,11 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	OnBeginCursorOver.AddDynamic(this, &AIslandTile::TileHoverBegin);
 	OnEndCursorOver.AddDynamic(this, &AIslandTile::TileHoverEnd);
 
+	PeopleLocationDisplacement = FVector(100, 100, 0);
 
+	TileExplored = false;
+	TileHidden = false;
+	TileCanBeBypassed = false;
 
 	// OnClicked.AddDynamic(this, &AWorldPawn::DoOnClicked);
 
@@ -29,12 +33,69 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 	/*
 	 ShipMesh->OnClicked.AddDynamic(this, &AShipActor::OnClicked);
- 
+
 	void AShipActor::OnClicked(UPrimitiveComponent* pComponent){
 		//my logic
 	}
 	
 	*/
+}
+
+
+/******************** PlacePerson *************************/
+int32 AIslandTile::PlacePerson(AIslandPerson* Person)
+{
+	int32 Index;
+	//~~ From from previous tile ~~//
+	if (Person->TilePlacedOn)
+	{
+		Person->TilePlacedOn->RemovePerson(Person);
+	}
+	//~~ Add to new tile ~~//
+	Index = PeopleOnTile.Add(Person);
+	FVector NewLocation = this->GetActorLocation() + (FVector(50, 0, 0) * Index) + PeopleLocationDisplacement;
+	Person->SetActorLocation(NewLocation);
+	Person->TilePlacedOn = this;
+
+	
+
+	return Index;
+}
+
+
+/******************** CheckTile *************************/
+void AIslandTile::CheckTile()
+{
+	if (!TileExplored)
+	{
+		// Trigger tile event reveal
+		//TileCard
+		UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+		if (GameInstance)
+		{
+			GameInstance->OnTileRevealed.Broadcast(this);
+		}
+	}
+}
+
+
+/******************** RemovePerson *************************/
+void AIslandTile::RemovePerson(AIslandPerson* Person)
+{
+	PeopleOnTile.Remove(Person);
+	UpdatePersonPlacements();
+}
+
+
+/******************** UpdatePersonPlacements *************************/
+void AIslandTile::UpdatePersonPlacements()
+{
+	for (int32 i = 0; i < PeopleOnTile.Num(); i++)
+	{
+		AIslandPerson* Person = PeopleOnTile[i];
+		FVector NewLocation = this->GetActorLocation() + (FVector(50, 0, 0) * i) + PeopleLocationDisplacement;
+		Person->SetActorLocation(NewLocation);
+	}
 }
 
 
@@ -69,13 +130,24 @@ void AIslandTile::TileHoverEnd()
 
 }
 
+/******************** Test *************************/
+void AIslandTile::Test(AIslandTile* Tile)
+{
 
+}
 
 
 // Called when the game starts or when spawned
 void AIslandTile::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		GameInstance->OnTileSelected.AddDynamic(this, &AIslandTile::Test);
+	}
+
 
 }
 

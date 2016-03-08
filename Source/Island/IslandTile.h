@@ -31,9 +31,38 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	TArray<AIslandPerson*> PeopleOnTile;
 
-	// Cards that fit
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	FVector PeopleLocationDisplacement;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	bool TileExplored;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	bool TileHidden;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	bool TileCanBeBypassed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	FST_Card TileCard;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	TArray<FString> CardsAllowed;
 
 
+	/*********** FUNCTIONS **************/
+
+	UFUNCTION(BlueprintCallable, Category = "Person")
+	int32 PlacePerson(AIslandPerson* Person);
+
+	UFUNCTION(BlueprintCallable, Category = "Person")
+	void RemovePerson(AIslandPerson* Person);
+
+	UFUNCTION(BlueprintCallable, Category = "Person")
+	void UpdatePersonPlacements();
+
+	UFUNCTION(BlueprintCallable, Category = "Tile")
+	void CheckTile();
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void TileClicked();
@@ -44,6 +73,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void TileHoverEnd();
 
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void Test(AIslandTile* Tile);
 
 public:
 

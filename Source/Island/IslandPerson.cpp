@@ -13,8 +13,9 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	ActionsLeft = 0;
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
 
-	//static_cast<UStaticMeshComponent*>(GlobeComponent)->OnClicked.AddDynamic(this, &AWorldPawn::DoMeshOnClicked);
+	TilePlacedOn = nullptr;
 
+	//static_cast<UStaticMeshComponent*>(GlobeComponent)->OnClicked.AddDynamic(this, &AWorldPawn::DoMeshOnClicked);
 }
 
 

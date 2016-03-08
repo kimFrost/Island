@@ -28,6 +28,7 @@ class AIslandTile;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTurnSwitched, float, Turn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNewTurn, float, Turn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileSelected, AIslandTile*, Tile);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileRevealed, AIslandTile*, Tile);
 
 
 
@@ -116,6 +117,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FTileSelected OnTileSelected;
+
+	UPROPERTY(BlueprintAssignable, Category = "Input")
+	FTileRevealed OnTileRevealed;
 
 	//UPROPERTY(BlueprintAssignable, Category = "Structure")
 	//FStructurePlanted OnStructurePlanted;

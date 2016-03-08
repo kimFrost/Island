@@ -7,6 +7,8 @@
 #include "IslandPerson.generated.h"
 
 
+//~~~~~ Forward Declarations ~~~~~//
+class AIslandTile;
 
 
 UCLASS()
@@ -24,6 +26,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	int32 ActionsLeft;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	AIslandTile* TilePlacedOn;
 
 	//~~ FUNCTIONS ~~//
 

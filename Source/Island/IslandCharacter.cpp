@@ -19,7 +19,7 @@ AIslandCharacter::AIslandCharacter(const FObjectInitializer &ObjectInitializer) 
 
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
-	BaseLookUpRate = 45.f;
+	BaseLookUpRate = 150.f;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -28,24 +28,33 @@ AIslandCharacter::AIslandCharacter(const FObjectInitializer &ObjectInitializer) 
 
 	//~~ Movement configuration  ~~//
 	GetCharacterMovement()->bOrientRotationToMovement = false;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 300.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 1.0f;
 	GetCharacterMovement()->GravityScale = 0;
 	GetCharacterMovement()->FallingLateralFriction = 4;
 	GetCharacterMovement()->MaxAcceleration = 2048;
 	GetCharacterMovement()->MaxWalkSpeed = 6000;
+	GetCharacterMovement()->bConstrainToPlane = true;
+	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->AttachTo(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character
+	CameraBoom->TargetArmLength = 500.0f; // The camera follows at this distance behind the character
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->bAbsoluteRotation = true; // Don't want arm to rotate when character does
+	CameraBoom->RelativeRotation = FRotator(-60.f, 0.f, 0.f);
+	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
+	CameraBoom->bEnableCameraLag = true;
+	CameraBoom->bEnableCameraRotationLag = true;
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->AttachTo(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	FollowCamera->bUsePawnControlRotation = true; // Camera does not rotate relative to arm
+
+
 }
 
 
@@ -67,14 +76,22 @@ void AIslandCharacter::BeginPlay()
 void AIslandCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+	
+
+	/*
+	FRotator NewRotation = CameraBoom->GetComponentRotation();
+	NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch, -80.0f, -15.0f);
+	CameraBoom->SetWorldRotation(NewRotation);
+	*/
+
 	//CharacterMovement->MaxWalkSpeed = SpeedFactor * PowerLevel + BaseSpeed;
 
 	//OurCamera->FieldOfView = FMath::Lerp<float>(90.0f, 60.0f, ZoomFactor);
-   // OurCameraSpringArm->TargetArmLength = FMath::Lerp<float>(400.0f, 300.0f, ZoomFactor);
+	// OurCameraSpringArm->TargetArmLength = FMath::Lerp<float>(400.0f, 300.0f, ZoomFactor);
 
 	//FRotator NewRotation = CameraBoom->GetComponentRotation();
-	//NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch + CameraInput.Y, -80.0f, -15.0f);
-	//CameraBoom->SetWorldRotation(NewRotation);
+	//
+	//
 
 }
 

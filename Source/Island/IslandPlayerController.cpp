@@ -16,6 +16,8 @@ AIslandPlayerController::AIslandPlayerController(const FObjectInitializer &Objec
 	bShowMouseCursor = true;
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
+
+	//SetControlRotation(FRotator(-70.f, 0.f, 0.f));
 }
 
 
@@ -25,8 +27,7 @@ AIslandPlayerController::AIslandPlayerController(const FObjectInitializer &Objec
 /******************** CenterCameraAt *************************/
 void AIslandPlayerController::CenterCameraAt(FVector WorldPosition)
 {
-	GetPawn()->SetActorLocation(WorldPosition + FVector(0, 0, 500));
-
+	GetPawn()->SetActorLocation(WorldPosition + FVector(0, 0, 3000));
 
 
 }
@@ -180,14 +181,28 @@ void AIslandPlayerController::SetupInputComponent()
 void AIslandPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	EnableInput(this);
+	
+	
+	/*
+	AIslandCharacter* Character = Cast<AIslandCharacter>(GetPawn());
+	if (Character)
+	{
+		Character->CameraBoom->TargetArmLength += Value * 100.f;
+	}
+	*/
+	//GetControlledPawn()->AddControllerPitchInput(Value * 10.f);
+	//AddPitchInput
 
+	EnableInput(this);
 }
 
 
 void AIslandPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
+
 
 }
 

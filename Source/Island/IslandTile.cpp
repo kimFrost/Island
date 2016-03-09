@@ -27,7 +27,6 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 	// OnClicked.AddDynamic(this, &AWorldPawn::DoOnClicked);
 
-
 	//col = PCIP.CreateDefaultSubobject(this, TEXT("light")); col->OnClicked.AddDynamic(this, &AMyActor::OnClick);
 	//exitButton->OnClicked.AddDynamic(this, &URoMMainMenuWidget::exitGame);
 
@@ -38,6 +37,50 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 		//my logic
 	}
 	
+	*/
+
+	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
+	BaseMesh->AttachParent = RootComponent;
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Decals/M_HexDecal_Inst.M_HexDecal_Inst'"));
+	if (BaseMesh && MaterialInstanceObj.Succeeded())
+	{
+		//Material = MaterialInstanceObj.Object;
+		//BaseMesh->SetMaterial(0, Material);
+		//BaseMesh->SetMaterial(0, MaterialInstanceObj.Object);
+		DynamicMaterial = UMaterialInstanceDynamic::Create(MaterialInstanceObj.Object, this);
+		//DynamicMaterial = (UMaterialInstanceDynamic*)MaterialInstanceObj.Object;
+		BaseMesh->SetMaterial(0, DynamicMaterial);
+		//DynamicMaterial = BaseMesh->CreateDynamicMaterialInstance(0);
+		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+		//DynamicMaterial->SetScalarParameterValue("ParamWhatever", 1.f);
+	}
+
+
+	
+
+	/*
+	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Decals/M_HexDecal_Inst.M_HexDecal_Inst'"));
+	if (MaterialInstanceObj.Succeeded())
+	{
+		Material = MaterialInstanceObj.Object;
+		GetDecal()->SetMaterial(0, Material);
+		DynamicMaterial = GetDecal()->CreateDynamicMaterialInstance();
+		SetMaterial(0, DynamicMaterial);
+		//DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+	}
+	*/
+	//DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Red);
+
+
+	//MatInst = ((UPrimitiveComponent*)GetRootComponent())->CreateAndSetMaterialInstanceDynamic(0);
+
+	/*
+	static ConstructorHelpers::FObjectFinder<UMaterial> Material(TEXT("Material'/Game/Materials/UI/Game/M_Reload.M_Reload'"));
+	if (Material.Object)
+	{
+		ReloadDisplay->AddElement((UMaterialInterface*)Material.Object, nullptr, false, 32.0f, 32.0f, nullptr);
+	}
 	*/
 }
 

@@ -49,6 +49,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	TArray<FString> CardsAllowed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+		UStaticMeshComponent* BaseMesh;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+	//UMaterialInterface* Material;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	UMaterialInstanceDynamic* DynamicMaterial;
+
+	// Dynamic material for param
+
 
 	/*********** FUNCTIONS **************/
 
@@ -85,5 +96,9 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
+
+	// OnConstruction
+	//virtual void OnConstruction(const FTransform& Transform) override;
+
 
 };

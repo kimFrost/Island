@@ -25,6 +25,10 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	TileHidden = false;
 	TileCanBeBypassed = false;
 
+	USceneComponent* const TranslationComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
+	TranslationComp->Mobility = EComponentMobility::Static;
+	RootComponent = TranslationComp;
+
 	// OnClicked.AddDynamic(this, &AWorldPawn::DoOnClicked);
 
 	//col = PCIP.CreateDefaultSubobject(this, TEXT("light")); col->OnClicked.AddDynamic(this, &AMyActor::OnClick);
@@ -40,20 +44,34 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	*/
 
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshObj(TEXT("StaticMesh'/Game/Meshes/Box_Brush_StaticMesh.Box_Brush_StaticMesh'"));
+	if (MeshObj.Succeeded())
+	{
+		BaseMesh->SetStaticMesh(MeshObj.Object);
+	}
 	BaseMesh->AttachParent = RootComponent;
 
-	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Decals/M_HexDecal_Inst.M_HexDecal_Inst'"));
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Selected/M_SelectedTest_Inst.M_SelectedTest_Inst'"));
 	if (BaseMesh && MaterialInstanceObj.Succeeded())
 	{
 		//Material = MaterialInstanceObj.Object;
 		//BaseMesh->SetMaterial(0, Material);
 		//BaseMesh->SetMaterial(0, MaterialInstanceObj.Object);
-		DynamicMaterial = UMaterialInstanceDynamic::Create(MaterialInstanceObj.Object, this);
 		//DynamicMaterial = (UMaterialInstanceDynamic*)MaterialInstanceObj.Object;
-		BaseMesh->SetMaterial(0, DynamicMaterial);
 		//DynamicMaterial = BaseMesh->CreateDynamicMaterialInstance(0);
-		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
 		//DynamicMaterial->SetScalarParameterValue("ParamWhatever", 1.f);
+
+		//DynamicMaterial = UMaterialInstanceDynamic::Create(MaterialInstanceObj.Object, this);
+
+		//BaseMesh->SetMaterial(0, DynamicMaterial);
+		//DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+
+
+		BaseMesh->SetMaterial(0, MaterialInstanceObj.Object);
+		//DynamicMaterial = BaseMesh->CreateAndSetMaterialInstanceDynamic(0);
+		DynamicMaterial = BaseMesh->CreateDynamicMaterialInstance(0);
+		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
 	}
 
 
@@ -156,7 +174,10 @@ void AIslandTile::TileClicked()
 	if (GameInstance)
 	{
 		GameInstance->OnTileSelected.Broadcast(this);
-		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+		if (DynamicMaterial)
+		{
+			DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+		}
 	}
 }
 
@@ -179,7 +200,10 @@ void AIslandTile::OnAnyTileSelected(AIslandTile* Tile)
 {
 	if (Tile != this)
 	{
-		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+		if (DynamicMaterial)
+		{
+			DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+		}
 	}
 }
 

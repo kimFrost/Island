@@ -50,7 +50,7 @@ public:
 	TArray<FString> CardsAllowed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-		UStaticMeshComponent* BaseMesh;
+	UStaticMeshComponent* BaseMesh;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 	//UMaterialInterface* Material;
@@ -85,7 +85,7 @@ public:
 	void TileHoverEnd();
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
-	void Test(AIslandTile* Tile);
+	void OnAnyTileSelected(AIslandTile* Tile);
 
 public:
 

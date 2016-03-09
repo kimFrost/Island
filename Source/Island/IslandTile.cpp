@@ -52,7 +52,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 		//DynamicMaterial = (UMaterialInstanceDynamic*)MaterialInstanceObj.Object;
 		BaseMesh->SetMaterial(0, DynamicMaterial);
 		//DynamicMaterial = BaseMesh->CreateDynamicMaterialInstance(0);
-		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
 		//DynamicMaterial->SetScalarParameterValue("ParamWhatever", 1.f);
 	}
 
@@ -156,6 +156,7 @@ void AIslandTile::TileClicked()
 	if (GameInstance)
 	{
 		GameInstance->OnTileSelected.Broadcast(this);
+		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
 	}
 }
 
@@ -174,9 +175,12 @@ void AIslandTile::TileHoverEnd()
 }
 
 /******************** Test *************************/
-void AIslandTile::Test(AIslandTile* Tile)
+void AIslandTile::OnAnyTileSelected(AIslandTile* Tile)
 {
-
+	if (Tile != this)
+	{
+		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+	}
 }
 
 
@@ -184,14 +188,11 @@ void AIslandTile::Test(AIslandTile* Tile)
 void AIslandTile::BeginPlay()
 {
 	Super::BeginPlay();
-
 	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
 	if (GameInstance)
 	{
-		GameInstance->OnTileSelected.AddDynamic(this, &AIslandTile::Test);
+		GameInstance->OnTileSelected.AddDynamic(this, &AIslandTile::OnAnyTileSelected);
 	}
-
-
 }
 
 // Called every frame

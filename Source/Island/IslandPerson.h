@@ -29,6 +29,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	AIslandTile* TilePlacedOn;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	UStaticMeshComponent* PersonMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	UMaterialInstanceDynamic* PersonMeshDynamicMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+	UStaticMeshComponent* PedestalMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	UMaterialInstanceDynamic* PedestalMeshDynamicMaterial;
+
 	//~~ FUNCTIONS ~~//
 
 	UFUNCTION(BlueprintCallable, Category = "Input")

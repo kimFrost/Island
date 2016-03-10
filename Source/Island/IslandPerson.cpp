@@ -16,6 +16,52 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	TilePlacedOn = nullptr;
 
 	//static_cast<UStaticMeshComponent*>(GlobeComponent)->OnClicked.AddDynamic(this, &AWorldPawn::DoMeshOnClicked);
+
+
+
+	//StaticMesh'/Game/Meshes/SM_TestPerson.SM_TestPerson'
+	//StaticMesh'/Game/Meshes/Cylinder_Brush_StaticMesh.Cylinder_Brush_StaticMesh'
+
+	// 0, 70, 260
+
+
+	USceneComponent* const TranslationComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
+	TranslationComp->Mobility = EComponentMobility::Movable;
+	RootComponent = TranslationComp;
+
+
+	//~~ Person Mesh ~~//
+	PersonMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PersonMesh"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>PersonMeshObj(TEXT("StaticMesh'/Game/Meshes/SM_TestPerson.SM_TestPerson'"));
+	if (PersonMeshObj.Succeeded())
+	{
+		PersonMesh->SetStaticMesh(PersonMeshObj.Object);
+	}
+	PersonMesh->AttachParent = RootComponent;
+
+	//~~ Person Material ~~//
+	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Selected/M_SelectedTest_Inst.M_SelectedTest_Inst'"));
+	if (PersonMesh && MaterialInstanceObj.Succeeded())
+	{
+		PersonMesh->SetMaterial(0, MaterialInstanceObj.Object);
+		PersonMeshDynamicMaterial = PersonMesh->CreateDynamicMaterialInstance(0, PersonMesh->GetMaterial(0));
+		PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Red);
+	}
+
+	//~~ Pedestal Mesh ~~//
+	PedestalMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedestalMesh"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>PedestalMeshObj(TEXT("StaticMesh'/Game/Meshes/Cylinder_Brush_StaticMesh.Cylinder_Brush_StaticMesh'"));
+	if (PedestalMeshObj.Succeeded())
+	{
+		PedestalMesh->SetStaticMesh(PedestalMeshObj.Object);
+	}
+	PedestalMesh->AttachParent = RootComponent;
+
+	//~~ Pedestal Material ~~//
+
+
+
+
 }
 
 

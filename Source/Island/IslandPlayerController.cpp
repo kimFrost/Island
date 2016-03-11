@@ -127,7 +127,7 @@ void AIslandPlayerController::Zoom(float Value)
 		AIslandCharacter* Character = Cast<AIslandCharacter>(GetPawn());
 		if (Character)
 		{
-			Character->CameraBoom->TargetArmLength += Value * 100.f; 
+			Character->CameraBoom->TargetArmLength -= Value * 100.f; 
 		}
 	}
 }

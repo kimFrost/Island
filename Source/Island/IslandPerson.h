@@ -32,19 +32,30 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UStaticMeshComponent* PersonMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Material")
+	UMaterialInstance* PersonMeshMaterial;
+	//UMaterial* PersonMeshMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Material")
 	UMaterialInstanceDynamic* PersonMeshDynamicMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UStaticMeshComponent* PedestalMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Material")
 	UMaterialInstanceDynamic* PedestalMeshDynamicMaterial;
 
-	//~~ FUNCTIONS ~~//
+
+	/*********** FUNCTIONS **************/
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void PersonClicked();
+
+	UFUNCTION(BlueprintCallable, Category = "Person")
+	void SelectPerson();
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void OnAnyPersonSelected(AIslandPerson* Person);
 
 
 	// Called when the game starts or when spawned
@@ -53,6 +64,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	
+	virtual void PostInitializeComponents() override;
+
 	
 };

@@ -2,6 +2,8 @@
 
 #include "Island.h"
 #include "IslandDataHolder.h"
+#include "IslandGameInstance.h"
+#include "IslandPlayerController.h"
 #include "IslandPerson.h"
 
 
@@ -22,9 +24,6 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	//StaticMesh'/Game/Meshes/SM_TestPerson.SM_TestPerson'
 	//StaticMesh'/Game/Meshes/Cylinder_Brush_StaticMesh.Cylinder_Brush_StaticMesh'
 
-	// 0, 70, 260
-
-
 	USceneComponent* const TranslationComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
 	TranslationComp->Mobility = EComponentMobility::Movable;
 	RootComponent = TranslationComp;
@@ -36,17 +35,47 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	if (PersonMeshObj.Succeeded())
 	{
 		PersonMesh->SetStaticMesh(PersonMeshObj.Object);
+		PersonMesh->RelativeLocation = FVector(0, 70, 260);
 	}
 	PersonMesh->AttachParent = RootComponent;
 
+
+
+	//~~ Person Material ~~//
+	/*
+	static ConstructorHelpers::FObjectFinder<UMaterial>MaterialObj(TEXT("Material'/Game/Materials/Selected/M_SelectedTest.M_SelectedTest'"));
+	if (MaterialObj.Succeeded())
+	{
+		PersonMeshMaterial = MaterialObj.Object;
+	}
+	*/
+
+	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Selected/M_SelectedTest_Inst.M_SelectedTest_Inst'"));
+	if (MaterialInstanceObj.Succeeded())
+	{
+		PersonMeshMaterial = MaterialInstanceObj.Object;
+	}
+
+	/*
 	//~~ Person Material ~~//
 	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Selected/M_SelectedTest_Inst.M_SelectedTest_Inst'"));
 	if (PersonMesh && MaterialInstanceObj.Succeeded())
 	{
 		PersonMesh->SetMaterial(0, MaterialInstanceObj.Object);
-		PersonMeshDynamicMaterial = PersonMesh->CreateDynamicMaterialInstance(0, PersonMesh->GetMaterial(0));
-		PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Red);
+		//PersonMeshDynamicMaterial = PersonMesh->CreateDynamicMaterialInstance(0, PersonMesh->GetMaterial(0));
+		//PersonMeshDynamicMaterial = PersonMesh->CreateDynamicMaterialInstance(0, MaterialInstanceObj.Object);
+		//PersonMeshDynamicMaterial = PersonMesh->CreateAndSetMaterialInstanceDynamicFromMaterial(0, MaterialInstanceObj.Object);
+		//PersonMeshDynamicMaterial = PersonMesh->CreateAndSetMaterialInstanceDynamic(0);
+		//PersonMeshDynamicMaterial = PersonMesh->CreateAndSetMaterialInstanceDynamicFromMaterial(0, PersonMesh->GetMaterial(0));
+
+		//Create new material instance and assign it
+		//PersonMeshDynamicMaterial = UMaterialInstanceDynamic::Create(PersonMesh->GetMaterial(0), this);
+		//PersonMesh->SetMaterial(0, PersonMeshDynamicMaterial);
+
+
+		//PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Red);
 	}
+	*/
 
 	//~~ Pedestal Mesh ~~//
 	PedestalMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedestalMesh"));
@@ -65,23 +94,61 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 }
 
 
+/******************** PersonClicked *************************/
 void AIslandPerson::PersonClicked() {
 	//UE_LOG(LogTemp, Log, TEXT("pawn clicked"));
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "AIslandPerson:PersonClicked");
-
-
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "AIslandPerson:PersonClicked");
+	/*
+	AIslandPlayerController* PlayerController = Cast<AIslandPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (PlayerController)
+	{
+		PlayerController->CenterCameraAt(GetActorLocation());
+	}
+	*/
+	if (TilePlacedOn)
+	{
+		TilePlacedOn->TileClicked();
+	}
+	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		GameInstance->OnPersonSelected.Broadcast(this);
+		if (PersonMeshDynamicMaterial)
+		{
+			SelectPerson();
+		}
+	}
 }
 
-/*
-void AIslandPerson::DoMeshOnClicked(UPrimitiveComponent* clicked) {
-	UE_LOG(LogTemp, Log, TEXT("mesh clicked"));
+
+/******************** PersonClicked *************************/
+void AIslandPerson::SelectPerson() {
+	PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
 }
-*/
+
+/******************** OnAnyTileSelected *************************/
+void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)
+{
+	if (Person != this)
+	{
+		if (PersonMeshDynamicMaterial)
+		{
+			PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+		}
+	}
+}
+
+
 
 // Called when the game starts or when spawned
 void AIslandPerson::BeginPlay()
 {
 	Super::BeginPlay();
+	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		GameInstance->OnPersonSelected.AddDynamic(this, &AIslandPerson::OnAnyPersonSelected);
+	}
 	
 }
 
@@ -92,3 +159,13 @@ void AIslandPerson::Tick( float DeltaTime )
 
 }
 
+void AIslandPerson::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	if (PersonMeshMaterial)
+	{
+		PersonMeshDynamicMaterial = UMaterialInstanceDynamic::Create(PersonMeshMaterial, this);
+		PersonMesh->SetMaterial(0, PersonMeshDynamicMaterial);
+		PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Red);
+	}
+}

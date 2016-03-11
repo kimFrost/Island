@@ -19,7 +19,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	OnBeginCursorOver.AddDynamic(this, &AIslandTile::TileHoverBegin);
 	OnEndCursorOver.AddDynamic(this, &AIslandTile::TileHoverEnd);
 
-	PeopleLocationDisplacement = FVector(100, 100, 0);
+	PeopleLocationDisplacement = FVector(300, 200, 0);
 
 	TileExplored = false;
 	TileHidden = false;
@@ -165,14 +165,25 @@ void AIslandTile::TileClicked()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "IslandTile::TileClicked");
 	//UIslandGameInstance GameInstance = Cast<UIslandGameInstance>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	AIslandPlayerController* PlayerController = Cast<AIslandPlayerController>(GetWorld()->GetFirstPlayerController());
-	if (PlayerController)
-	{
-		PlayerController->CenterCameraAt(GetActorLocation());
-	}
 	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
 	if (GameInstance)
 	{
+		//~~ Select first person ~~//
+		if (PeopleOnTile.Num() > 0)
+		{
+			GameInstance->OnPersonSelected.Broadcast(PeopleOnTile[0]);
+			PeopleOnTile[0]->SelectPerson();
+		}
+		//~~ Else select nullptr ~~//
+		else
+		{
+			GameInstance->OnPersonSelected.Broadcast(nullptr);
+		}
+		AIslandPlayerController* PlayerController = Cast<AIslandPlayerController>(GetWorld()->GetFirstPlayerController());
+		if (PlayerController)
+		{
+			PlayerController->CenterCameraAt(GetActorLocation());
+		}
 		GameInstance->OnTileSelected.Broadcast(this);
 		if (DynamicMaterial)
 		{
@@ -195,7 +206,7 @@ void AIslandTile::TileHoverEnd()
 
 }
 
-/******************** Test *************************/
+/******************** OnAnyTileSelected *************************/
 void AIslandTile::OnAnyTileSelected(AIslandTile* Tile)
 {
 	if (Tile != this)

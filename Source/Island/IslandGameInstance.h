@@ -21,6 +21,7 @@ enum class EIslandPlayState : uint8 //** you can replace short with uint8 */
 
 //~~~~~ Forward Declarations ~~~~~//
 class AIslandTile;
+class AIslandPerson;
 
 
 
@@ -29,6 +30,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTurnSwitched, float, Turn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNewTurn, float, Turn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileSelected, AIslandTile*, Tile);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileRevealed, AIslandTile*, Tile);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPersonSelected, AIslandPerson*, Person);
+
 
 
 
@@ -120,6 +123,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FTileRevealed OnTileRevealed;
+
+	UPROPERTY(BlueprintAssignable, Category = "Input")
+	FPersonSelected OnPersonSelected;
 
 	//UPROPERTY(BlueprintAssignable, Category = "Structure")
 	//FStructurePlanted OnStructurePlanted;

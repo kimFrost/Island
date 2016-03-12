@@ -176,7 +176,13 @@ void AIslandPerson::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 
-
 	// Better with dynamic material here???
+
+
+
+	//static const FString ContextString(TEXT("GENERAL")); //~~ Key value for each column of values ~~//
+	//FST_Structure* StructureData = DATA_Structures->FindRow<FST_Structure>(*RowName, ContextString);
+	//if (StructureData)
+
 
 }

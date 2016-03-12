@@ -24,6 +24,9 @@ public:
 	FST_Person PersonRawData;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString PersonId;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	int32 ActionsLeft;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
@@ -66,5 +69,6 @@ public:
 
 	virtual void PostInitializeComponents() override;
 
+	virtual void OnConstruction(const FTransform& Transform) override;
 	
 };

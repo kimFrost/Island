@@ -68,9 +68,9 @@ struct FST_Person : public FTableRowBase
 public:
 	FST_Person()
 	{}
-	UPROPERTY(EditAnywhere, Category = "Person")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Id;
-	UPROPERTY(EditAnywhere, Category = "Person")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Title;
 };
 
@@ -82,9 +82,9 @@ struct FST_Card : public FTableRowBase
 public:
 	FST_Card()
 	{}
-	UPROPERTY(EditAnywhere, Category = "Card")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	FString Id;
-	UPROPERTY(EditAnywhere, Category = "Card")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	FString Title;
 };
 
@@ -96,9 +96,9 @@ struct FST_Event : public FTableRowBase
 public:
 	FST_Event()
 	{}
-	UPROPERTY(EditAnywhere, Category = "Event")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Event")
 	FString Id;
-	UPROPERTY(EditAnywhere, Category = "Event")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Event")
 	FString Title;
 };
 

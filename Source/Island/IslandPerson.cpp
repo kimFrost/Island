@@ -153,9 +153,9 @@ void AIslandPerson::BeginPlay()
 }
 
 // Called every frame
-void AIslandPerson::Tick( float DeltaTime )
+void AIslandPerson::Tick(float DeltaTime)
 {
-	Super::Tick( DeltaTime );
+	Super::Tick(DeltaTime);
 
 }
 
@@ -168,4 +168,15 @@ void AIslandPerson::PostInitializeComponents()
 		PersonMesh->SetMaterial(0, PersonMeshDynamicMaterial);
 		PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Red);
 	}
+}
+
+
+
+void AIslandPerson::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+
+	// Better with dynamic material here???
+
 }

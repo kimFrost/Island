@@ -51,11 +51,12 @@ public:
 	EToolType ActiveToolType;
 
 	// Selected Tile
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tool")
+	AIslandPerson* SelectedPerson;
 
 	// Selected Person
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tool")
-	AActor* SelectedActor;
+	AIslandTile* SelectedTile;
 
 	//~~ Camera ~~//
 
@@ -69,7 +70,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	bool RightMouseButtonDown;
 
+
 	/*********** FUNCTIONS **************/
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void SetSelectedPerson(AIslandPerson* Person);
+
+	UFUNCTION(BlueprintCallable, Category = "Input")
+	void SetSelectedTile(AIslandTile* Tile);
 
 	//~~ Camera ~~//
 

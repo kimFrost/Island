@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Island.h"
+#include "IslandGameInstance.h"
 #include "IslandHUD.h"
 #include "IslandCharacter.h"
 #include "IslandPlayerController.h"
@@ -12,7 +13,8 @@
 AIslandPlayerController::AIslandPlayerController(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
 {
 	ActiveToolType = EToolType::Select;
-	SelectedActor = nullptr;
+	SelectedPerson = nullptr;
+	SelectedTile = nullptr;
 	bShowMouseCursor = true;
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
@@ -21,6 +23,20 @@ AIslandPlayerController::AIslandPlayerController(const FObjectInitializer &Objec
 }
 
 
+/******************** SetSelectedPerson *************************/
+void AIslandPlayerController::SetSelectedPerson(AIslandPerson* Person)
+{
+	SelectedPerson = Person;
+
+}
+
+
+/******************** SetSelectedTile *************************/
+void AIslandPlayerController::SetSelectedTile(AIslandTile* Tile)
+{
+	SelectedTile = Tile;
+
+}
 
 
 
@@ -103,17 +119,70 @@ void AIslandPlayerController::LeftClickReleased()
 }
 
 
-/******************** LeftClickPressed *************************/
+/******************** RightClickPressed *************************/
 void AIslandPlayerController::RightClickPressed()
 {
 	RightMouseButtonDown = true;
+
 }
 
 
-/******************** LeftClickReleased *************************/
+/******************** RightClickReleased *************************/
 void AIslandPlayerController::RightClickReleased()
 {
 	RightMouseButtonDown = false;
+
+	// Trace for tiles for goTo
+	if (!GetWorld())
+	{
+		return;
+	}
+
+	// Trace
+	FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, this);
+	RV_TraceParams.bTraceComplex = true;
+	RV_TraceParams.bTraceAsyncScene = true;
+	RV_TraceParams.bReturnPhysicalMaterial = false;
+	//RV_TraceParams.TraceTag = TraceTag;
+
+	//~~ Re-initialize hit info ~~//
+	FHitResult RV_Hit(ForceInit);
+
+	FVector WorldLocation;
+	FVector WorldDirection;
+	this->DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
+
+	FVector LineTraceFrom = WorldLocation + FVector{ 1.f, 1.f, 0.f };
+	FVector LineTraceTo = WorldDirection * 50000 + WorldLocation + FVector{ 1.f, 1.f, 0.f };
+
+	this->GetWorld()->LineTraceSingleByChannel(RV_Hit, LineTraceFrom, LineTraceTo, ECC_Pawn, RV_TraceParams);
+	if (RV_Hit.bBlockingHit)
+	{
+		if (RV_Hit.GetActor())
+		{
+			AIslandTile* HitTile = Cast<AIslandTile>(RV_Hit.GetActor());
+			if (HitTile)
+			{
+				if (SelectedPerson)
+				{
+					// Move to ?
+					HitTile->PlacePerson(SelectedPerson);
+				}
+				if (ActiveToolType == EToolType::Select)
+				{
+
+				}
+			}
+			AIslandPerson* HitPerson = Cast<AIslandPerson>(RV_Hit.GetActor());
+			if (HitPerson)
+			{
+				if (ActiveToolType == EToolType::Select)
+				{
+
+				}
+			}
+		}
+	}
 }
 
 
@@ -182,6 +251,13 @@ void AIslandPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		GameInstance->OnTileSelected.AddDynamic(this, &AIslandPlayerController::SetSelectedTile);
+		GameInstance->OnPersonSelected.AddDynamic(this, &AIslandPlayerController::SetSelectedPerson);
+	}
+
 	
 	/*
 	AIslandCharacter* Character = Cast<AIslandCharacter>(GetPawn());

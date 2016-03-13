@@ -171,6 +171,7 @@ void AIslandTile::TileClicked()
 	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
 	if (GameInstance)
 	{
+		/*
 		//~~ Select first person ~~//
 		if (PeopleOnTile.Num() > 0)
 		{
@@ -182,6 +183,7 @@ void AIslandTile::TileClicked()
 		{
 			GameInstance->OnPersonSelected.Broadcast(nullptr);
 		}
+		*/
 		AIslandPlayerController* PlayerController = Cast<AIslandPlayerController>(GetWorld()->GetFirstPlayerController());
 		if (PlayerController)
 		{

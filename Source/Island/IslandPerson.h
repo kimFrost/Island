@@ -30,6 +30,9 @@ public:
 	int32 ActionsLeft;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	bool Selected;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	AIslandTile* TilePlacedOn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")

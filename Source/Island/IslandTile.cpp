@@ -19,7 +19,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	OnBeginCursorOver.AddDynamic(this, &AIslandTile::TileHoverBegin);
 	OnEndCursorOver.AddDynamic(this, &AIslandTile::TileHoverEnd);
 
-	PeopleLocationDisplacement = FVector(300, 200, 0);
+	PeopleLocationDisplacement = FVector(300, 300, 0);
 
 	TileExplored = false;
 	TileHidden = false;
@@ -114,11 +114,9 @@ int32 AIslandTile::PlacePerson(AIslandPerson* Person)
 	}
 	//~~ Add to new tile ~~//
 	Index = PeopleOnTile.Add(Person);
-	FVector NewLocation = this->GetActorLocation() + (FVector(50, 0, 0) * Index) + PeopleLocationDisplacement;
+	FVector NewLocation = this->GetActorLocation() + (FVector(0, 500, 0) * Index) + PeopleLocationDisplacement;
 	Person->SetActorLocation(NewLocation);
 	Person->TilePlacedOn = this;
-
-	
 
 	return Index;
 }
@@ -143,7 +141,12 @@ void AIslandTile::CheckTile()
 /******************** RemovePerson *************************/
 void AIslandTile::RemovePerson(AIslandPerson* Person)
 {
+	FString asdasd;
+
 	PeopleOnTile.Remove(Person);
+
+	FString asdsadd;
+
 	UpdatePersonPlacements();
 }
 

@@ -13,9 +13,12 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	ActionsLeft = 0;
+	Selected = false;
+
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
 
 	TilePlacedOn = nullptr;
+
 
 	//static_cast<UStaticMeshComponent*>(GlobeComponent)->OnClicked.AddDynamic(this, &AWorldPawn::DoMeshOnClicked);
 
@@ -109,21 +112,22 @@ void AIslandPerson::PersonClicked() {
 	{
 		TilePlacedOn->TileClicked();
 	}
-	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
-	if (GameInstance)
-	{
-		GameInstance->OnPersonSelected.Broadcast(this);
-		if (PersonMeshDynamicMaterial)
-		{
-			SelectPerson();
-		}
-	}
+	SelectPerson();
 }
 
 
 /******************** PersonClicked *************************/
 void AIslandPerson::SelectPerson() {
-	PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+	if (PersonMeshDynamicMaterial)
+	{
+		PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+		UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+		if (GameInstance)
+		{
+			GameInstance->OnPersonSelected.Broadcast(this);
+			Selected = true;
+		}
+	}
 }
 
 /******************** OnAnyTileSelected *************************/
@@ -134,6 +138,7 @@ void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)
 		if (PersonMeshDynamicMaterial)
 		{
 			PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+			Selected = false;
 		}
 	}
 }
@@ -152,6 +157,7 @@ void AIslandPerson::BeginPlay()
 	
 }
 
+
 // Called every frame
 void AIslandPerson::Tick(float DeltaTime)
 {
@@ -159,25 +165,72 @@ void AIslandPerson::Tick(float DeltaTime)
 
 }
 
+
 void AIslandPerson::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+	/*
 	if (PersonMeshMaterial)
 	{
 		PersonMeshDynamicMaterial = UMaterialInstanceDynamic::Create(PersonMeshMaterial, this);
 		PersonMesh->SetMaterial(0, PersonMeshDynamicMaterial);
 		PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Red);
 	}
+	*/
 }
-
 
 
 void AIslandPerson::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 
-	// Better with dynamic material here???
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "AIslandPerson::OnConstruction");
 
+	if (PersonMeshMaterial)
+	{
+		PersonMeshDynamicMaterial = UMaterialInstanceDynamic::Create(PersonMeshMaterial, this);
+		PersonMesh->SetMaterial(0, PersonMeshDynamicMaterial);
+		PersonMeshDynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Red);
+	}
+
+	//!! This will not work. The game instance is only present when in play. !!//
+	/*
+	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+	if (GameInstance)
+	{
+		static const FString ContextString(TEXT("GENERAL")); //~~ Key value for each column of values ~~//
+		FST_Person* PersonData = GameInstance->DATA_People->FindRow<FST_Person>(*PersonId, ContextString);
+		if (PersonData)
+		{
+			PersonRawData = *PersonData;
+		}
+	}
+	*/
+
+	//~~ Place Person ~~//
+	if (TilePlacedOn)
+	{
+		TilePlacedOn->PlacePerson(this);
+	}
+
+	//~~ Data table read raw data
+	UDataTable* PeopleTable = (UDataTable*)StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("DataTable'/Game/Data/People.People'"));
+	if (PeopleTable)
+	{
+		static const FString ContextString(TEXT("GENERAL")); //~~ Key value for each column of values ~~//
+		FST_Person* PersonData = PeopleTable->FindRow<FST_Person>(*PersonId, ContextString);
+		if (PersonData)
+		{
+			PersonRawData = *PersonData;
+		}
+		else {
+			PersonRawData = FST_Person{};
+		}
+	}
+	else
+	{
+		PersonRawData = FST_Person{};
+	}
 
 
 	//static const FString ContextString(TEXT("GENERAL")); //~~ Key value for each column of values ~~//
@@ -186,3 +239,8 @@ void AIslandPerson::OnConstruction(const FTransform& Transform)
 
 
 }
+
+
+//PostEditMove
+
+//PostEditChangeProperty 

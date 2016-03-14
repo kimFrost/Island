@@ -104,21 +104,31 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 
 /******************** PlacePerson *************************/
-int32 AIslandTile::PlacePerson(AIslandPerson* Person)
+FVector AIslandTile::PlacePerson(AIslandPerson* Person, bool Teleport)
 {
 	int32 Index;
-	//~~ From from previous tile ~~//
-	if (Person->TilePlacedOn)
+	FVector NewLocation;
+	if (Person)
 	{
-		Person->TilePlacedOn->RemovePerson(Person);
-	}
-	//~~ Add to new tile ~~//
-	Index = PeopleOnTile.Add(Person);
-	FVector NewLocation = this->GetActorLocation() + (FVector(0, 500, 0) * Index) + PeopleLocationDisplacement;
-	Person->SetActorLocation(NewLocation);
-	Person->TilePlacedOn = this;
+		//~~ From from previous tile ~~//
+		if (Person->TilePlacedOn)
+		{
+			Person->TilePlacedOn->RemovePerson(Person);
+		}
+		//~~ Add to new tile ~~//
+		Index = PeopleOnTile.Add(Person);
+		NewLocation = this->GetActorLocation() + (FVector(0, 500, 0) * Index) + PeopleLocationDisplacement;
+		if (Teleport)
+		{
+			Person->SetActorLocation(NewLocation);
+		}
+		Person->TilePlacedOn = this;
 
-	return Index;
+		// Get all steps/tiles pathto?
+		
+	}
+	//return Index;
+	return NewLocation;
 }
 
 
@@ -157,8 +167,11 @@ void AIslandTile::UpdatePersonPlacements()
 	for (int32 i = 0; i < PeopleOnTile.Num(); i++)
 	{
 		AIslandPerson* Person = PeopleOnTile[i];
-		FVector NewLocation = this->GetActorLocation() + (FVector(50, 0, 0) * i) + PeopleLocationDisplacement;
-		Person->SetActorLocation(NewLocation);
+		if (Person)
+		{
+			FVector NewLocation = this->GetActorLocation() + (FVector(50, 0, 0) * i) + PeopleLocationDisplacement;
+			Person->SetActorLocation(NewLocation);
+		}
 	}
 }
 

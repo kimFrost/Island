@@ -64,7 +64,7 @@ public:
 	/*********** FUNCTIONS **************/
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
-	int32 PlacePerson(AIslandPerson* Person);
+	FVector PlacePerson(AIslandPerson* Person, bool Teleport);
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	void RemovePerson(AIslandPerson* Person);

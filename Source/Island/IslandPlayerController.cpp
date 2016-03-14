@@ -166,7 +166,9 @@ void AIslandPlayerController::RightClickReleased()
 				if (SelectedPerson)
 				{
 					// Move to ?
-					HitTile->PlacePerson(SelectedPerson);
+					FVector NewLocation = HitTile->PlacePerson(SelectedPerson, true);
+
+
 				}
 				if (ActiveToolType == EToolType::Select)
 				{

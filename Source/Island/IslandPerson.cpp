@@ -4,6 +4,7 @@
 #include "IslandDataHolder.h"
 #include "IslandGameInstance.h"
 #include "IslandPlayerController.h"
+#include "IslandTile.h"
 #include "IslandPerson.h"
 
 
@@ -39,9 +40,10 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	{
 		PersonMesh->SetStaticMesh(PersonMeshObj.Object);
 		PersonMesh->RelativeLocation = FVector(0, 70, 260);
+		PersonMesh->Mobility = EComponentMobility::Movable;
+		PersonMesh->AttachParent = RootComponent;
 	}
-	PersonMesh->AttachParent = RootComponent;
-
+	
 
 
 	//~~ Person Material ~~//
@@ -82,17 +84,65 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 
 	//~~ Pedestal Mesh ~~//
 	PedestalMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PedestalMesh"));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>PedestalMeshObj(TEXT("StaticMesh'/Game/Meshes/Cylinder_Brush_StaticMesh.Cylinder_Brush_StaticMesh'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PedestalMeshObj(TEXT("StaticMesh'/Game/Meshes/Cylinder_Brush_StaticMesh.Cylinder_Brush_StaticMesh'"));
 	if (PedestalMeshObj.Succeeded())
 	{
 		PedestalMesh->SetStaticMesh(PedestalMeshObj.Object);
+		PedestalMesh->Mobility = EComponentMobility::Movable;
+		PedestalMesh->AttachParent = RootComponent;
 	}
-	PedestalMesh->AttachParent = RootComponent;
 
 	//~~ Pedestal Material ~~//
 
 
 
+	//~~ Animation curve ~~//
+	static ConstructorHelpers::FObjectFinder<UCurveFloat> CurveObj(TEXT("CurveFloat'/Game/OwnStuff/EffectCurve.EffectCurve'"));
+	if (CurveObj.Succeeded())
+	{
+		//TimeLine = FTimeline{};
+		//FOnTimelineFloat progressFunction{};
+		//progressFunction.BindUFunction(this, "EffectProgress");
+		//TimeLine.AddInterpFloat(Curve.Object, progressFunction);
+	}
+
+}
+
+
+
+
+
+
+/** The function which gets called from the timeline tick */
+void AIslandPerson::EffectProgress(float Value)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("EffectProgress: timeline: %f  value:%f"), TimeLine.GetPlaybackPosition(), Value));
+	// do something
+
+}
+
+/** Function which gets called from the Timer to call EffectProgress */
+void AIslandPerson::TickTimeline()
+{
+	if (TimeLine.IsPlaying())
+	{
+		TimeLine.TickTimeline(DELTATIME);
+	}
+	else
+	{
+		//GetWorldTimerManager().ClearTimer(this, &AIslandPerson::TickTimeline);
+		GetWorldTimerManager().ClearTimer(TimerHandle);
+		SetLifeSpan(0);
+	}
+}
+
+
+
+
+
+
+/******************** MoveTo *************************/
+void AIslandPerson::MoveTo(AIslandTile* Tile) {
 
 }
 
@@ -155,6 +205,11 @@ void AIslandPerson::BeginPlay()
 		GameInstance->OnPersonSelected.AddDynamic(this, &AIslandPerson::OnAnyPersonSelected);
 	}
 	
+
+
+	TimeLine.PlayFromStart();
+	
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AIslandPerson::TickTimeline, DELTATIME, true, 0.0f);
 }
 
 
@@ -210,7 +265,7 @@ void AIslandPerson::OnConstruction(const FTransform& Transform)
 	//~~ Place Person ~~//
 	if (TilePlacedOn)
 	{
-		TilePlacedOn->PlacePerson(this);
+		TilePlacedOn->PlacePerson(this, true);
 	}
 
 	//~~ Data table read raw data

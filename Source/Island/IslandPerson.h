@@ -54,25 +54,31 @@ public:
 
 
 
-	UPROPERTY(EditInstanceOnly, Category = Tools, DisplayName = "Animation")
-	FTimeline TimeLine;
 
-	UPROPERTY(EditInstanceOnly, Category = Tools, DisplayName = "Animation")
-	UCurveFloat* mCurve;
 
-	/** Deltatime(stepsize) for the timer calling the timeline tick */
+	UPROPERTY(EditInstanceOnly, Category = "Animation")
+	FTimeline MoveTimeLine;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UCurveFloat* MoveCurve;
+
+
+
+
+	/*
 	static const float DELTATIME;
 
 	UPROPERTY(EditInstanceOnly, Category = Tools, DisplayName = "Animation")
 	FTimerHandle TimerHandle;
 
-	/** Function which gets called from the Timer to call EffectProgress */
 	void TickTimeline();
+	*/
 
-	/** Function which gets called from the Timeline on a Tick */
-	UFUNCTION()
+
+
+	UFUNCTION(BlueprintCallable, Category = "Animation")
 	void EffectProgress(float Value);
-
+	
 
 
 

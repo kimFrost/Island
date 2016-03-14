@@ -19,7 +19,7 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
 
 	TilePlacedOn = nullptr;
-
+	MoveCurve = nullptr;
 
 	//static_cast<UStaticMeshComponent*>(GlobeComponent)->OnClicked.AddDynamic(this, &AWorldPawn::DoMeshOnClicked);
 
@@ -96,24 +96,44 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 
 
 
+
+	//~~ Move timeline ~~//
+	//MoveTimeLine = FTimeline{};
+	MoveTimeLine.SetTimelineLength(3);
+
+	FOnTimelineEvent MoveTimeEvent = FOnTimelineEvent();
+	FOnTimelineFloat MoveTimeFloatDelegate = FOnTimelineFloat();
+
+	MoveTimeFloatDelegate.BindUFunction(this, "EffectProgress");
+
 	//~~ Animation curve ~~//
-	static ConstructorHelpers::FObjectFinder<UCurveFloat> CurveObj(TEXT("CurveFloat'/Game/OwnStuff/EffectCurve.EffectCurve'"));
+	static ConstructorHelpers::FObjectFinder<UCurveFloat> CurveObj(TEXT("CurveFloat'/Game/Util/MoveAnimCurve.MoveAnimCurve'"));
 	if (CurveObj.Succeeded())
 	{
+		MoveCurve = CurveObj.Object;
+		MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimeFloatDelegate, FName("Percentage_Complete"));
+
 		//TimeLine = FTimeline{};
 		//FOnTimelineFloat progressFunction{};
 		//progressFunction.BindUFunction(this, "EffectProgress");
 		//TimeLine.AddInterpFloat(Curve.Object, progressFunction);
 	}
 
+	//testEvent.BindDynamic(this, &AFireBall::OnEventEvent);
+
+}
+
+
+
+void AIslandPerson::EffectProgress(float Value)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Green, TEXT("EFFECT PROGRESS") + FString::SanitizeFloat(Value));
 }
 
 
 
 
-
-
-/** The function which gets called from the timeline tick */
+/*
 void AIslandPerson::EffectProgress(float Value)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("EffectProgress: timeline: %f  value:%f"), TimeLine.GetPlaybackPosition(), Value));
@@ -121,7 +141,6 @@ void AIslandPerson::EffectProgress(float Value)
 
 }
 
-/** Function which gets called from the Timer to call EffectProgress */
 void AIslandPerson::TickTimeline()
 {
 	if (TimeLine.IsPlaying())
@@ -135,7 +154,7 @@ void AIslandPerson::TickTimeline()
 		SetLifeSpan(0);
 	}
 }
-
+*/
 
 
 
@@ -163,6 +182,9 @@ void AIslandPerson::PersonClicked() {
 		TilePlacedOn->TileClicked();
 	}
 	SelectPerson();
+
+	MoveTimeLine.PlayFromStart();
+
 }
 
 
@@ -206,11 +228,13 @@ void AIslandPerson::BeginPlay()
 	}
 	
 
-
+	/*
 	TimeLine.PlayFromStart();
 	
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &AIslandPerson::TickTimeline, DELTATIME, true, 0.0f);
+	*/
 }
+
 
 
 // Called every frame
@@ -218,6 +242,8 @@ void AIslandPerson::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//~~ Tick timeline for movement ~~//
+	MoveTimeLine.TickTimeline(DeltaTime); 
 }
 
 

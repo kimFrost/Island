@@ -54,7 +54,7 @@ public:
 
 
 
-
+	// TimeLine
 
 	UPROPERTY(EditInstanceOnly, Category = "Animation")
 	FTimeline MoveTimeLine;
@@ -62,23 +62,27 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
 	UCurveFloat* MoveCurve;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Animation")
+	FOnTimelineEvent MoveTimelineEventEvent;
+ 
+	UPROPERTY(BlueprintReadOnly, Category = "Animation")
+	FOnTimelineFloat MoveTimelineFloatEvent;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Animation")
+	FVector MoveFromLocation;
 
-
-	/*
-	static const float DELTATIME;
-
-	UPROPERTY(EditInstanceOnly, Category = Tools, DisplayName = "Animation")
-	FTimerHandle TimerHandle;
-
-	void TickTimeline();
-	*/
-
-
+	UPROPERTY(BlueprintReadOnly, Category = "Animation")
+	FVector MoveToLocation;
 
 	UFUNCTION(BlueprintCallable, Category = "Animation")
-	void EffectProgress(float Value);
+	void TimelineUpdate(float Value);
 	
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+	void MoveEnded();
+	
+
+
+ 
 
 
 

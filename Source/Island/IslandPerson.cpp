@@ -97,72 +97,73 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 
 
 
-	//~~ Move timeline ~~//
+	//~~ MoveTimeline ~~//
 	//MoveTimeLine = FTimeline{};
 	MoveTimeLine.SetTimelineLength(3);
+	//MoveTimeLine.SetPlaybackPosition(1 / 10.f);
 
-	FOnTimelineEvent MoveTimeEvent = FOnTimelineEvent();
+	//~~ Timeline events ~~//
+	MoveTimelineEventEvent.BindDynamic(this, &AIslandPerson::MoveEnded);
+	MoveTimelineFloatEvent.BindDynamic(this, &AIslandPerson::TimelineUpdate);
+
+	MoveTimeLine.SetTimelinePostUpdateFunc(MoveTimelineEventEvent);
+
+
+	/*
+	//~~ Timeline ended event ~~//
+	FOnTimelineEvent MoveTimeEventEnd = FOnTimelineEvent();
+	MoveTimeEventEnd.BindDynamic(this, &AIslandPerson::MoveEnded);
+	MoveTimeLine.SetTimelineFinishedFunc(MoveTimeEventEnd);
+
+	//~~ Timeline post update event ~~//
+	FOnTimelineEvent MoveTimeEventUpdate = FOnTimelineEvent();
+	MoveTimeEventUpdate.BindUFunction(this, "TimelineUpdate");
+	MoveTimeLine.SetTimelinePostUpdateFunc(MoveTimeEventUpdate);
+
+	//~~ Timeline tick update ~~//
 	FOnTimelineFloat MoveTimeFloatDelegate = FOnTimelineFloat();
-
-	MoveTimeFloatDelegate.BindUFunction(this, "EffectProgress");
+	MoveTimeFloatDelegate.BindUFunction(this, "TimelineUpdate");
+	*/
 
 	//~~ Animation curve ~~//
 	static ConstructorHelpers::FObjectFinder<UCurveFloat> CurveObj(TEXT("CurveFloat'/Game/Util/MoveAnimCurve.MoveAnimCurve'"));
 	if (CurveObj.Succeeded())
 	{
 		MoveCurve = CurveObj.Object;
-		MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimeFloatDelegate, FName("Percentage_Complete"));
-
-		//TimeLine = FTimeline{};
-		//FOnTimelineFloat progressFunction{};
-		//progressFunction.BindUFunction(this, "EffectProgress");
-		//TimeLine.AddInterpFloat(Curve.Object, progressFunction);
+		//MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimeFloatDelegate, FName("Percentage_Complete"));
+		MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimelineFloatEvent, FName("Percentage_Complete"));
+		//TimelineComponent->AddInterpFloat(Curve, Racer->TimelineFloatEvent, FName("Percentage_Complete"));
 	}
-
-	//testEvent.BindDynamic(this, &AFireBall::OnEventEvent);
 
 }
 
 
-
-void AIslandPerson::EffectProgress(float Value)
+/******************** TimelineUpdate *************************/
+void AIslandPerson::TimelineUpdate(float Value)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Green, TEXT("EFFECT PROGRESS") + FString::SanitizeFloat(Value));
+	FVector NewLocation = FMath::Lerp(MoveFromLocation, MoveToLocation, Value);
+	SetActorLocation(NewLocation);
 }
 
 
-
-
-/*
-void AIslandPerson::EffectProgress(float Value)
+/******************** MoveEnded *************************/
+void AIslandPerson::MoveEnded()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("EffectProgress: timeline: %f  value:%f"), TimeLine.GetPlaybackPosition(), Value));
-	// do something
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Timeline ended"));
 
 }
-
-void AIslandPerson::TickTimeline()
-{
-	if (TimeLine.IsPlaying())
-	{
-		TimeLine.TickTimeline(DELTATIME);
-	}
-	else
-	{
-		//GetWorldTimerManager().ClearTimer(this, &AIslandPerson::TickTimeline);
-		GetWorldTimerManager().ClearTimer(TimerHandle);
-		SetLifeSpan(0);
-	}
-}
-*/
-
-
-
 
 
 /******************** MoveTo *************************/
 void AIslandPerson::MoveTo(AIslandTile* Tile) {
+	if (Tile)
+	{
+		MoveFromLocation = GetActorLocation();
+		MoveToLocation = Tile->GetActorLocation();
+		//~~ Start animation timeline ~~//
 
+	}
 }
 
 
@@ -243,7 +244,10 @@ void AIslandPerson::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	//~~ Tick timeline for movement ~~//
-	MoveTimeLine.TickTimeline(DeltaTime); 
+	if (MoveTimeLine.IsPlaying())
+	{
+		//MoveTimeLine.TickTimeline(DeltaTime);
+	}
 }
 
 
@@ -313,12 +317,9 @@ void AIslandPerson::OnConstruction(const FTransform& Transform)
 		PersonRawData = FST_Person{};
 	}
 
-
 	//static const FString ContextString(TEXT("GENERAL")); //~~ Key value for each column of values ~~//
 	//FST_Structure* StructureData = DATA_Structures->FindRow<FST_Structure>(*RowName, ContextString);
 	//if (StructureData)
-
-
 }
 
 

@@ -19,7 +19,7 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
 
 	TilePlacedOn = nullptr;
-	MoveCurve = nullptr;
+	//MoveCurve = nullptr;
 
 	//static_cast<UStaticMeshComponent*>(GlobeComponent)->OnClicked.AddDynamic(this, &AWorldPawn::DoMeshOnClicked);
 
@@ -98,41 +98,28 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 
 
 	//~~ MoveTimeline ~~//
-	//MoveTimeLine = FTimeline{};
-	MoveTimeLine.SetTimelineLength(3);
+	//MoveTimeLine = FTimeline();
+	MoveTimeLine.SetTimelineLength(1);
+	//MoveTimeLine.SetPlayRate(1 / 10.f);
 	//MoveTimeLine.SetPlaybackPosition(1 / 10.f);
 
-	//~~ Timeline events ~~//
-	MoveTimelineEventEvent.BindDynamic(this, &AIslandPerson::MoveEnded);
-	MoveTimelineFloatEvent.BindDynamic(this, &AIslandPerson::TimelineUpdate);
-
-	MoveTimeLine.SetTimelinePostUpdateFunc(MoveTimelineEventEvent);
-
-
-	/*
-	//~~ Timeline ended event ~~//
-	FOnTimelineEvent MoveTimeEventEnd = FOnTimelineEvent();
-	MoveTimeEventEnd.BindDynamic(this, &AIslandPerson::MoveEnded);
-	MoveTimeLine.SetTimelineFinishedFunc(MoveTimeEventEnd);
-
-	//~~ Timeline post update event ~~//
-	FOnTimelineEvent MoveTimeEventUpdate = FOnTimelineEvent();
-	MoveTimeEventUpdate.BindUFunction(this, "TimelineUpdate");
-	MoveTimeLine.SetTimelinePostUpdateFunc(MoveTimeEventUpdate);
 
 	//~~ Timeline tick update ~~//
 	FOnTimelineFloat MoveTimeFloatDelegate = FOnTimelineFloat();
 	MoveTimeFloatDelegate.BindUFunction(this, "TimelineUpdate");
-	*/
+	//MoveTimeLine.SetTimelinePostUpdateFunc(MoveTimeEventUpdate);
+
+	//~~ Timeline post update event ~~//
+	FOnTimelineEvent MoveTimeEventUpdate = FOnTimelineEvent();
+	MoveTimeEventUpdate.BindUFunction(this, "MoveEnded");
+	MoveTimeLine.SetTimelineFinishedFunc(MoveTimeEventUpdate);
 
 	//~~ Animation curve ~~//
 	static ConstructorHelpers::FObjectFinder<UCurveFloat> CurveObj(TEXT("CurveFloat'/Game/Util/MoveAnimCurve.MoveAnimCurve'"));
 	if (CurveObj.Succeeded())
 	{
 		MoveCurve = CurveObj.Object;
-		//MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimeFloatDelegate, FName("Percentage_Complete"));
-		MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimelineFloatEvent, FName("Percentage_Complete"));
-		//TimelineComponent->AddInterpFloat(Curve, Racer->TimelineFloatEvent, FName("Percentage_Complete"));
+		MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimeFloatDelegate, FName("Percentage_Complete"));
 	}
 
 }
@@ -150,8 +137,7 @@ void AIslandPerson::TimelineUpdate(float Value)
 /******************** MoveEnded *************************/
 void AIslandPerson::MoveEnded()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Timeline ended"));
-
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, TEXT("Timeline ended"));
 }
 
 
@@ -162,7 +148,7 @@ void AIslandPerson::MoveTo(AIslandTile* Tile) {
 		MoveFromLocation = GetActorLocation();
 		MoveToLocation = Tile->GetActorLocation();
 		//~~ Start animation timeline ~~//
-
+		MoveTimeLine.PlayFromStart();
 	}
 }
 
@@ -183,9 +169,6 @@ void AIslandPerson::PersonClicked() {
 		TilePlacedOn->TileClicked();
 	}
 	SelectPerson();
-
-	MoveTimeLine.PlayFromStart();
-
 }
 
 
@@ -246,7 +229,7 @@ void AIslandPerson::Tick(float DeltaTime)
 	//~~ Tick timeline for movement ~~//
 	if (MoveTimeLine.IsPlaying())
 	{
-		//MoveTimeLine.TickTimeline(DeltaTime);
+		MoveTimeLine.TickTimeline(DeltaTime);
 	}
 }
 

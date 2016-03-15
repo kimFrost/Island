@@ -56,17 +56,11 @@ public:
 
 	// TimeLine
 
-	UPROPERTY(EditInstanceOnly, Category = "Animation")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation") //!! Cannot be a UPROPERTY, the update function won't run, for some reason !!//
 	FTimeline MoveTimeLine;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
 	UCurveFloat* MoveCurve;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Animation")
-	FOnTimelineEvent MoveTimelineEventEvent;
- 
-	UPROPERTY(BlueprintReadOnly, Category = "Animation")
-	FOnTimelineFloat MoveTimelineFloatEvent;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Animation")
 	FVector MoveFromLocation;
@@ -74,10 +68,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Animation")
 	FVector MoveToLocation;
 
-	UFUNCTION(BlueprintCallable, Category = "Animation")
+	UFUNCTION()
 	void TimelineUpdate(float Value);
 	
-	UFUNCTION(BlueprintCallable, Category = "Animation")
+	UFUNCTION()
 	void MoveEnded();
 	
 

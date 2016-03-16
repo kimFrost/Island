@@ -51,6 +51,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Material")
 	UMaterialInstanceDynamic* PedestalMeshDynamicMaterial;
 
+	TMap<int32, TArray<AIslandTile*>> TileRangeMap;
 
 
 
@@ -90,6 +91,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	void SelectPerson();
+
+	UFUNCTION(BlueprintCallable, Category = "Pathing")
+	void UpdatePathingOptions();
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnAnyPersonSelected(AIslandPerson* Person);

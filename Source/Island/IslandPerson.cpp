@@ -172,7 +172,7 @@ void AIslandPerson::PersonClicked() {
 }
 
 
-/******************** PersonClicked *************************/
+/******************** SelectPerson *************************/
 void AIslandPerson::SelectPerson() {
 	if (PersonMeshDynamicMaterial)
 	{
@@ -182,9 +182,60 @@ void AIslandPerson::SelectPerson() {
 		{
 			GameInstance->OnPersonSelected.Broadcast(this);
 			Selected = true;
+			UpdatePathingOptions();
 		}
 	}
 }
+
+
+/******************** UpdatePathingOptions *************************/
+void AIslandPerson::UpdatePathingOptions() {
+	if (TilePlacedOn)
+	{
+		TileRangeMap.Empty();
+		
+		struct Frontier
+		{
+			TArray<AIslandTile*> Tiles;
+		};
+
+		TArray<Frontier> Frontiers;
+		TArray<AIslandTile*> VisitedTiles;
+
+		Frontier frontier;
+		frontier.Tiles.Add(TilePlacedOn);
+		Frontiers.Add(frontier);
+
+		for (int32 k = 1; k <= ActionsLeft + 1; k++)
+		{
+			Frontier frontier;
+			Frontiers.Add(frontier);
+			frontier = Frontiers[k - 1];
+			
+			for (int32 m = 0; m < frontier.Tiles.Num(); m++)
+			{
+				AIslandTile* Tile = frontier.Tiles[m];
+				//HiddenPathTo?? / PathTo
+				for (int32 l = 0; l < Tile->PathTo.Num(); l++)
+				{
+					AIslandTile* NeighbourTile = Tile->PathTo[l];
+					//~~ Check if add to next frontier ~~//
+					if (!VisitedTiles.Contains(NeighbourTile))
+					{
+						Frontiers[k].Tiles.Add(NeighbourTile); //~~ Add Neighbor Hex to the next frontier ~~//
+						VisitedTiles.Add(NeighbourTile); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
+					}
+				}
+			}
+		}
+		for (int32 i = 0; i < Frontiers.Num(); i++)
+		{
+			Frontier& frontier = Frontiers[i];
+			TileRangeMap.Add(i + 1, frontier.Tiles);
+		}
+	}
+}
+
 
 /******************** OnAnyTileSelected *************************/
 void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)

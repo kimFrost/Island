@@ -25,6 +25,8 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	TileHidden = false;
 	TileCanBeBypassed = false;
 
+	Selected = false;
+
 	USceneComponent* const TranslationComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
 	TranslationComp->Mobility = EComponentMobility::Static;
 	RootComponent = TranslationComp;
@@ -176,6 +178,28 @@ void AIslandTile::UpdatePersonPlacements()
 }
 
 
+/******************** SelectTile *************************/
+void AIslandTile::SelectTile()
+{
+	if (DynamicMaterial)
+	{
+		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+		Selected = true;
+	}
+}
+
+
+/******************** DeselectTile *************************/
+void AIslandTile::DeselectTile()
+{
+	if (DynamicMaterial)
+	{
+		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+		Selected = false;
+	}
+}
+
+
 /******************** TileClicked *************************/
 void AIslandTile::TileClicked()
 {
@@ -202,11 +226,8 @@ void AIslandTile::TileClicked()
 		{
 			PlayerController->CenterCameraAt(GetActorLocation());
 		}
-		GameInstance->OnTileSelected.Broadcast(this);
-		if (DynamicMaterial)
-		{
-			DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
-		}
+		GameInstance->OnTileClicked.Broadcast(this);
+		SelectTile();
 	}
 }
 
@@ -224,15 +245,12 @@ void AIslandTile::TileHoverEnd()
 
 }
 
-/******************** OnAnyTileSelected *************************/
-void AIslandTile::OnAnyTileSelected(AIslandTile* Tile)
+/******************** OnAnyTileClicked *************************/
+void AIslandTile::OnAnyTileClicked(AIslandTile* Tile)
 {
 	if (Tile != this)
 	{
-		if (DynamicMaterial)
-		{
-			DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
-		}
+		DeselectTile();
 	}
 }
 
@@ -244,7 +262,7 @@ void AIslandTile::BeginPlay()
 	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
 	if (GameInstance)
 	{
-		GameInstance->OnTileSelected.AddDynamic(this, &AIslandTile::OnAnyTileSelected);
+		GameInstance->OnTileClicked.AddDynamic(this, &AIslandTile::OnAnyTileClicked);
 	}
 }
 

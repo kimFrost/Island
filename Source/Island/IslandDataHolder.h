@@ -23,6 +23,13 @@ enum class EPersonTypesEnum : uint8
 	OldWomen UMETA(DisplayName = "OldWomen")
 };
 
+UENUM(BlueprintType)
+enum class EIslandCardType : uint8
+{
+	Event UMETA(DisplayName = "Event"),
+	Tile UMETA(DisplayName = "Tile")
+};
+
 
 
 //~~~~~ DATA IMPORT ~~~~~//

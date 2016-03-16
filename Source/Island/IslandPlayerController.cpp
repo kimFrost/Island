@@ -258,7 +258,7 @@ void AIslandPlayerController::BeginPlay()
 	UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
 	if (GameInstance)
 	{
-		GameInstance->OnTileSelected.AddDynamic(this, &AIslandPlayerController::SetSelectedTile);
+		GameInstance->OnTileClicked.AddDynamic(this, &AIslandPlayerController::SetSelectedTile);
 		GameInstance->OnPersonSelected.AddDynamic(this, &AIslandPlayerController::SetSelectedPerson);
 	}
 

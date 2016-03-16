@@ -43,6 +43,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	bool TileCanBeBypassed;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	bool Selected;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	FST_Card TileCard;
 
@@ -57,6 +60,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	UMaterialInstanceDynamic* DynamicMaterial;
+
 
 	// Dynamic material for param
 
@@ -75,6 +79,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Tile")
 	void CheckTile();
 
+	UFUNCTION(BlueprintCallable, Category = "Tile")
+	void SelectTile();
+
+	UFUNCTION(BlueprintCallable, Category = "Tile")
+	void DeselectTile();
+
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void TileClicked();
 
@@ -85,7 +95,7 @@ public:
 	void TileHoverEnd();
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
-	void OnAnyTileSelected(AIslandTile* Tile);
+	void OnAnyTileClicked(AIslandTile* Tile);
 
 public:
 

@@ -54,10 +54,20 @@ void UIslandGameInstance::NewTurn()
 }
 
 
-/******************** BroadcastSelectedTile *************************/
-void UIslandGameInstance::BroadcastSelectedTile(AIslandTile* Tile)
+/******************** GetRandCard *************************/
+FST_Card UIslandGameInstance::GetRandCard(EIslandCardType Type)
 {
-	OnTileSelected.Broadcast(Tile);
+	FST_Card Card;
+
+
+	return Card;
+}
+
+
+/******************** BroadcastSelectedTile *************************/
+void UIslandGameInstance::BroadcastClickedTile(AIslandTile* Tile)
+{
+	OnTileClicked.Broadcast(Tile);
 }
 
 

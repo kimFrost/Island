@@ -28,7 +28,7 @@ class AIslandPerson;
 //~~~~~ Delegates/Event dispatcher ~~~~~//
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTurnSwitched, float, Turn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNewTurn, float, Turn);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileSelected, AIslandTile*, Tile);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileClicked, AIslandTile*, Tile);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileRevealed, AIslandTile*, Tile);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPersonSelected, AIslandPerson*, Person);
 
@@ -80,11 +80,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Turn")
 	void NewTurn();
 
+	UFUNCTION(BlueprintCallable, Category = "Turn")
+	FST_Card GetRandCard(EIslandCardType Type);
 
 	//~~ Broadcasts ~~//
 
 	UFUNCTION(BlueprintCallable, Category = "Turn")
-	void BroadcastSelectedTile(AIslandTile* Tile);
+	void BroadcastClickedTile(AIslandTile* Tile);
 
 
 	//~~ Cards ~~//
@@ -119,7 +121,7 @@ public:
 	FNewTurn OnNewTurn;
 
 	UPROPERTY(BlueprintAssignable, Category = "Input")
-	FTileSelected OnTileSelected;
+	FTileClicked OnTileClicked;
 
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FTileRevealed OnTileRevealed;

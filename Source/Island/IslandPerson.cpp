@@ -13,7 +13,7 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	ActionsLeft = 0;
+	ActionsLeft = 2;
 	Selected = false;
 
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
@@ -183,6 +183,24 @@ void AIslandPerson::SelectPerson() {
 			GameInstance->OnPersonSelected.Broadcast(this);
 			Selected = true;
 			UpdatePathingOptions();
+
+			// Deselect all tile
+			for (TActorIterator<AIslandTile> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+			{
+				// Same as with the Object Iterator, access the subclass instance with the * or -> operators.
+				AIslandTile* Tile = *ActorItr;
+				Tile->DeselectTile();
+			}
+
+			// Select tiles in range
+			for (auto& Tiles : TileRangeMap)
+			{
+				for (int32 i = 0; i < Tiles.Value.Num(); i++)
+				{
+					AIslandTile* Tile = Tiles.Value[i];
+					Tile->SelectTile();
+				}
+			}
 		}
 	}
 }
@@ -194,44 +212,36 @@ void AIslandPerson::UpdatePathingOptions() {
 	{
 		TileRangeMap.Empty();
 		
-		struct Frontier
-		{
-			TArray<AIslandTile*> Tiles;
-		};
-
-		TArray<Frontier> Frontiers;
 		TArray<AIslandTile*> VisitedTiles;
 
-		Frontier frontier;
-		frontier.Tiles.Add(TilePlacedOn);
-		Frontiers.Add(frontier);
+		TArray<AIslandTile*> Frontier;
+		Frontier.Add(TilePlacedOn);
+		TileRangeMap.Add(0, Frontier); //~~ Add base for the start ~~//
 
-		for (int32 k = 1; k <= ActionsLeft + 1; k++)
+		VisitedTiles.Add(TilePlacedOn); //~~ Add base to allready visited to prevent bounce back ~~//
+
+		for (int32 k = 0; k < ActionsLeft; k++)
 		{
-			Frontier frontier;
-			Frontiers.Add(frontier);
-			frontier = Frontiers[k - 1];
-			
-			for (int32 m = 0; m < frontier.Tiles.Num(); m++)
+			TArray<AIslandTile*> NewFrontier;
+			TileRangeMap.Add(k + 1, NewFrontier);
+			Frontier = TileRangeMap[k];
+			//~~ Loop though all tiles in current frontier ~~//
+			for (int32 m = 0; m < Frontier.Num(); m++)
 			{
-				AIslandTile* Tile = frontier.Tiles[m];
-				//HiddenPathTo?? / PathTo
+				AIslandTile* Tile = Frontier[m];
+				//~~ Loop though all pathto to create the next frontier ~~//
 				for (int32 l = 0; l < Tile->PathTo.Num(); l++)
 				{
 					AIslandTile* NeighbourTile = Tile->PathTo[l];
 					//~~ Check if add to next frontier ~~//
-					if (!VisitedTiles.Contains(NeighbourTile))
+					if (NeighbourTile && !VisitedTiles.Contains(NeighbourTile))
 					{
-						Frontiers[k].Tiles.Add(NeighbourTile); //~~ Add Neighbor Hex to the next frontier ~~//
+						TileRangeMap[k + 1].Add(NeighbourTile); //~~ Add Neighbor tile to the next frontier ~~//
 						VisitedTiles.Add(NeighbourTile); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
 					}
 				}
 			}
-		}
-		for (int32 i = 0; i < Frontiers.Num(); i++)
-		{
-			Frontier& frontier = Frontiers[i];
-			TileRangeMap.Add(i + 1, frontier.Tiles);
+
 		}
 	}
 }

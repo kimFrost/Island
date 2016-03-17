@@ -102,6 +102,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Pathing")
 	void UpdateShortestPath(AIslandTile* TargetTile);
 
+	UFUNCTION(BlueprintCallable, Category = "Pathing")
+	bool ExecuteMoveAlongPath();
+
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnAnyPersonSelected(AIslandPerson* Person);
 

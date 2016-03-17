@@ -254,7 +254,7 @@ void AIslandPerson::UpdateShortestPath(AIslandTile* TargetTile) {
 	if (TilePlacedOn && TargetTile)
 	{
 		PathToTake.Empty();
-		int32 ShortestPathLength;
+		int32 ShortestPathLength = 0;
 		for (auto& Tiles : TileRangeMap)
 		{
 			if (Tiles.Value.Find(TargetTile) != -1)
@@ -287,16 +287,23 @@ void AIslandPerson::UpdateShortestPath(AIslandTile* TargetTile) {
 				}
 			}
 		}
-
-
-		//!! I have to path flood fill from clicked tile to TilePlacedOn 
-
-
-		// if tile pathto -> Loop ->  neighbour tile has DistanceFromSelectedPerson == neighbour->DistanceFromSelectedPerson - 1, then on right path
-
-		
-
 	}
+}
+
+
+/******************** ExecuteMoveAlongPath *************************/
+bool AIslandPerson::ExecuteMoveAlongPath()
+{
+	bool IsAtEnd = false;
+
+	if (PathToTake[0])
+	{
+		MoveFromLocation = GetActorLocation();
+		MoveToLocation = PathToTake[0]->PlacePerson(this, false, true);
+		MoveTimeLine.PlayFromStart();
+	}
+
+	return IsAtEnd;
 }
 
 

@@ -165,16 +165,15 @@ void AIslandPlayerController::RightClickReleased()
 			{
 				if (SelectedPerson)
 				{
-					SelectedPerson->MoveTo(HitTile);
-					
-					//SelectedPerson->UpdateShortestPath(HitTile);
+					//SelectedPerson->MoveTo(HitTile);
+					SelectedPerson->UpdateShortestPath(HitTile); // doesn't use num of actions yet
+					if (SelectedPerson->PathToTake.Find(HitTile))
+					{
+						SelectedPerson->ExecuteMoveAlongPath();
+					}
+
 
 					//SelectedPerson->PathToTake
-
-					// Loop move and only store in last. Use PlacePerson to get person slot position from each tile
-
-					//SelectedPerson->PathToTake
-
 
 				}
 				if (ActiveToolType == EToolType::Select)

@@ -55,12 +55,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 	UStaticMeshComponent* BaseMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+	UStaticMeshComponent* MoveToIndicatorMesh;
+
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 	//UMaterialInterface* Material;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	UMaterialInstanceDynamic* DynamicMaterial;
 
+	int32 DistanceFromSelectedPerson;
 
 	// Dynamic material for param
 
@@ -68,7 +72,7 @@ public:
 	/*********** FUNCTIONS **************/
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
-	FVector PlacePerson(AIslandPerson* Person, bool Teleport);
+	FVector PlacePerson(AIslandPerson* Person, bool Teleport, bool StoreInTile);
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	void RemovePerson(AIslandPerson* Person);

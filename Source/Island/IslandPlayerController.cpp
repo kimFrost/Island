@@ -165,10 +165,15 @@ void AIslandPlayerController::RightClickReleased()
 			{
 				if (SelectedPerson)
 				{
-					// Move to ?
-					//FVector NewLocation = HitTile->PlacePerson(SelectedPerson, true);
-					FVector NewLocation = HitTile->PlacePerson(SelectedPerson, false);
 					SelectedPerson->MoveTo(HitTile);
+					
+					//SelectedPerson->UpdateShortestPath(HitTile);
+
+					//SelectedPerson->PathToTake
+
+					// Loop move and only store in last. Use PlacePerson to get person slot position from each tile
+
+					//SelectedPerson->PathToTake
 
 
 				}

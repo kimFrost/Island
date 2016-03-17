@@ -54,6 +54,10 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	BaseMesh->AttachParent = RootComponent;
 
 
+	MoveToIndicatorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MoveToIndicatorMesh"));
+	MoveToIndicatorMesh->SetVisibility(false);
+
+
 	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Selected/M_SelectedTest_Inst.M_SelectedTest_Inst'"));
 	if (BaseMesh && MaterialInstanceObj.Succeeded())
 	{
@@ -106,7 +110,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 
 /******************** PlacePerson *************************/
-FVector AIslandTile::PlacePerson(AIslandPerson* Person, bool Teleport)
+FVector AIslandTile::PlacePerson(AIslandPerson* Person, bool Teleport, bool StoreInTile)
 {
 	int32 Index;
 	FVector NewLocation;
@@ -118,16 +122,18 @@ FVector AIslandTile::PlacePerson(AIslandPerson* Person, bool Teleport)
 			Person->TilePlacedOn->RemovePerson(Person);
 		}
 		//~~ Add to new tile ~~//
-		Index = PeopleOnTile.Add(Person);
-		NewLocation = this->GetActorLocation() + (FVector(0, 500, 0) * Index) + PeopleLocationDisplacement;
-		if (Teleport)
+		if (StoreInTile)
 		{
-			Person->SetActorLocation(NewLocation);
-		}
-		Person->TilePlacedOn = this;
+			Index = PeopleOnTile.Add(Person);
+			NewLocation = this->GetActorLocation() + (FVector(0, 500, 0) * Index) + PeopleLocationDisplacement;
+			if (Teleport)
+			{
+				Person->SetActorLocation(NewLocation);
+			}
+			Person->TilePlacedOn = this;
 
+		}
 		// Get all steps/tiles pathto?
-		
 	}
 	//return Index;
 	return NewLocation;

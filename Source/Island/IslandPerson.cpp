@@ -146,7 +146,8 @@ void AIslandPerson::MoveTo(AIslandTile* Tile) {
 	if (Tile)
 	{
 		MoveFromLocation = GetActorLocation();
-		MoveToLocation = Tile->GetActorLocation();
+		//MoveToLocation = Tile->GetActorLocation();
+		MoveToLocation = Tile->PlacePerson(this, false, true);
 		//~~ Start animation timeline ~~//
 		MoveTimeLine.PlayFromStart();
 	}
@@ -236,6 +237,7 @@ void AIslandPerson::UpdatePathingOptions() {
 					//~~ Check if add to next frontier ~~//
 					if (NeighbourTile && !VisitedTiles.Contains(NeighbourTile))
 					{
+						NeighbourTile->DistanceFromSelectedPerson = k + 1;
 						TileRangeMap[k + 1].Add(NeighbourTile); //~~ Add Neighbor tile to the next frontier ~~//
 						VisitedTiles.Add(NeighbourTile); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
 					}
@@ -243,6 +245,57 @@ void AIslandPerson::UpdatePathingOptions() {
 			}
 
 		}
+	}
+}
+
+
+/******************** UpdateShortestPath *************************/
+void AIslandPerson::UpdateShortestPath(AIslandTile* TargetTile) {
+	if (TilePlacedOn && TargetTile)
+	{
+		PathToTake.Empty();
+		int32 ShortestPathLength;
+		for (auto& Tiles : TileRangeMap)
+		{
+			if (Tiles.Value.Find(TargetTile) != -1)
+			{
+				ShortestPathLength = Tiles.Key;
+				break;
+			}
+		}
+		AIslandTile* Tile = TargetTile;
+		for (int32 steps = 0; steps < ShortestPathLength; steps++)
+		{
+			for (int32 i = 0; i < Tile->PathTo.Num(); i++)
+			{
+				AIslandTile* NeighbourTile = Tile->PathTo[i];
+				//~~ If neighbour tile distance from person is lower than current tile ~~//
+				if (NeighbourTile->DistanceFromSelectedPerson < Tile->DistanceFromSelectedPerson)
+				{
+					if (Tile->DistanceFromSelectedPerson > 0)
+					{
+						PathToTake.Insert(Tile, 0);
+						Tile = NeighbourTile;
+						i = -1; // Reset neighbour loop for new current tile
+					}
+					else 
+					{
+						PathToTake.Insert(Tile, 0); 
+						// We are there
+						break;
+					}
+				}
+			}
+		}
+
+
+		//!! I have to path flood fill from clicked tile to TilePlacedOn 
+
+
+		// if tile pathto -> Loop ->  neighbour tile has DistanceFromSelectedPerson == neighbour->DistanceFromSelectedPerson - 1, then on right path
+
+		
+
 	}
 }
 
@@ -339,7 +392,7 @@ void AIslandPerson::OnConstruction(const FTransform& Transform)
 	//~~ Place Person ~~//
 	if (TilePlacedOn)
 	{
-		TilePlacedOn->PlacePerson(this, true);
+		TilePlacedOn->PlacePerson(this, true, true);
 	}
 
 	//~~ Data table read raw data

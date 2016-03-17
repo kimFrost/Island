@@ -76,12 +76,16 @@ public:
 	void MoveEnded();
 	
 
+	// Path
 
- 
+	TArray<AIslandTile*> PathToTake;
+
 
 
 
 	/*********** FUNCTIONS **************/
+
+	
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void MoveTo(AIslandTile* Tile);
@@ -94,6 +98,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Pathing")
 	void UpdatePathingOptions();
+
+	UFUNCTION(BlueprintCallable, Category = "Pathing")
+	void UpdateShortestPath(AIslandTile* TargetTile);
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnAnyPersonSelected(AIslandPerson* Person);

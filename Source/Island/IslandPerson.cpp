@@ -138,9 +138,14 @@ void AIslandPerson::TimelineUpdate(float Value)
 void AIslandPerson::MoveEnded()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, TEXT("Timeline ended"));
+
 	if (PathToTake.Num() > 0)
 	{
 		ExecuteMoveAlongPath();
+	}
+	else 
+	{
+		UpdatePathingOptions(); // force update tiles in range
 	}
 }
 
@@ -188,24 +193,6 @@ void AIslandPerson::SelectPerson() {
 			GameInstance->OnPersonSelected.Broadcast(this);
 			Selected = true;
 			UpdatePathingOptions();
-
-			// Deselect all tile
-			for (TActorIterator<AIslandTile> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-			{
-				// Same as with the Object Iterator, access the subclass instance with the * or -> operators.
-				AIslandTile* Tile = *ActorItr;
-				Tile->DeselectTile();
-			}
-
-			// Select tiles in range
-			for (auto& Tiles : TileRangeMap)
-			{
-				for (int32 i = 0; i < Tiles.Value.Num(); i++)
-				{
-					AIslandTile* Tile = Tiles.Value[i];
-					Tile->SelectTile();
-				}
-			}
 		}
 	}
 }
@@ -215,14 +202,29 @@ void AIslandPerson::SelectPerson() {
 void AIslandPerson::UpdatePathingOptions() {
 	if (TilePlacedOn)
 	{
-		TileRangeMap.Empty();
-		
-		TArray<AIslandTile*> VisitedTiles;
+		// Deselect all tile
+		for (TActorIterator<AIslandTile> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+		{
+			// Same as with the Object Iterator, access the subclass instance with the * or -> operators.
+			AIslandTile* Tile = *ActorItr;
+			Tile->DeselectTile();
+		}
 
+		// Select tiles in range
+		for (auto& Tiles : TileRangeMap)
+		{
+			for (int32 i = 0; i < Tiles.Value.Num(); i++)
+			{
+				AIslandTile* Tile = Tiles.Value[i];
+				Tile->SelectTile();
+			}
+		}
+
+		TileRangeMap.Empty();
+		TArray<AIslandTile*> VisitedTiles;
 		TArray<AIslandTile*> Frontier;
 		Frontier.Add(TilePlacedOn);
 		TileRangeMap.Add(0, Frontier); //~~ Add base for the start ~~//
-
 		VisitedTiles.Add(TilePlacedOn); //~~ Add base to allready visited to prevent bounce back ~~//
 
 		for (int32 k = 0; k < ActionsLeft; k++)
@@ -302,6 +304,7 @@ void AIslandPerson::ExecuteMoveAlongPath()
 	{
 		MoveFromLocation = GetActorLocation();
 		MoveToLocation = PathToTake[0]->PlacePerson(this, false, true);
+		PathToTake.RemoveAt(0);
 		MoveTimeLine.PlayFromStart();
 	}
 }

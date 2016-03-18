@@ -210,22 +210,14 @@ void AIslandPerson::UpdatePathingOptions() {
 			Tile->DeselectTile();
 		}
 
-		// Select tiles in range
-		for (auto& Tiles : TileRangeMap)
-		{
-			for (int32 i = 0; i < Tiles.Value.Num(); i++)
-			{
-				AIslandTile* Tile = Tiles.Value[i];
-				Tile->SelectTile();
-			}
-		}
-
 		TileRangeMap.Empty();
 		TArray<AIslandTile*> VisitedTiles;
 		TArray<AIslandTile*> Frontier;
 		Frontier.Add(TilePlacedOn);
 		TileRangeMap.Add(0, Frontier); //~~ Add base for the start ~~//
 		VisitedTiles.Add(TilePlacedOn); //~~ Add base to allready visited to prevent bounce back ~~//
+
+		TilePlacedOn->DistanceFromSelectedPerson = 0; //~~ set person distance to zero on base tile ~~//
 
 		for (int32 k = 0; k < ActionsLeft; k++)
 		{
@@ -250,6 +242,16 @@ void AIslandPerson::UpdatePathingOptions() {
 				}
 			}
 
+		}
+
+		// Select tiles in range
+		for (auto& Tiles : TileRangeMap)
+		{
+			for (int32 i = 0; i < Tiles.Value.Num(); i++)
+			{
+				AIslandTile* Tile = Tiles.Value[i];
+				Tile->SelectTile();
+			}
 		}
 	}
 }
@@ -302,6 +304,14 @@ void AIslandPerson::ExecuteMoveAlongPath()
 {
 	if (PathToTake.Num() > 0 && PathToTake[0])
 	{
+		// Deselect all tile
+		for (TActorIterator<AIslandTile> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+		{
+			// Same as with the Object Iterator, access the subclass instance with the * or -> operators.
+			AIslandTile* Tile = *ActorItr;
+			Tile->DeselectTile();
+		}
+
 		MoveFromLocation = GetActorLocation();
 		MoveToLocation = PathToTake[0]->PlacePerson(this, false, true);
 		PathToTake.RemoveAt(0);

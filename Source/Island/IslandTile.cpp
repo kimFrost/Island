@@ -13,6 +13,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	IsCamp = false;
+	DistanceFromSelectedPerson = 0;
 
 	OnClicked.AddDynamic(this, &AIslandTile::TileClicked);
 	//OnReleased

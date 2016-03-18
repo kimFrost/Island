@@ -64,6 +64,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	UMaterialInstanceDynamic* DynamicMaterial;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathing")
 	int32 DistanceFromSelectedPerson;
 
 	// Dynamic material for param

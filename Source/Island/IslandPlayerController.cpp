@@ -165,16 +165,11 @@ void AIslandPlayerController::RightClickReleased()
 			{
 				if (SelectedPerson)
 				{
-					//SelectedPerson->MoveTo(HitTile);
 					SelectedPerson->UpdateShortestPath(HitTile); // doesn't use num of actions yet
 					if (SelectedPerson->PathToTake.Find(HitTile))
 					{
 						SelectedPerson->ExecuteMoveAlongPath();
 					}
-
-
-					//SelectedPerson->PathToTake
-
 				}
 				if (ActiveToolType == EToolType::Select)
 				{

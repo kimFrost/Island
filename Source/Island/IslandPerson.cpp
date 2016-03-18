@@ -138,6 +138,10 @@ void AIslandPerson::TimelineUpdate(float Value)
 void AIslandPerson::MoveEnded()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, TEXT("Timeline ended"));
+	if (PathToTake.Num() > 0)
+	{
+		ExecuteMoveAlongPath();
+	}
 }
 
 
@@ -292,18 +296,14 @@ void AIslandPerson::UpdateShortestPath(AIslandTile* TargetTile) {
 
 
 /******************** ExecuteMoveAlongPath *************************/
-bool AIslandPerson::ExecuteMoveAlongPath()
+void AIslandPerson::ExecuteMoveAlongPath()
 {
-	bool IsAtEnd = false;
-
-	if (PathToTake[0])
+	if (PathToTake.Num() > 0 && PathToTake[0])
 	{
 		MoveFromLocation = GetActorLocation();
 		MoveToLocation = PathToTake[0]->PlacePerson(this, false, true);
 		MoveTimeLine.PlayFromStart();
 	}
-
-	return IsAtEnd;
 }
 
 

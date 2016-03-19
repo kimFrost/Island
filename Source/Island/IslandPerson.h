@@ -11,6 +11,17 @@
 class AIslandTile;
 
 
+//~~~~~ ENUMS ~~~~~//
+UENUM(BlueprintType)
+enum class EIslandPersonState : uint8
+{
+	Idle UMETA(DisplayName = "Idle"),
+	Moving UMETA(DisplayName = "Moving"),
+	Trapped UMETA(DisplayName = "Trapped")
+};
+
+
+
 UCLASS()
 class ISLAND_API AIslandPerson : public AActor
 {
@@ -27,7 +38,10 @@ public:
 	FString PersonId;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	int32 ActionsLeft;
+	int32 MovePointsLeft;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	EIslandPersonState PersonState;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	bool Selected;

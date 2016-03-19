@@ -13,7 +13,8 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	ActionsLeft = 2;
+	MovePointsLeft = 2;
+	PersonState = EIslandPersonState::Idle;
 	Selected = false;
 
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
@@ -138,7 +139,6 @@ void AIslandPerson::TimelineUpdate(float Value)
 void AIslandPerson::MoveEnded()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, TEXT("Timeline ended"));
-
 	if (PathToTake.Num() > 0)
 	{
 		ExecuteMoveAlongPath();
@@ -146,6 +146,7 @@ void AIslandPerson::MoveEnded()
 	else 
 	{
 		UpdatePathingOptions(); // force update tiles in range
+		PersonState = EIslandPersonState::Idle;
 	}
 }
 
@@ -219,7 +220,7 @@ void AIslandPerson::UpdatePathingOptions() {
 
 		TilePlacedOn->DistanceFromSelectedPerson = 0; //~~ set person distance to zero on base tile ~~//
 
-		for (int32 k = 0; k < ActionsLeft; k++)
+		for (int32 k = 0; k < MovePointsLeft; k++)
 		{
 			TArray<AIslandTile*> NewFrontier;
 			TileRangeMap.Add(k + 1, NewFrontier);
@@ -304,6 +305,7 @@ void AIslandPerson::ExecuteMoveAlongPath()
 {
 	if (PathToTake.Num() > 0 && PathToTake[0])
 	{
+		PersonState = EIslandPersonState::Moving;
 		// Deselect all tile
 		for (TActorIterator<AIslandTile> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 		{

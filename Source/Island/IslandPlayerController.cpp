@@ -163,9 +163,9 @@ void AIslandPlayerController::RightClickReleased()
 			AIslandTile* HitTile = Cast<AIslandTile>(RV_Hit.GetActor());
 			if (HitTile)
 			{
-				if (SelectedPerson)
+				if (SelectedPerson && SelectedPerson->PersonState == EIslandPersonState::Idle)
 				{
-					SelectedPerson->UpdateShortestPath(HitTile); // doesn't use num of actions yet
+					SelectedPerson->UpdateShortestPath(HitTile); // doesn't use num of MovePointsLeft yet
 					//if (SelectedPerson->PathToTake.Find(HitTile))
 					if (SelectedPerson->PathToTake.FindByKey(HitTile))
 					{

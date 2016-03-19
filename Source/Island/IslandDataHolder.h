@@ -31,7 +31,6 @@ enum class EIslandCardType : uint8
 };
 
 
-
 //~~~~~ DATA IMPORT ~~~~~//
 
 USTRUCT(BlueprintType)

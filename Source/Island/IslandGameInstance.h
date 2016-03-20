@@ -62,6 +62,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Data")
 	UDataTable* DATA_Events;
 
+	//~~ Stats ~~//
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turn")
+	int32 CurrentTurn;
+
+
 private:
 
 	// Store the current playstate

@@ -10,7 +10,7 @@
 UIslandGameInstance::UIslandGameInstance(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
 {
 	ReadTables();
-
+	CurrentTurn = 1;
 
 }
 
@@ -43,17 +43,16 @@ void UIslandGameInstance::ReadTables()
 /******************** SwitchTurn *************************/
 void UIslandGameInstance::SwitchTurn()
 {
-
-	
 	OnTurnSwitched.Broadcast(0.f);
+	NewTurn();
 }
 
 
 /******************** SwitchTurn *************************/
 void UIslandGameInstance::NewTurn()
 {
-
-	OnNewTurn.Broadcast(0.f);
+	CurrentTurn++;
+	OnNewTurn.Broadcast(CurrentTurn);
 }
 
 

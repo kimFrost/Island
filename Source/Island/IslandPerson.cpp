@@ -349,6 +349,10 @@ void AIslandPerson::OnNewTurn(float Turn)
 {
 	// Reset movement points
 	MovePointsLeft = 2;
+	if (Selected)
+	{
+		UpdatePathingOptions();
+	}
 }
 
 

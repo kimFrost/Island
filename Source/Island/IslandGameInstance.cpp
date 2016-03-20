@@ -44,6 +44,8 @@ void UIslandGameInstance::ReadTables()
 void UIslandGameInstance::SwitchTurn()
 {
 
+	
+	OnTurnSwitched.Broadcast(0.f);
 }
 
 
@@ -51,6 +53,7 @@ void UIslandGameInstance::SwitchTurn()
 void UIslandGameInstance::NewTurn()
 {
 
+	OnNewTurn.Broadcast(0.f);
 }
 
 

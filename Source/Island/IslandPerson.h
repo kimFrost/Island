@@ -122,6 +122,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnAnyPersonSelected(AIslandPerson* Person);
 
+	UFUNCTION(BlueprintCallable, Category = "Turn")
+	void OnTurnSwitched(float Turn);
+
+	UFUNCTION(BlueprintCallable, Category = "Turn")
+	void OnNewTurn(float Turn);
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

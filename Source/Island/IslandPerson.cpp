@@ -317,6 +317,7 @@ void AIslandPerson::ExecuteMoveAlongPath()
 		MoveFromLocation = GetActorLocation();
 		MoveToLocation = PathToTake[0]->PlacePerson(this, false, true);
 		PathToTake.RemoveAt(0);
+		MovePointsLeft--; //~~ Decrease movement points per tile moved ~~//
 		MoveTimeLine.PlayFromStart();
 	}
 }
@@ -336,6 +337,20 @@ void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)
 }
 
 
+/******************** OnTurnSwitched *************************/
+void AIslandPerson::OnTurnSwitched(float Turn)
+{
+	
+}
+
+
+/******************** OnNewTurn *************************/
+void AIslandPerson::OnNewTurn(float Turn)
+{
+	// Reset movement points
+	MovePointsLeft = 2;
+}
+
 
 // Called when the game starts or when spawned
 void AIslandPerson::BeginPlay()
@@ -345,6 +360,8 @@ void AIslandPerson::BeginPlay()
 	if (GameInstance)
 	{
 		GameInstance->OnPersonSelected.AddDynamic(this, &AIslandPerson::OnAnyPersonSelected);
+		GameInstance->OnTurnSwitched.AddDynamic(this, &AIslandPerson::OnTurnSwitched);
+		GameInstance->OnNewTurn.AddDynamic(this, &AIslandPerson::OnNewTurn);
 	}
 	
 

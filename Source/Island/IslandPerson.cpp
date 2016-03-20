@@ -391,6 +391,7 @@ void AIslandPerson::Tick(float DeltaTime)
 }
 
 
+// Called on spawn actor and load actor
 void AIslandPerson::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -405,6 +406,11 @@ void AIslandPerson::PostInitializeComponents()
 }
 
 
+// TODO 
+// - Test when PostInitializeComponents is called. Placd in editor. Spawned in play, loaded from disk on startup
+// - Test when OnConstruction is called. Placed in editor. C++ prop, uproperty change and blueprint change. Spawned in play, loaded from disk
+
+// Called on spawn actor, and Uproperty value change
 void AIslandPerson::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
@@ -460,6 +466,21 @@ void AIslandPerson::OnConstruction(const FTransform& Transform)
 	//static const FString ContextString(TEXT("GENERAL")); //~~ Key value for each column of values ~~//
 	//FST_Structure* StructureData = DATA_Structures->FindRow<FST_Structure>(*RowName, ContextString);
 	//if (StructureData)
+
+	//RegisterAllComponents();
+
+
+	// For creating object in OnConstruction
+	/*
+	for (int32 i = 0; i < nNbComponentsToSpawn; i++)
+	{
+	USphereComponent* spawnPoint = NewObject<USphereComponent>(this);
+	spawnPoint->CreationMethod = EComponentCreationMethod::UserConstructionScript;
+	spawnPoint->AttachParent = RootComponent;
+	spawnPoint->bCastDynamicShadow = false;
+	spawnPoint->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	RegisterAllComponents();
 }
 
 

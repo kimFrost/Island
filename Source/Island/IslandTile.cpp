@@ -28,6 +28,8 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 	Selected = false;
 
+	PathTo = TArray<AIslandTile*>();
+
 	USceneComponent* const TranslationComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
 	TranslationComp->Mobility = EComponentMobility::Static;
 	RootComponent = TranslationComp;

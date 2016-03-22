@@ -391,10 +391,12 @@ void AIslandPerson::Tick(float DeltaTime)
 }
 
 
-// Called on spawn actor and load actor
+// Called on spawn actor(PIE) and load actor
 void AIslandPerson::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+	UE_LOG(LogTemp, Warning, TEXT("AIslandPerson::PostInitializeComponents"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "AIslandPerson::PostInitializeComponents");
 	/*
 	if (PersonMeshMaterial)
 	{
@@ -414,9 +416,8 @@ void AIslandPerson::PostInitializeComponents()
 void AIslandPerson::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-
+	UE_LOG(LogTemp, Warning, TEXT("AIslandPerson::OnConstruction"));
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "AIslandPerson::OnConstruction");
-
 	if (PersonMeshMaterial)
 	{
 		PersonMeshDynamicMaterial = UMaterialInstanceDynamic::Create(PersonMeshMaterial, this);
@@ -481,6 +482,7 @@ void AIslandPerson::OnConstruction(const FTransform& Transform)
 	spawnPoint->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	RegisterAllComponents();
+	*/
 }
 
 

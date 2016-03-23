@@ -20,6 +20,7 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
 
 	TilePlacedOn = nullptr;
+	TestTileRef = nullptr;
 	//MoveCurve = nullptr;
 
 	//static_cast<UStaticMeshComponent*>(GlobeComponent)->OnClicked.AddDynamic(this, &AWorldPawn::DoMeshOnClicked);
@@ -209,6 +210,7 @@ void AIslandPerson::UpdatePathingOptions() {
 			// Same as with the Object Iterator, access the subclass instance with the * or -> operators.
 			AIslandTile* Tile = *ActorItr;
 			Tile->DeselectTile();
+			Tile->DistanceFromSelectedPerson = 9999;
 		}
 
 		TileRangeMap.Empty();

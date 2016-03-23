@@ -82,7 +82,6 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 
 	//~~ Indicator ~~//
-
 	MoveToIndicatorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MoveToIndicatorMesh"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>MoveToIndicatorMeshObj(TEXT("StaticMesh'/Engine/BasicShapes/Cone.Cone'"));
 	if (MoveToIndicatorMeshObj.Succeeded())
@@ -101,6 +100,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	MoveToIndicatorMesh->RelativeLocation = FVector(0, 0, 260);
 	MoveToIndicatorMesh->AttachParent = RootComponent;
 	MoveToIndicatorMesh->SetVisibility(false);
+	MoveToIndicatorMesh->SetCastShadow(false);
 
 
 
@@ -256,7 +256,7 @@ void AIslandTile::TileClicked()
 		AIslandPlayerController* PlayerController = Cast<AIslandPlayerController>(GetWorld()->GetFirstPlayerController());
 		if (PlayerController)
 		{
-			PlayerController->CenterCameraAt(GetActorLocation());
+			//PlayerController->CenterCameraAt(GetActorLocation());
 		}
 		GameInstance->OnTileClicked.Broadcast(this);
 		SelectTile();

@@ -49,6 +49,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	AIslandTile* TilePlacedOn;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	AIslandTile* TestTileRef;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	UStaticMeshComponent* PersonMesh;
 

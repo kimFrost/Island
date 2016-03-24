@@ -5,6 +5,7 @@
 #include "IslandGameInstance.h"
 #include "IslandPlayerController.h"
 #include "IslandTile.h"
+#include "IslandPath.h"
 #include "IslandPerson.h"
 
 
@@ -231,6 +232,39 @@ void AIslandPerson::UpdatePathingOptions() {
 			for (int32 m = 0; m < Frontier.Num(); m++)
 			{
 				AIslandTile* Tile = Frontier[m];
+				//~~ Loop though all Paths connected to this tile to create the next frontier ~~//
+				for (int32 l = 0; l < Tile->Paths.Num(); l++)
+				{
+					AIslandPath* Path = Tile->Paths[l];
+					//~~ Error handing in path pointer ~~//
+					if (!Path->TileA || !Path->TileB)
+					{
+						continue; //~~ Skip path ~~//
+					}
+					// If not oneway or if oneway and This til is A (A=>B)
+					if ((Path->bOneWay && Path->TileA == Tile) || !Path->bOneWay)
+					{
+						AIslandTile* NeighbourTile = nullptr;
+						if (Path->TileA == Tile)
+						{
+							NeighbourTile = Path->TileB;
+						}
+						else if (Path->TileB == Tile)
+						{
+							NeighbourTile = Path->TileA;
+						}
+						if (NeighbourTile)
+						{
+							if (NeighbourTile && !VisitedTiles.Contains(NeighbourTile))
+							{
+								NeighbourTile->DistanceFromSelectedPerson = k + 1;
+								TileRangeMap[k + 1].Add(NeighbourTile); //~~ Add Neighbor tile to the next frontier ~~//
+								VisitedTiles.Add(NeighbourTile); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
+							}
+						}
+					}
+				}
+				/*
 				//~~ Loop though all pathto to create the next frontier ~~//
 				for (int32 l = 0; l < Tile->PathTo.Num(); l++)
 				{
@@ -243,6 +277,7 @@ void AIslandPerson::UpdatePathingOptions() {
 						VisitedTiles.Add(NeighbourTile); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
 					}
 				}
+				*/
 			}
 
 		}
@@ -277,6 +312,45 @@ void AIslandPerson::UpdateShortestPath(AIslandTile* TargetTile) {
 		AIslandTile* Tile = TargetTile;
 		for (int32 steps = 0; steps < ShortestPathLength; steps++)
 		{
+			for (int32 i = 0; i < Tile->Paths.Num(); i++)
+			{
+				AIslandPath* Path = Tile->Paths[i];
+				if (!Path->TileA || !Path->TileB)
+				{
+					continue; //~~ Skip path ~~//
+				}
+				if ((Path->bOneWay && Path->TileB == Tile) || !Path->bOneWay)
+				{
+					AIslandTile* NeighbourTile = nullptr;
+					if (Path->TileA == Tile)
+					{
+						NeighbourTile = Path->TileB;
+					}
+					else if (Path->TileB == Tile)
+					{
+						NeighbourTile = Path->TileA;
+					}
+					if (NeighbourTile)
+					{
+						if (NeighbourTile->DistanceFromSelectedPerson < Tile->DistanceFromSelectedPerson)
+						{
+							if (Tile->DistanceFromSelectedPerson > 0)
+							{
+								PathToTake.Insert(Tile, 0);
+								Tile = NeighbourTile;
+								i = -1; // Reset neighbour loop for new current tile
+							}
+							else
+							{
+								PathToTake.Insert(Tile, 0);
+								// We are there
+								break;
+							}
+						}
+					}
+				}
+			}
+			/*
 			for (int32 i = 0; i < Tile->PathTo.Num(); i++)
 			{
 				AIslandTile* NeighbourTile = Tile->PathTo[i];
@@ -297,6 +371,7 @@ void AIslandPerson::UpdateShortestPath(AIslandTile* TargetTile) {
 					}
 				}
 			}
+			*/
 		}
 	}
 }

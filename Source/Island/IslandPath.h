@@ -5,6 +5,12 @@
 #include "GameFramework/Actor.h"
 #include "IslandPath.generated.h"
 
+
+//~~~~~ Forward Declarations ~~~~~//
+class AIslandTile;
+
+
+
 UCLASS()
 class ISLAND_API AIslandPath : public AActor
 {
@@ -20,6 +26,36 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	// PathLink
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Path")
+	AIslandTile* TileA;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Path")
+	AIslandTile* TileB;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Path")
+	int32 NumOfIntersections;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Path")
+	bool bOneWay;
+
+	// Destinations
+
+	// Tile A
+
+	// Tile B
+
+	// bOneWay // A -> B
+
+
+	// Update on construction script?
+
+	virtual void PreEditChange(UProperty* PropertyThatWillChange) override;
 	
-	
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
+
+	virtual void OnConstruction(const FTransform& Transform) override;
+
+
 };

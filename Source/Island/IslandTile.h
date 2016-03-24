@@ -4,6 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "IslandPerson.h"
+#include "IslandPath.h"
 #include "IslandTile.generated.h"
 
 
@@ -22,8 +23,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	bool IsCamp;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Path")
 	TArray<AIslandTile*> PathTo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Path")
+	TArray<AIslandPath*> Paths;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	TArray<AIslandTile*> HiddenPathTo;
@@ -113,7 +117,7 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	// OnConstruction
-	//virtual void OnConstruction(const FTransform& Transform) override;
+	virtual void OnConstruction(const FTransform& Transform) override;
 
 
 };

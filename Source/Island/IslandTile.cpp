@@ -3,6 +3,7 @@
 #include "Island.h"
 #include "Kismet/GameplayStatics.h"
 #include "IslandGameInstance.h"
+#include "IslandPath.h"
 #include "IslandPlayerController.h"
 #include "IslandTile.h"
 
@@ -305,3 +306,11 @@ void AIslandTile::Tick( float DeltaTime )
 
 }
 
+void AIslandTile::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	UE_LOG(LogTemp, Warning, TEXT("Tile::OnConstruction"));
+
+
+}

@@ -20,13 +20,7 @@ public:
 	// Sets default values for this actor's properties
 	AIslandPath();
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	
-	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
-
-	// PathLink
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Path")
 	AIslandTile* TileA;
@@ -40,16 +34,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Path")
 	bool bOneWay;
 
-	// Destinations
-
-	// Tile A
-
-	// Tile B
-
-	// bOneWay // A -> B
+	UPROPERTY(BlueprintReadOnly, Category = "Path")
+	bool bVisible;
 
 
-	// Update on construction script?
+	//UFUNCTION(BlueprintNativeEvent, Category = "Path")
+	UFUNCTION(BlueprintImplementableEvent, Category = "Path")
+	void SetPathVisibility(bool Visible);
+	virtual void SetPathVisibility_Implementation(bool Visible);
+
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void PreEditChange(UProperty* PropertyThatWillChange) override;
 	

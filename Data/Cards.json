@@ -3,5 +3,25 @@
         "Name": "Cave",
         "Id": "Cave",
         "Title": "Cave"
+    },
+	{
+        "Name": "AbandonedHouse",
+        "Id": "AbandonedHouse",
+        "Title": "Abandoned house"
+    },
+	{
+        "Name": "WaterSpring",
+        "Id": "WaterSpring",
+        "Title": "Water spring"
+    },
+	{
+        "Name": "Totem1",
+        "Id": "Totem1",
+        "Title": "Totem"
+    },
+	{
+        "Name": "Totem2",
+        "Id": "Totem1",
+        "Title": "Totem"
     }
 ]

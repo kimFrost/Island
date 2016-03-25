@@ -60,8 +60,18 @@ void UIslandGameInstance::NewTurn()
 FST_Card UIslandGameInstance::GetRandCard(EIslandCardType Type)
 {
 	FST_Card Card;
+	if (DATA_Cards)
+	{
+		TArray<FName> RowNames = DATA_Cards->GetRowNames();
+		FName RowId = RowNames[FMath::RandRange(0, RowNames.Num() - 1)];
 
-
+		static const FString ContextString(TEXT("CardLookup"));
+		FST_Card* CardData = DATA_Cards->FindRow<FST_Card>(RowId, ContextString);
+		if (CardData)
+		{
+			Card = *CardData;
+		}
+	}
 	return Card;
 }
 

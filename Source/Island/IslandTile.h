@@ -42,7 +42,7 @@ public:
 	bool TileExplored;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
-	bool TileHidden;
+	bool bTileHidden;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	bool TileCanBeBypassed;
@@ -84,6 +84,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	void UpdatePersonPlacements();
+
+	UFUNCTION(BlueprintCallable, Category = "Tile")
+	void ShowTile();
+
+	UFUNCTION(BlueprintCallable, Category = "Tile")
+	void HideTile();
 
 	UFUNCTION(BlueprintCallable, Category = "Tile")
 	void CheckTile();

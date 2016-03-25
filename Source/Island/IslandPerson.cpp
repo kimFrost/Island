@@ -147,6 +147,10 @@ void AIslandPerson::MoveEnded()
 	}
 	else 
 	{
+		if (TilePlacedOn)
+		{
+			TilePlacedOn->CheckTile();
+		}
 		UpdatePathingOptions(); // force update tiles in range
 		PersonState = EIslandPersonState::Idle;
 	}
@@ -237,7 +241,7 @@ void AIslandPerson::UpdatePathingOptions() {
 				{
 					AIslandPath* Path = Tile->Paths[l];
 					//~~ Error handing in path pointer ~~//
-					if (!Path->TileA || !Path->TileB)
+					if (!Path->TileA || !Path->TileB || !Path->bVisible)
 					{
 						continue; //~~ Skip path ~~//
 					}
@@ -444,8 +448,10 @@ void AIslandPerson::BeginPlay()
 		GameInstance->OnTurnSwitched.AddDynamic(this, &AIslandPerson::OnTurnSwitched);
 		GameInstance->OnNewTurn.AddDynamic(this, &AIslandPerson::OnNewTurn);
 	}
-	
-
+	if (TilePlacedOn)
+	{
+		TilePlacedOn->CheckTile();
+	}
 	/*
 	TimeLine.PlayFromStart();
 	

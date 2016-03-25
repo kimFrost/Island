@@ -15,13 +15,53 @@ AIslandPath::AIslandPath()
 	TileB = nullptr;
 	NumOfIntersections = 0;
 	bOneWay = false;
+	bVisible = false;
+
+	//~~ Root component ~~//
+	USceneComponent* const TranslationComp = CreateDefaultSubobject<USceneComponent>(TEXT("PathRoot"));
+	TranslationComp->Mobility = EComponentMobility::Static;
+	RootComponent = TranslationComp;
+
 }
+
+
+
+/*
+void AIslandPath::SetPathVisibility(bool Visible)
+{
+	bVisible = Visible;
+}
+*/
+
+
+void AIslandPath::SetPathVisibility_Implementation(bool Visible)
+{
+	bVisible = Visible;
+	RootComponent->SetVisibility(bVisible, true);
+	//~~ Show connected tiles ~~//
+	if (TileA && TileB)
+	{
+		if (TileA->bTileHidden)
+		{
+			TileA->ShowTile();
+		}
+		if (TileB->bTileHidden)
+		{
+			TileB->ShowTile();
+		}
+	}
+}
+
+
 
 // Called when the game starts or when spawned
 void AIslandPath::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	if (!bVisible)
+	{
+		RootComponent->SetVisibility(false, true);
+	}
 }
 
 // Called every frame

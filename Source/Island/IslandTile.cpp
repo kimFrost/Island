@@ -24,7 +24,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	PeopleLocationDisplacement = FVector(300, 300, 0);
 
 	TileExplored = false;
-	TileHidden = false;
+	bTileHidden = true;
 	TileCanBeBypassed = false;
 
 	Selected = false;
@@ -131,6 +131,8 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 		ReloadDisplay->AddElement((UMaterialInterface*)Material.Object, nullptr, false, 32.0f, 32.0f, nullptr);
 	}
 	*/
+
+	
 }
 
 
@@ -165,11 +167,37 @@ FVector AIslandTile::PlacePerson(AIslandPerson* Person, bool Teleport, bool Stor
 }
 
 
+/******************** ShowTile *************************/
+void AIslandTile::ShowTile()
+{
+	RootComponent->SetVisibility(true, true);
+	bTileHidden = false;
+}
+
+
+/******************** HideTile *************************/
+void AIslandTile::HideTile()
+{
+	RootComponent->SetVisibility(false, true);
+	bTileHidden = true;
+}
+
+
 /******************** CheckTile *************************/
 void AIslandTile::CheckTile()
 {
 	if (!TileExplored)
 	{
+		ShowTile();
+		for (int32 i = 0; i < Paths.Num(); i++)
+		{
+			AIslandPath* Path = Paths[i];
+			if (Path)
+			{
+				Path->SetPathVisibility_Implementation(true);
+				//Path->SetPathVisibility(true); //!! Won't work apparently
+			}
+		}
 		// Trigger tile event reveal
 		//TileCard
 		UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
@@ -177,6 +205,7 @@ void AIslandTile::CheckTile()
 		{
 			GameInstance->OnTileRevealed.Broadcast(this);
 		}
+		TileExplored = true;
 	}
 }
 
@@ -184,12 +213,7 @@ void AIslandTile::CheckTile()
 /******************** RemovePerson *************************/
 void AIslandTile::RemovePerson(AIslandPerson* Person)
 {
-	FString asdasd;
-
 	PeopleOnTile.Remove(Person);
-
-	FString asdsadd;
-
 	UpdatePersonPlacements();
 }
 
@@ -296,6 +320,12 @@ void AIslandTile::BeginPlay()
 	if (GameInstance)
 	{
 		GameInstance->OnTileClicked.AddDynamic(this, &AIslandTile::OnAnyTileClicked);
+		TileCard = GameInstance->GetRandCard(EIslandCardType::Tile);
+	}
+	//~~ Make the tile default hidden ~~//
+	if (bTileHidden)
+	{
+		HideTile();
 	}
 }
 

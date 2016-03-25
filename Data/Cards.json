@@ -2,26 +2,33 @@
     {
         "Name": "Cave",
         "Id": "Cave",
-        "Title": "Cave"
+        "Title": "Cave",
+		"Actions": [
+			"(Title=\"Explore\")"
+		]
     },
 	{
         "Name": "AbandonedHouse",
         "Id": "AbandonedHouse",
-        "Title": "Abandoned house"
+        "Title": "Abandoned house",
+		"Actions": []
     },
 	{
         "Name": "WaterSpring",
         "Id": "WaterSpring",
-        "Title": "Water spring"
+        "Title": "Water spring",
+		"Actions": []
     },
 	{
         "Name": "Totem1",
         "Id": "Totem1",
-        "Title": "Totem"
+        "Title": "Totem",
+		"Actions": []
     },
 	{
         "Name": "Totem2",
         "Id": "Totem1",
-        "Title": "Totem"
+        "Title": "Totem",
+		"Actions": []
     }
 ]

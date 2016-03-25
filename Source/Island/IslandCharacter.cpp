@@ -10,6 +10,8 @@ AIslandCharacter::AIslandCharacter(const FObjectInitializer &ObjectInitializer) 
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
+	bHasCamaeraControl = true;
+
 	// Set the dependece of speed on the power level
 	SpeedFactor = 0.75f;
 	BaseSpeed = 10.0f;

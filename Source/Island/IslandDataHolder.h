@@ -30,6 +30,12 @@ enum class EIslandCardType : uint8
 	Tile UMETA(DisplayName = "Tile")
 };
 
+UENUM(BlueprintType)
+enum class ETileStdActions : uint8
+{
+	DoNothing UMETA(DisplayName = "Do nothing")
+};
+
 
 //~~~~~ DATA IMPORT ~~~~~//
 
@@ -82,6 +88,18 @@ public:
 
 
 USTRUCT(BlueprintType)
+struct FST_Action : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Action()
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	FString Title;
+};
+
+
+USTRUCT(BlueprintType)
 struct FST_Card : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
@@ -92,7 +110,11 @@ public:
 	FString Id;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
+	TArray<FST_Action> Actions;
 };
+
+
 
 
 USTRUCT(BlueprintType)

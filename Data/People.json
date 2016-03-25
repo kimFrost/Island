@@ -2,11 +2,32 @@
     {
         "Name": "LouisGrant",
         "Id": "LouisGrant",
-        "Title": "Louis Grant"
+        "Title": "Louis Grant",
+		"Profession": "Hairdresser",
+		"Description": "Louis description here",
+		"Traits": [
+			"(Title=\"Compulsive liar\", Description=\"Complements everyone's hair, giving everyone one the same tile a +1 confidence bonus.\")"
+		]
     },
 	{
         "Name": "KimFrost",
         "Id": "KimFrost",
-        "Title": "Kim Frost"
-    }
+        "Title": "Kim Frost",
+		"Profession": "Messiah",
+		"Description": "Practically a God. But with a larger ego",
+		"Traits": [
+			"(Title=\"Hated by all\", Description=\"Everyone but Betina Wolf hates Kim.\")"
+		]
+    },
+	{
+		"Name": "BetinaWolf",
+		"Id": "BetinaWolf",
+		"Title": "Betina Korsgaard Wolf",
+		"Profession": "Nurse",
+		"Description": "A caregiver and warm person. Will kill you in your sleep though.",
+		"Traits": [
+			"(Title=\"Loved by all\", Description=\"Everyone loves Betina.\")",
+			"(Title=\"Black widow\", Description=\"Will sillently murder everyone while they sleep next to her.\")"
+		]
+	}
 ]

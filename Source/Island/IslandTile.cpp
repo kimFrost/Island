@@ -188,7 +188,20 @@ void AIslandTile::CheckTile()
 {
 	if (!TileExplored)
 	{
+		// Trigger tile event reveal
+		//TileCard
+		if (bTileHidden)
+		{
+			UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+			if (GameInstance)
+			{
+				GameInstance->OnTileRevealed.Broadcast(this);
+			}
+		}
+		
+		TileExplored = true;
 		ShowTile();
+
 		for (int32 i = 0; i < Paths.Num(); i++)
 		{
 			AIslandPath* Path = Paths[i];
@@ -198,14 +211,6 @@ void AIslandTile::CheckTile()
 				//Path->SetPathVisibility(true); //!! Won't work apparently
 			}
 		}
-		// Trigger tile event reveal
-		//TileCard
-		UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
-		if (GameInstance)
-		{
-			GameInstance->OnTileRevealed.Broadcast(this);
-		}
-		TileExplored = true;
 	}
 }
 

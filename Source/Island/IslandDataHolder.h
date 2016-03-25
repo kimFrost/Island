@@ -79,11 +79,19 @@ struct FST_Person : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 public:
 	FST_Person()
+		: Id(TEXT(""))
+		, Title(TEXT("No title"))
+		, Description(TEXT("No description"))
+		, Profession(TEXT("No profession"))
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Id;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Profession; //?? Maybe a enum instead? ??//
 };
 
 
@@ -93,9 +101,39 @@ struct FST_Action : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 public:
 	FST_Action()
+		: Title(TEXT("No title"))
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	FString Title;
+};
+
+
+USTRUCT(BlueprintType)
+struct FST_Stats : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Stats()
+		: Title(TEXT("No title"))
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	FString Title;
+};
+
+
+USTRUCT(BlueprintType)
+struct FST_Trait : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Trait()
+		: Title(TEXT("No title"))
+		: Description(TEXT("No Description"))
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	FString Description;
 };
 
 
@@ -105,6 +143,10 @@ struct FST_Card : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 public:
 	FST_Card()
+		: Id(TEXT(""))
+		, Title(TEXT("No title"))
+		, Actions(TArray<FST_Action>())
+		, IdleActions(TArray<FST_Action>())
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	FString Id;
@@ -112,8 +154,11 @@ public:
 	FString Title;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	TArray<FST_Action> Actions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
+	TArray<FST_Action> IdleActions;
 };
 
+//TAssetPtr<UTexture> AchievementIcon; "Texture2d'/Game/Textures/AchievementIcon2'"
 
 
 

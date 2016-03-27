@@ -40,36 +40,39 @@ enum class ETileStdActions : uint8
 //~~~~~ DATA IMPORT ~~~~~//
 
 USTRUCT(BlueprintType)
-struct FST_Ingredient
+struct FST_Effect : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
-	FName Id;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
-	int32 Quantity;
-	FST_Ingredient()
-		: Id(FName(TEXT("")))
-		, Quantity(0)
+	FST_Effect()
+		: Prop(TEXT("No name"))
+		, Value(0)
 	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	FString Prop;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	int32 Value;
 };
 
 
 USTRUCT(BlueprintType)
-struct FST_ResourceRecipe : public FTableRowBase
+struct FST_Trait : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 public:
-	FST_ResourceRecipe()
-		//: Wood(0.f)
-		//, Planks(0.f)
+	FST_Trait()
+		: Title(TEXT("No title"))
+		, Description(TEXT("No Description"))
+		, Effects(TArray<FST_Effect>())
 	{}
-	UPROPERTY(EditAnywhere, Category = "Resources")
-	TArray<FST_Ingredient> Ingredients;
-	UPROPERTY(EditAnywhere, Category = "Resources")
-	int32 Servings;
-	UPROPERTY(EditAnywhere, Category = "Resources")
-	int32 Sequence;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	FString Target;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	TArray<FST_Effect> Effects;
 };
 
 
@@ -83,16 +86,21 @@ public:
 		, Title(TEXT("No title"))
 		, Description(TEXT("No description"))
 		, Profession(TEXT("No profession"))
+		, Traits(TArray<FST_Trait>())
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Id;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Title;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Profession; //?? Maybe a enum instead? ??//
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Description;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	FString Profession; //?? Maybe a enum instead? ??//
+	TArray<FST_Trait> Traits;
 };
+
+//TEnumAsByte<EElementalEnum::Type> PrimaryElementalType;
 
 
 USTRUCT(BlueprintType)
@@ -118,22 +126,6 @@ public:
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FString Title;
-};
-
-
-USTRUCT(BlueprintType)
-struct FST_Trait : public FTableRowBase
-{
-	GENERATED_USTRUCT_BODY()
-public:
-	FST_Trait()
-		: Title(TEXT("No title"))
-		: Description(TEXT("No Description"))
-	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	FString Title;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	FString Description;
 };
 
 

@@ -6,7 +6,10 @@
 		"Profession": "Hairdresser",
 		"Description": "Louis description here",
 		"Traits": [
-			"(Title=\"Compulsive liar\", Description=\"Complements everyone's hair, giving everyone one the same tile a +1 confidence bonus.\")"
+			"(Title=\"Compulsive liar\",
+			Description=\"Complements everyone's hair, giving everyone one the same tile a +1 confidence bonus.\"
+			Target=\"Self\",
+			Effects=\"[(Prop=\"\confidence", )\")]"
 		]
     },
 	{

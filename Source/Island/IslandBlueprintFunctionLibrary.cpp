@@ -6,3 +6,15 @@
 
 
 
+/******************** NotNull *************************/
+void UIslandBlueprintFunctionLibrary::NotNull(AActor* Actor, TEnumAsByte<EBoolGateEnum>& Branches)
+{
+	if (Actor)
+	{
+		Branches = EBoolGateEnum::Exits;
+	}
+	else
+	{
+		Branches = EBoolGateEnum::Null;
+	}
+}

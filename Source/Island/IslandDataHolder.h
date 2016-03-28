@@ -31,6 +31,13 @@ enum class EIslandCardType : uint8
 };
 
 UENUM(BlueprintType)
+enum class ETileActions : uint8
+{
+	Explore UMETA(DisplayName = "Explore"),
+	DoNothing UMETA(DisplayName = "Do nothing")
+};
+
+UENUM(BlueprintType)
 enum class ETileStdActions : uint8
 {
 	DoNothing UMETA(DisplayName = "Do nothing")
@@ -38,6 +45,26 @@ enum class ETileStdActions : uint8
 
 
 //~~~~~ DATA IMPORT ~~~~~//
+
+
+USTRUCT(BlueprintType)
+struct FST_Item : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Item()
+		: Title(TEXT("No title"))
+		, Description(TEXT("No Description"))
+		, Unique(false)
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	bool Unique;
+};
+
 
 USTRUCT(BlueprintType)
 struct FST_Effect : public FTableRowBase
@@ -48,9 +75,9 @@ public:
 		: Prop(TEXT("No name"))
 		, Value(0)
 	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
 	FString Prop;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
 	int32 Value;
 };
 
@@ -110,9 +137,13 @@ struct FST_Action : public FTableRowBase
 public:
 	FST_Action()
 		: Title(TEXT("No title"))
+		, Type(ETileActions::DoNothing)
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	ETileActions Type;
+
 };
 
 

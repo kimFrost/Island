@@ -4,7 +4,8 @@
         "Id": "Cave",
         "Title": "Cave",
 		"Actions": [
-			"(Title=\"Explore\")"
+			"(Title=\"Explore\", Type=\"Explore\")",
+			"(Title=\"Do nothing\", Type=\"DoNothing\")"
 		],
 		"IdleActions": [
 			
@@ -15,34 +16,18 @@
         "Id": "AbandonedHouse",
         "Title": "Abandoned house",
 		"Actions": [
-			"(Title=\"Explore\")"
+			"(Title=\"Explore\", Type=\"Explore\")",
+			"(Title=\"Do nothing\", Type=\"DoNothing\")"
 		]
     },
 	{
         "Name": "WaterSpring",
         "Id": "WaterSpring",
         "Title": "Water spring",
+		"InfinityItems": ["Water"],
 		"Actions": [
-			"(Title=\"Explore\")"
+			"(Title=\"Get Water\", Type=\"GetItem\")",
+			"(Title=\"Do nothing\", Type=\"DoNothing\")"
 		]
-    },
-	{
-        "Name": "Totem1",
-        "Id": "Totem1",
-        "Title": "Totem",
-		"Actions": [
-			"(Title=\"Explore\")"
-		]
-    },
-	{
-        "Name": "Totem2",
-        "Id": "Totem1",
-        "Title": "Totem",
-		"Actions": [
-			"(Title=\"Explore\")"
-		]
-    },
-	{
-        "Name": "Totem3"
     }
 ]

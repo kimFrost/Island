@@ -63,7 +63,9 @@ FST_Card UIslandGameInstance::GetRandCard(EIslandCardType Type)
 	if (DATA_Cards)
 	{
 		TArray<FName> RowNames = DATA_Cards->GetRowNames();
-		FName RowId = RowNames[FMath::RandRange(0, RowNames.Num() - 1)];
+		int RandIndex = FMath::RandRange(0, RowNames.Num() - 1);
+		FName RowId = RowNames[RandIndex];
+		//FString TempRowName = RowId.ToString();
 
 		static const FString ContextString(TEXT("CardLookup"));
 		FST_Card* CardData = DATA_Cards->FindRow<FST_Card>(RowId, ContextString);

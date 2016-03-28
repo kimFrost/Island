@@ -14,25 +14,33 @@
         "Name": "AbandonedHouse",
         "Id": "AbandonedHouse",
         "Title": "Abandoned house",
-		"Actions": []
+		"Actions": [
+			"(Title=\"Explore\")"
+		]
     },
 	{
         "Name": "WaterSpring",
         "Id": "WaterSpring",
         "Title": "Water spring",
-		"Actions": []
+		"Actions": [
+			"(Title=\"Explore\")"
+		]
     },
 	{
         "Name": "Totem1",
         "Id": "Totem1",
         "Title": "Totem",
-		"Actions": []
+		"Actions": [
+			"(Title=\"Explore\")"
+		]
     },
 	{
         "Name": "Totem2",
         "Id": "Totem1",
         "Title": "Totem",
-		"Actions": []
+		"Actions": [
+			"(Title=\"Explore\")"
+		]
     },
 	{
         "Name": "Totem3"

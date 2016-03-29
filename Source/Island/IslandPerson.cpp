@@ -150,6 +150,12 @@ void AIslandPerson::MoveEnded()
 		if (TilePlacedOn)
 		{
 			TilePlacedOn->CheckTile();
+			// Trigger tile modal
+			UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+			if (GameInstance)
+			{
+				GameInstance->OnPersonMoveEnded.Broadcast(this, TilePlacedOn);
+			}
 		}
 		UpdatePathingOptions(); // force update tiles in range
 		PersonState = EIslandPersonState::Idle;

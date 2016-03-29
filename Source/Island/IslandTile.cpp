@@ -188,12 +188,11 @@ void AIslandTile::CheckTile()
 {
 	if (!TileExplored)
 	{
-		// Trigger tile event reveal
-		//TileCard
-		if (bTileHidden)
+		UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+		if (GameInstance)
 		{
-			UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
-			if (GameInstance)
+			// Trigger tile event reveal
+			if (bTileHidden)
 			{
 				GameInstance->OnTileRevealed.Broadcast(this);
 			}

@@ -30,6 +30,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTurnSwitched, float, Turn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNewTurn, float, Turn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileClicked, AIslandTile*, Tile);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileRevealed, AIslandTile*, Tile);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPersonMoveEnded, AIslandPerson*, Person, AIslandTile*, Tile);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPersonSelected, AIslandPerson*, Person);
 
 
@@ -130,6 +131,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FTileRevealed OnTileRevealed;
+
+	UPROPERTY(BlueprintAssignable, Category = "Input")
+	FPersonMoveEnded OnPersonMoveEnded;
 
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FPersonSelected OnPersonSelected;

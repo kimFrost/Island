@@ -165,6 +165,10 @@ public:
 	int32 Endurance;
 };
 
+// Motivations
+// Relationships
+// Secrets
+// Hobbies
 
 
 USTRUCT(BlueprintType)

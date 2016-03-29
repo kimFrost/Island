@@ -3,6 +3,7 @@
         "Name": "Cave",
         "Id": "Cave",
         "Title": "Cave",
+		"Items": [],
 		"Actions": [
 			"(Title=\"Explore\", Type=\"Explore\")",
 			"(Title=\"Do nothing\", Type=\"DoNothing\")"
@@ -15,6 +16,7 @@
         "Name": "AbandonedHouse",
         "Id": "AbandonedHouse",
         "Title": "Abandoned house",
+		"Items": [],
 		"Actions": [
 			"(Title=\"Explore\", Type=\"Explore\")",
 			"(Title=\"Do nothing\", Type=\"DoNothing\")"
@@ -24,7 +26,6 @@
         "Name": "WaterSpring",
         "Id": "WaterSpring",
         "Title": "Water spring",
-		"InfinityItems": ["Water"],
 		"Actions": [
 			"(Title=\"Get Water\", Type=\"GetItem\")",
 			"(Title=\"Do nothing\", Type=\"DoNothing\")"

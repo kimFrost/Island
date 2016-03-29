@@ -153,11 +153,18 @@ struct FST_Stats : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 public:
 	FST_Stats()
-		: Title(TEXT("No title"))
+		: Confidence(1)
+		, Cognitive(1)
+		, Endurance(1)
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	FString Title;
+	int32 Confidence;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	int32 Cognitive;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	int32 Endurance;
 };
+
 
 
 USTRUCT(BlueprintType)
@@ -168,6 +175,7 @@ public:
 	FST_Card()
 		: Id(TEXT(""))
 		, Title(TEXT("No title"))
+		, Items(TArray<FString>())
 		, Actions(TArray<FST_Action>())
 		, IdleActions(TArray<FST_Action>())
 	{}
@@ -175,6 +183,8 @@ public:
 	FString Id;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
+	TArray<FString> Items;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	TArray<FST_Action> Actions;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")

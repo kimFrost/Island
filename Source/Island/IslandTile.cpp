@@ -237,6 +237,30 @@ void AIslandTile::UpdatePersonPlacements()
 }
 
 
+/******************** PerformTileAction *************************/
+void AIslandTile::PerformTileAction(AIslandPerson* ByPerson, ETileActions Action)
+{
+
+	switch (Action)
+	{
+		case ETileActions::DoNothing:
+		{
+			break;
+		}
+		case ETileActions::Explore:
+		{
+			// Items
+			// Artifacts
+			// Events
+			// Hidden paths
+
+			break;
+		}
+	}
+
+}
+
+
 /******************** SelectTile *************************/
 void AIslandTile::SelectTile()
 {

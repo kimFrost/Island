@@ -86,6 +86,9 @@ public:
 	void UpdatePersonPlacements();
 
 	UFUNCTION(BlueprintCallable, Category = "Tile")
+	void PerformTileAction(AIslandPerson* ByPerson, ETileActions Action);
+
+	UFUNCTION(BlueprintCallable, Category = "Tile")
 	void ShowTile();
 
 	UFUNCTION(BlueprintCallable, Category = "Tile")

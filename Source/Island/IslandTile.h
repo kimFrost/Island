@@ -47,11 +47,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	bool TileCanBeBypassed;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	bool Selected;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	FST_Card TileCard;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+	TArray<FString> CompletedEvents;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	TArray<FString> CardsAllowed;
@@ -86,7 +89,10 @@ public:
 	void UpdatePersonPlacements();
 
 	UFUNCTION(BlueprintCallable, Category = "Tile")
-	void PerformTileAction(AIslandPerson* ByPerson, ETileActions Action);
+	TArray<FST_Action> GetTileAvailableActions();
+
+	UFUNCTION(BlueprintCallable, Category = "Tile")
+	void PerformTileAction(AIslandPerson* ByPerson, FST_Action Action);
 
 	UFUNCTION(BlueprintCallable, Category = "Tile")
 	void ShowTile();

@@ -1,7 +1,12 @@
 [
     {
-        "Name": "TropicalStorm",
-        "Id": "TropicalStorm",
-        "Title": "Tropical Storm"
+        "Name": "EventCaveFoundMushroom",
+        "Id": "EventCaveFoundMushroom",
+        "Title": "Found mushroom in cave",
+        "Description": "$name found a mushroom in the cave. Look yummy..",
+		"Chance": 1.0,
+		"Actions": [
+			"(Action=\"GiveItem\" Quantity=\"1\")"
+		]
     }
 ]

@@ -34,6 +34,8 @@ UENUM(BlueprintType)
 enum class ETileActions : uint8
 {
 	Explore UMETA(DisplayName = "Explore"),
+	Event UMETA(DisplayName = "Event"),
+	GiveItem UMETA(DisplayName = "Give item"),
 	DoNothing UMETA(DisplayName = "Do nothing")
 };
 
@@ -130,21 +132,6 @@ public:
 //TEnumAsByte<EElementalEnum::Type> PrimaryElementalType;
 
 
-USTRUCT(BlueprintType)
-struct FST_Action : public FTableRowBase
-{
-	GENERATED_USTRUCT_BODY()
-public:
-	FST_Action()
-		: Title(TEXT("No title"))
-		, Type(ETileActions::DoNothing)
-	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
-	FString Title;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
-	ETileActions Type;
-
-};
 
 
 USTRUCT(BlueprintType)
@@ -169,6 +156,32 @@ public:
 // Relationships
 // Secrets
 // Hobbies
+
+
+
+USTRUCT(BlueprintType)
+struct FST_Action : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Action()
+		: Title(TEXT("No title"))
+		, Type(ETileActions::DoNothing)
+		, Conditions(TArray<FString>())
+		, NotConditions(TArray<FString>())
+		, Events(TArray<FString>())
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	ETileActions Type;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	TArray<FString> Conditions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	TArray<FString> NotConditions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	TArray<FString> Events;
+};
 
 
 USTRUCT(BlueprintType)

@@ -13,6 +13,19 @@
 		]
     },
 	{
+        "Name": "Cave2",
+        "Id": "Cave2",
+        "Title": "Cave2",
+		"TileScene": "",
+		"Actions": [
+			"(Title=\"Explore\", Conditions=\"[]\" NotConditions=\"[\"EventCaveFoundMushroom\"]\", Events=\"[\"EventCaveFoundMushroom\"]\")",
+			"(Title=\"Do nothing\", Type=\"DoNothing\")"
+		],
+		"IdleActions": [
+			
+		]
+    },
+	{
         "Name": "AbandonedHouse",
         "Id": "AbandonedHouse",
         "Title": "Abandoned house",

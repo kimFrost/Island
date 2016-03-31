@@ -237,10 +237,35 @@ void AIslandTile::UpdatePersonPlacements()
 }
 
 
+/******************** GetTileAvailableActions *************************/
+TArray<FST_Action> AIslandTile::GetTileAvailableActions()
+{
+	TArray<FST_Action> Actions;
+	for (auto& Action : TileCard.Actions)
+	{
+		
+	}
+
+
+	// TileCard.Conditions
+
+	// TileCard.NotConditions
+
+
+	//CompletedEvents
+
+	return Actions;
+}
+
 /******************** PerformTileAction *************************/
-void AIslandTile::PerformTileAction(AIslandPerson* ByPerson, ETileActions Action)
+void AIslandTile::PerformTileAction(AIslandPerson* ByPerson, FST_Action Action)
 {
 
+
+	
+
+
+	/*
 	switch (Action)
 	{
 		case ETileActions::DoNothing:
@@ -257,7 +282,7 @@ void AIslandTile::PerformTileAction(AIslandPerson* ByPerson, ETileActions Action
 			break;
 		}
 	}
-
+	*/
 }
 
 

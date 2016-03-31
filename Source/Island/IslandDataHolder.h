@@ -192,6 +192,7 @@ public:
 	FST_Card()
 		: Id(TEXT(""))
 		, Title(TEXT("No title"))
+		, TileScene(TEXT(""))
 		, Items(TArray<FString>())
 		, Actions(TArray<FST_Action>())
 		, IdleActions(TArray<FST_Action>())
@@ -200,6 +201,8 @@ public:
 	FString Id;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
+	FString TileScene;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	TArray<FString> Items;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")

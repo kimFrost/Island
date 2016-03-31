@@ -89,7 +89,7 @@ public:
 	void UpdatePersonPlacements();
 
 	UFUNCTION(BlueprintCallable, Category = "Tile")
-	TArray<FST_Action> GetTileAvailableActions();
+	TArray<FST_Action> GetTileAvailableActions(AIslandPerson* Person);
 
 	UFUNCTION(BlueprintCallable, Category = "Tile")
 	void PerformTileAction(AIslandPerson* ByPerson, FST_Action Action);

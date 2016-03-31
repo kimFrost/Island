@@ -238,7 +238,7 @@ void AIslandTile::UpdatePersonPlacements()
 
 
 /******************** GetTileAvailableActions *************************/
-TArray<FST_Action> AIslandTile::GetTileAvailableActions()
+TArray<FST_Action> AIslandTile::GetTileAvailableActions(AIslandPerson* Person)
 {
 	TArray<FST_Action> Actions;
 	for (auto& Action : TileCard.Actions)
@@ -246,6 +246,7 @@ TArray<FST_Action> AIslandTile::GetTileAvailableActions()
 		
 	}
 
+	Actions = TileCard.Actions;
 
 	// TileCard.Conditions
 
@@ -261,8 +262,8 @@ TArray<FST_Action> AIslandTile::GetTileAvailableActions()
 void AIslandTile::PerformTileAction(AIslandPerson* ByPerson, FST_Action Action)
 {
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "AIslandTile:PerformTileAction");
 
-	
 
 
 	/*

@@ -255,16 +255,33 @@ TArray<FST_Action> AIslandTile::GetTileAvailableActions(AIslandPerson* Person)
 
 	//CompletedEvents
 
+
+	//~~ Parse string parameters $name etc. ~~//
+	for (auto& Action : Actions)
+	{
+		for (auto& Event : Action.Events)
+		{
+			
+		}
+		//Action.Title.Replace();
+	}
+
 	return Actions;
 }
 
 /******************** PerformTileAction *************************/
 void AIslandTile::PerformTileAction(AIslandPerson* ByPerson, FST_Action Action)
 {
-
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, "AIslandTile:PerformTileAction");
 
 
+
+	for (auto& Event : Action.Events)
+	{
+		//~~ Pick and find event in event datatable ~~//
+
+		//~~ Parse string parameters $name etc. ~~//
+	}
 
 	/*
 	switch (Action)

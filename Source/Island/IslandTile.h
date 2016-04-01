@@ -76,6 +76,8 @@ public:
 
 	// Dynamic material for param
 
+	// Food stored. 
+
 
 	/*********** FUNCTIONS **************/
 

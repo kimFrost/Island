@@ -10,7 +10,10 @@
 			"(Title=\"Compulsive liar\",
 			Description=\"Complements everyone's hair, giving everyone one the same tile a +1 confidence bonus.\"
 			Target=\"Self\",
-			Effects=\"[(Prop=\"\Confidence", )\")]"
+			Effects=\"[(Prop=\"\Confidence", Value=1)\")]"
+		],
+		TileSpecActios: [
+			"(TileId=\"Cave\", Type=\"Event\", Conditions=\"[]\", NotConditions=(\"EventCaveFoundSomething\"), Events=(\"EventCaveFoundSomething\"]))",
 		]
     },
 	{

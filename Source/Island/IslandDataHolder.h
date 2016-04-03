@@ -45,6 +45,15 @@ enum class ETileStdActions : uint8
 	DoNothing UMETA(DisplayName = "Do nothing")
 };
 
+UENUM(BlueprintType)
+enum class EPersonStats : uint8
+{
+	Confidence UMETA(DisplayName = "Confidence"),
+	Endurance UMETA(DisplayName = "Endurance"),
+	Cognitive UMETA(DisplayName = "Cognitive")
+};
+
+
 
 //~~~~~ DATA IMPORT ~~~~~//
 
@@ -106,6 +115,25 @@ public:
 
 
 USTRUCT(BlueprintType)
+struct FST_Stats : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Stats()
+		: Confidence(1)
+		, Endurance(1)
+		, Cognitive(1)
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	int32 Confidence;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	int32 Endurance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	int32 Cognitive;
+};
+
+
+USTRUCT(BlueprintType)
 struct FST_Person : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
@@ -115,6 +143,7 @@ public:
 		, Title(TEXT("No title"))
 		, Description(TEXT("No description"))
 		, Profession(TEXT("No profession"))
+		, Stats(FST_Stats{})
 		, Traits(TArray<FST_Trait>())
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
@@ -126,31 +155,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Description;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FST_Stats Stats;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	TArray<FST_Trait> Traits;
 };
+
 
 //TEnumAsByte<EElementalEnum::Type> PrimaryElementalType;
 
 
 
-
-USTRUCT(BlueprintType)
-struct FST_Stats : public FTableRowBase
-{
-	GENERATED_USTRUCT_BODY()
-public:
-	FST_Stats()
-		: Confidence(1)
-		, Cognitive(1)
-		, Endurance(1)
-	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	int32 Confidence;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	int32 Cognitive;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	int32 Endurance;
-};
 
 // Motivations
 // Relationships
@@ -231,50 +245,22 @@ public:
 
 //~~~~~ STRUCTS ~~~~~//
 
-
-
-
-/*** FST_Point ***/
 USTRUCT(BlueprintType)
-struct FST_Point
+struct FST_StatModifier
 {
 	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Point")
-	FVector Location;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Point")
-	int32 Column;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Point")
-	int32 Row;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Point")
-	bool IsCreator;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Point")
-	bool Exits;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Point")
-	int32 Hex0Index;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Point")
-	int32 Hex1Index;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Point")
-	int32 Hex2Index;
-
-	FST_Point()
-	{
-		Location = { -1, -1, -1 };
-		Column = 0;
-		Row = 0;
-		IsCreator = false;
-		Exits = false;
-		Hex0Index = -1;
-		Hex1Index = -1;
-		Hex2Index = -1;
-	}
+public:
+	FST_StatModifier()
+		: Id(TEXT(""))
+		, Description(TEXT(""))
+		, Amount(0)
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Id;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	int32 Amount;
 };
 
 

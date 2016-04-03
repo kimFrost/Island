@@ -18,6 +18,9 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	PersonState = EIslandPersonState::Idle;
 	Selected = false;
 
+	bEatenThisTurn = true;
+	TurnsStaving = 0;
+
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
 
 	TilePlacedOn = nullptr;
@@ -25,8 +28,6 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	//MoveCurve = nullptr;
 
 	//static_cast<UStaticMeshComponent*>(GlobeComponent)->OnClicked.AddDynamic(this, &AWorldPawn::DoMeshOnClicked);
-
-
 
 	//StaticMesh'/Game/Meshes/SM_TestPerson.SM_TestPerson'
 	//StaticMesh'/Game/Meshes/Cylinder_Brush_StaticMesh.Cylinder_Brush_StaticMesh'
@@ -46,6 +47,9 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 		PersonMesh->Mobility = EComponentMobility::Movable;
 		PersonMesh->AttachParent = RootComponent;
 	}
+
+
+
 	
 
 
@@ -124,6 +128,24 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 		MoveCurve = CurveObj.Object;
 		MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimeFloatDelegate, FName("Percentage_Complete"));
 	}
+
+
+	FST_StatModifier StarvingEduranceModifier;
+	StarvingEduranceModifier.Id = "StarvingEdurance";
+	StarvingEduranceModifier.Description = "";
+	StarvingEduranceModifier.Amount = 0;
+	StatModifiers.Add(StarvingEduranceModifier);
+
+	FST_StatModifier StarvingConfidenceModifier;
+	StarvingConfidenceModifier.Id = "StarvingConfidense";
+	StarvingConfidenceModifier.Description = "";
+	StarvingConfidenceModifier.Amount = 0;
+	StatModifiers.Add(StarvingConfidenceModifier);
+
+	//StatModifiers.Add(FST_StatModifier{ "Endurance", "", 0 });
+	//StatModifiers.Add(FST_StatModifier{ "Endurance", "", 0 });
+	//StatModifiers.Add(FST_StatModifier{ "Cognitive", "", 0});
+
 
 }
 
@@ -427,15 +449,42 @@ void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)
 /******************** OnTurnSwitched *************************/
 void AIslandPerson::OnTurnSwitched(float Turn)
 {
-	
+	if (!bEatenThisTurn)
+	{
+		TurnsStaving++;
+		HungerModifier--;
+		// Add negative modifier to all stats
+		for (auto& Modifier : StatModifiers)
+		{
+			//Modifier.Key Modifier stat name
+			//Modifier.Value Modifier stat value int
+			//PersonRawData.Stats
+
+
+
+		}
+		//StatModifiers
+	}
+	else
+	{
+		//~~ Descrese stat starving modifiers ~~//
+		TurnsStaving = 0;
+		if (HungerModifier < 0)
+		{
+			HungerModifier++;
+		}
+	}
 }
 
 
 /******************** OnNewTurn *************************/
 void AIslandPerson::OnNewTurn(float Turn)
 {
-	// Reset movement points
+	//~~ Reset needs ~~//
+	bEatenThisTurn = false;
+	//~~ Reset movement points ~~//
 	MovePointsLeft = 2;
+
 	if (Selected)
 	{
 		UpdatePathingOptions();
@@ -552,6 +601,7 @@ void AIslandPerson::OnConstruction(const FTransform& Transform)
 	{
 		PersonRawData = FST_Person{};
 	}
+
 
 	//static const FString ContextString(TEXT("GENERAL")); //~~ Key value for each column of values ~~//
 	//FST_Structure* StructureData = DATA_Structures->FindRow<FST_Structure>(*RowName, ContextString);

@@ -46,6 +46,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	bool Selected;
 
+	bool bEatenThisTurn;
+
+	int32 TurnsStaving;
+
+	int32 HungerModifier;
+
+	TArray<FST_StatModifier> StatModifiers;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	AIslandTile* TilePlacedOn;
 

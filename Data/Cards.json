@@ -18,7 +18,7 @@
         "Title": "Cave2",
 		"TileScene": "",
 		"Actions": [
-			"(Title=\"Explore\", Type=\"Event\", Conditions=\"[]\", NotConditions=(\"EventCaveFoundMushroom\", \"EventSomething\"), Events=(\"EventCaveFoundMushroom\"]))",
+			"(Title=\"Explore\", Type=\"Event\", ReqStats=\"[Confidence, 6]\" Conditions=\"[]\", NotConditions=(\"EventCaveFoundMushroom\", \"EventSomething\"), Events=(\"EventCaveFoundMushroom\"]))",
 			"(Title=\"Do nothing\", Type=\"DoNothing\")"
 		],
 		"IdleActions": [

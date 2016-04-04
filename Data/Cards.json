@@ -1,4 +1,11 @@
 [
+	{
+        "Name": "Camp",
+        "Id": "Camp",
+        "Title": "Camp",
+		"Items": [],
+		"TileProvide": ["Comfort", 1]
+    },
     {
         "Name": "Cave",
         "Id": "Cave",

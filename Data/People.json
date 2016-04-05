@@ -6,11 +6,12 @@
 		"Profession": "Hairdresser",
 		"Description": "Louis description here",
 		"Stats": "(Confidence=2, Cognitive=3, Endurance=2)",
-		"Traits": [
-			"(Title=\"Compulsive liar\", Description=\"Complements everyone's hair, giving everyone one the same tile a +1 confidence bonus.\", Effects=\"[(Prop=\"\Confidence", "Value"=1, Target=\"Self\")\")]"
+		"Traits": [	
+			"(Title=\"Compulsive liar\", Description=\"Complements everyone\\'s hair, giving everyone one the same tile a +1 confidence bonus for 1 turn.\", Effects=((Prop=Confidence,Quantity=1,Target=TileAll)))"
 		],
 		"TileSpecActios": [
-			"(TileId=\"Cave\", Type=\"Event\", Conditions=\"[]\", NotConditions=(\"EventCaveFoundSomething\"), Events=(\"EventCaveFoundSomething\"]))",
+			"(TileId=\"Cave\", Type=\"Event\", Conditions=\"[]\", NotConditions=(\"EventCaveFoundSomething\"), Events=(\"EventCaveFoundSomething\"]))"
+			"(Title=\"Explore\", Type=\"Event\", ReqStats=\"[Confidence, 6]\" Conditions=\"[]\", NotConditions=(\"EventCaveFoundMushroom\", \"EventSomething\"), Events=(\"EventCaveFoundMushroom\"]))",
 		]
     },
 	{
@@ -19,6 +20,7 @@
         "Title": "Kim Frost",
 		"Profession": "Messiah",
 		"Description": "Practically a God. But with a larger ego",
+		"Stats": "(Confidence=4, Endurance=4, Cognitive=4)",
 		"Traits": [
 			"(Title=\"Hated by all\", Description=\"Everyone but Betina Wolf hates Kim.\")"
 		]
@@ -29,6 +31,7 @@
 		"Title": "Betina Korsgaard Wolf",
 		"Profession": "Nurse",
 		"Description": "A caregiver and warm person. Will kill you in your sleep though.",
+		"Stats": "(Confidence=4, Endurance=5, Cognitive=4)",
 		"Traits": [
 			"(Title=\"Loved by all\", Description=\"Everyone loves Betina.\")",
 			"(Title=\"Black widow\", Description=\"Will sillently murder everyone while they sleep next to her.\")"

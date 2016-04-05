@@ -1,0 +1,36 @@
+[
+	{
+		"Name": "LouisGrant",
+		"Id": "LouisGrant",
+		"Title": "Louis Grant",
+		"Profession": "Hairdresser",
+		"Description": "Louis description here",
+		"Stats": "(Confidence=3, Endurance=2, Cognitive=2)",
+		"Traits": [
+			"(Title=\"Compulsive liar\", Description=\"Complements everyone\\'s hair, giving everyone one the same tile a +1 confidence bonus.\", Effects=((Prop=Confidence,Quantity=1,Target=TileAll),(Prop=Endurance,Quantity=1)))"
+		]
+	},
+	{
+		"Name": "KimFrost",
+		"Id": "KimFrost",
+		"Title": "Kim Frost",
+		"Profession": "Messiah",
+		"Description": "Practically a God. But with a larger ego",
+		"Stats": "(Confidence=2,Endurance=2,Cognitive=2)",
+		"Traits": [
+			"(Title=\"Hated by all\",Description=\"Everyone but Betina Wolf hates Kim.\",Effects=)"
+		]
+	},
+	{
+		"Name": "BetinaWolf",
+		"Id": "BetinaWolf",
+		"Title": "Betina Korsgaard Wolf",
+		"Profession": "Nurse",
+		"Description": "A caregiver and warm person. Will kill you in your sleep though.",
+		"Stats": "(Confidence=3,Endurance=3,Cognitive=3)",
+		"Traits": [
+			"(Title=\"Loved by all\",Description=\"Everyone loves Betina.\",Effects=)",
+			"(Title=\"Black widow\",Description=\"Will sillently murder everyone while they sleep next to her.\",Effects=)"
+		]
+	}
+]

@@ -56,6 +56,10 @@ public:
 
 	TArray<FST_Modifier> Modifiers;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Person")
+	FVector GetStats;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	AIslandTile* TilePlacedOn;
 

@@ -45,6 +45,15 @@ enum class ETileStdActions : uint8
 	DoNothing UMETA(DisplayName = "Do nothing")
 };
 
+/*
+UENUM(BlueprintType)
+enum class EStats : uint8
+{
+Confidence UMETA(DisplayName = "Confidence"),
+Confidence UMETA(DisplayName = "Confidence")
+};
+*/
+
 UENUM(BlueprintType)
 enum class EEffectTarget : uint8
 {
@@ -57,7 +66,9 @@ UENUM(BlueprintType)
 enum class EEffectProp : uint8
 {
 	None UMETA(DisplayName = "None"),
-	Confidence UMETA(DisplayName = "Confidence")
+	Confidence UMETA(DisplayName = "Confidence"),
+	Endurance UMETA(DisplayName = "Endurance"),
+	Cognitive UMETA(DisplayName = "Cognitive")
 };
 
 
@@ -92,13 +103,16 @@ public:
 		: Prop(EEffectProp::None)
 		, Quantity(0)
 		, Target(EEffectTarget::Self)
+		, Turns(1)
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
 	EEffectProp Prop;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
 	int32 Quantity;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
 	EEffectTarget Target;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
+	int32 Turns;
 };
 
 
@@ -140,36 +154,8 @@ public:
 };
 
 
-USTRUCT(BlueprintType)
-struct FST_Person : public FTableRowBase
-{
-	GENERATED_USTRUCT_BODY()
-public:
-	FST_Person()
-		: Id(TEXT(""))
-		, Title(TEXT("No title"))
-		, Description(TEXT("No description"))
-		, Profession(TEXT("No profession"))
-		, Stats(FST_Stats{})
-		, Traits(TArray<FST_Trait>())
-	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	FString Id;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	FString Title;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	FString Profession; //?? Maybe a enum instead? ??//
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	FString Description;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	FST_Stats Stats;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	TArray<FST_Trait> Traits;
-};
-
 
 //TEnumAsByte<EElementalEnum::Type> PrimaryElementalType;
-
 
 
 
@@ -203,6 +189,38 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	TArray<FString> Events;
 };
+
+
+USTRUCT(BlueprintType)
+struct FST_Person : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Person()
+		: Id(TEXT(""))
+		, Title(TEXT("No title"))
+		, Description(TEXT("No description"))
+		, Profession(TEXT("No profession"))
+		, Stats(FST_Stats{})
+		, Traits(TArray<FST_Trait>())
+		, TileSpecActios(TArray<FST_Action>())
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Id;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Profession; //?? Maybe a enum instead? ??//
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	FST_Stats Stats;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	TArray<FST_Trait> Traits;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	TArray<FST_Action> TileSpecActios;
+};
+
 
 
 USTRUCT(BlueprintType)

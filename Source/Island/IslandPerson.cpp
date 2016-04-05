@@ -19,6 +19,7 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	Selected = false;
 
 	bEatenThisTurn = true;
+	bAvaiable = true;
 	TurnsStaving = 0;
 
 	OnClicked.AddDynamic(this, &AIslandPerson::PersonClicked);
@@ -129,23 +130,25 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 		MoveTimeLine.AddInterpFloat(MoveCurve, MoveTimeFloatDelegate, FName("Percentage_Complete"));
 	}
 
-
-	FST_StatModifier StarvingEduranceModifier;
+	/*
+	FST_Modifier StarvingEduranceModifier;
 	StarvingEduranceModifier.Id = "StarvingEdurance";
 	StarvingEduranceModifier.Description = "";
 	StarvingEduranceModifier.Amount = 0;
-	StatModifiers.Add(StarvingEduranceModifier);
+	Modifiers.Add(StarvingEduranceModifier);
 
-	FST_StatModifier StarvingConfidenceModifier;
-	StarvingConfidenceModifier.Id = "StarvingConfidense";
+	FST_Modifier StarvingConfidenceModifier;
+	StarvingConfidenceModifier.Id = "StarvingConfidence";
 	StarvingConfidenceModifier.Description = "";
 	StarvingConfidenceModifier.Amount = 0;
-	StatModifiers.Add(StarvingConfidenceModifier);
+	Modifiers.Add(StarvingConfidenceModifier);
+	*/
 
-	//StatModifiers.Add(FST_StatModifier{ "Endurance", "", 0 });
-	//StatModifiers.Add(FST_StatModifier{ "Endurance", "", 0 });
-	//StatModifiers.Add(FST_StatModifier{ "Cognitive", "", 0});
-
+	//~~ Add stat keys to the hunger modifier ~~//
+	HungerModifier.Stats.Add("Endurance", 0);
+	HungerModifier.Stats.Add("Confidence", 0);
+	HungerModifier.Stats.Add("Cognitive", 0);
+	HungerModifier.Description = "Hunger modifier";
 
 }
 
@@ -432,6 +435,55 @@ void AIslandPerson::ExecuteMoveAlongPath()
 }
 
 
+/******************** ParseTraits *************************/
+void AIslandPerson::ParseTraits()
+{
+	if (bAvaiable)
+	{
+		for (auto& Trait : PersonRawData.Traits)
+		{
+			//Trait.Target
+			for (auto& Effect : Trait.Effects)
+			{
+				//Effect.Prop
+				//Effect.Quantity
+				//Effect.Target
+				switch (Effect.Target)
+				{
+					case EEffectTarget::Self:
+					{
+
+						break;
+					}
+					case EEffectTarget::TileOne:
+					{
+
+						break;
+					}
+					case EEffectTarget::TileAll:
+					{
+
+						break;
+					}
+					default:
+						break;
+				}
+				switch (Effect.Prop)
+				{
+					case EEffectProp::Confidence:
+					{
+
+						break;
+					}
+					default:
+						break;
+				}
+			}
+		}
+	}
+	//TilePlacedOn->PeopleOnTile
+}
+
 /******************** OnAnyTileSelected *************************/
 void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)
 {
@@ -452,34 +504,51 @@ void AIslandPerson::OnTurnSwitched(float Turn)
 	if (!bEatenThisTurn)
 	{
 		TurnsStaving++;
-		HungerModifier--;
 		// Add negative modifier to all stats
-		for (auto& Modifier : StatModifiers)
+		for (auto& Stat : HungerModifier.Stats)
 		{
-			//Modifier.Key Modifier stat name
-			//Modifier.Value Modifier stat value int
-			//PersonRawData.Stats
-
-
-
+			Stat.Value -= 1;
 		}
-		//StatModifiers
 	}
 	else
 	{
 		//~~ Descrese stat starving modifiers ~~//
 		TurnsStaving = 0;
-		if (HungerModifier < 0)
+		for (auto& Stat : HungerModifier.Stats)
 		{
-			HungerModifier++;
+			if (Stat.Value < 0)
+			{
+				Stat.Value += 1;
+			}
 		}
 	}
+	// Update all modifiers TurnsLeft
+	for (int32 i = Modifiers.Num() - 1; i >= 0; i--)
+	{
+		FST_Modifier& Modifier = Modifiers[i];
+		if (Modifier.TurnsLeft > 0)
+		{
+			Modifier.TurnsLeft--;
+		}
+		else if (Modifier.TurnsLeft == 0)
+		{
+			Modifiers.RemoveAt(i);
+		}
+	}
+
+	// Convert tmaps to tarray
+
+
+
 }
 
 
 /******************** OnNewTurn *************************/
 void AIslandPerson::OnNewTurn(float Turn)
 {
+	//~~ Parse person traits and their effects ~~//
+	ParseTraits();
+
 	//~~ Reset needs ~~//
 	bEatenThisTurn = false;
 	//~~ Reset movement points ~~//

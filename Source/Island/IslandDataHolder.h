@@ -46,17 +46,23 @@ enum class ETileStdActions : uint8
 };
 
 UENUM(BlueprintType)
-enum class EPersonStats : uint8
+enum class EEffectTarget : uint8
 {
-	Confidence UMETA(DisplayName = "Confidence"),
-	Endurance UMETA(DisplayName = "Endurance"),
-	Cognitive UMETA(DisplayName = "Cognitive")
+	Self UMETA(DisplayName = "Self"),
+	TileAll UMETA(DisplayName = "All on tile"),
+	TileOne UMETA(DisplayName = "One on tile")
+};
+
+UENUM(BlueprintType)
+enum class EEffectProp : uint8
+{
+	None UMETA(DisplayName = "None"),
+	Confidence UMETA(DisplayName = "Confidence")
 };
 
 
 
 //~~~~~ DATA IMPORT ~~~~~//
-
 
 USTRUCT(BlueprintType)
 struct FST_Item : public FTableRowBase
@@ -83,13 +89,16 @@ struct FST_Effect : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 public:
 	FST_Effect()
-		: Prop(TEXT("No name"))
-		, Value(0)
+		: Prop(EEffectProp::None)
+		, Quantity(0)
+		, Target(EEffectTarget::Self)
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
-	FString Prop;
+	EEffectProp Prop;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
-	int32 Value;
+	int32 Quantity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
+	EEffectTarget Target;
 };
 
 
@@ -107,8 +116,6 @@ public:
 	FString Title;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
 	FString Description;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
-	FString Target;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trait")
 	TArray<FST_Effect> Effects;
 };
@@ -246,22 +253,50 @@ public:
 //~~~~~ STRUCTS ~~~~~//
 
 USTRUCT(BlueprintType)
-struct FST_StatModifier
+struct FST_Map
 {
 	GENERATED_USTRUCT_BODY()
 public:
-	FST_StatModifier()
+	FST_Map()
+		: Key(TEXT(""))
+		, Val(0)
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
+	FString Key;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
+	int32 Val;
+	//TArray<T> Value;
+};
+
+
+USTRUCT(BlueprintType)
+struct FST_Modifier
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Modifier()
 		: Id(TEXT(""))
 		, Description(TEXT(""))
 		, Amount(0)
+		, TurnsLeft(-1)
 	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	TMap<FString, int32> Stats;
+	TMap<FString, int32> Needs;
+	//TArray<FST_Map> Stats;
+	//TArray<FST_Map> Needs;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
 	FString Id;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
 	FString Description;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
 	int32 Amount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
+	int32 TurnsLeft;
 };
+
+
+
+
 
 
 

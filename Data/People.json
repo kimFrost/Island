@@ -7,7 +7,7 @@
 		"Description": "Louis description here",
 		"Stats": "(Confidence=2, Cognitive=3, Endurance=2)",
 		"Traits": [
-			"(Title=\"Compulsive liar\", Description=\"Complements everyone's hair, giving everyone one the same tile a +1 confidence bonus.\", Target=\"Self\", Effects=\"[(Prop=\"\Confidence", "Value"=1)\")]"
+			"(Title=\"Compulsive liar\", Description=\"Complements everyone's hair, giving everyone one the same tile a +1 confidence bonus.\", Effects=\"[(Prop=\"\Confidence", "Value"=1, Target=\"Self\")\")]"
 		],
 		"TileSpecActios": [
 			"(TileId=\"Cave\", Type=\"Event\", Conditions=\"[]\", NotConditions=(\"EventCaveFoundSomething\"), Events=(\"EventCaveFoundSomething\"]))",

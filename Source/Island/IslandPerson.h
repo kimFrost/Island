@@ -47,12 +47,14 @@ public:
 	bool Selected;
 
 	bool bEatenThisTurn;
+	
+	bool bAvaiable;
 
 	int32 TurnsStaving;
 
-	int32 HungerModifier;
+	FST_Modifier HungerModifier;
 
-	TArray<FST_StatModifier> StatModifiers;
+	TArray<FST_Modifier> Modifiers;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	AIslandTile* TilePlacedOn;
@@ -129,6 +131,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Pathing")
 	void ExecuteMoveAlongPath();
+
+	UFUNCTION(BlueprintCallable, Category = "Person")
+	void ParseTraits();
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnAnyPersonSelected(AIslandPerson* Person);

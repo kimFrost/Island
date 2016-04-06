@@ -10,8 +10,7 @@
 			"(Title=\"Compulsive liar\", Description=\"Complements everyone\\'s hair, giving everyone one the same tile a +1 confidence bonus for 1 turn.\", Effects=((Prop=Confidence,Quantity=1,Target=TileAll)))"
 		],
 		"TileSpecActios": [
-			"(TileId=\"Cave\", Type=\"Event\", Conditions=\"[]\", NotConditions=(\"EventCaveFoundSomething\"), Events=(\"EventCaveFoundSomething\"]))"
-			"(Title=\"Explore\", Type=\"Event\", ReqStats=\"[Confidence, 6]\" Conditions=\"[]\", NotConditions=(\"EventCaveFoundMushroom\", \"EventSomething\"), Events=(\"EventCaveFoundMushroom\"]))",
+			"(TileId=\"Cave\", Type=\"Event\", ReqStats=(Confidence=6) Conditions=\"[]\", NotConditions=(\"EventCaveFoundMushroom\", \"EventSomething\"), Events=(\"EventLouisGrantFoundSomething\"]))"
 		]
     },
 	{

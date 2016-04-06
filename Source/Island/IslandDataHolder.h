@@ -173,19 +173,25 @@ struct FST_Action : public FTableRowBase
 public:
 	FST_Action()
 		: Title(TEXT("No title"))
+		, TileId(TEXT(""))
 		, Type(ETileActions::DoNothing)
 		, Conditions(TArray<FString>())
 		, NotConditions(TArray<FString>())
+		, ReqStats(FST_Stats{})
 		, Events(TArray<FString>())
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	FString TileId;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	ETileActions Type;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	TArray<FString> Conditions;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	TArray<FString> NotConditions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
+	FST_Stats ReqStats;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	TArray<FString> Events;
 };

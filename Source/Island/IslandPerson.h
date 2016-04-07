@@ -57,8 +57,9 @@ public:
 	TArray<FST_Modifier> Modifiers;
 
 
-	UPROPERTY(BlueprintReadOnly, Category = "Person")
-	FST_Stats PersonStates;
+	//UPROPERTY(BlueprintReadOnly, Category = "Person")
+	TMap<EPersonStat, FST_Stat> PersonStates;
+	//FST_Stats PersonStates;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Person")
 	FST_StatState PersonStatStates;
@@ -66,6 +67,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	void UpdateStatsObj();
 
+	//TArray<FST_Stat> GetPersonStats()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	AIslandTile* TilePlacedOn;

@@ -1,0 +1,57 @@
+
+FST_Stat(FString Stat = "", int32 Level = 0)
+	FString Stat;
+	int32 Level;
+
+FST_Stats()
+	FST_Stat Confidence;
+	FST_Stat Endurance;
+	FST_Stat Cognitive;
+		
+FST_Action()
+	FString Title;
+	FString TileId;
+	ETileActions Type;
+	TArray<FString> Conditions;
+	TArray<FString> NotConditions;
+	FST_Stats ReqStats;
+	TArray<FString> Events;
+	
+FST_Person()
+	FString Id;
+	FString Title;
+	FString Profession; //?? Maybe a enum instead? ??//
+	FString Description;
+	FST_Stats Stats;
+	TArray<FST_Trait> Traits;
+	TArray<FST_Action> TileSpecActios;
+	
+FST_Modifier
+	FString Id;
+	FString Description;
+	int32 Amount;
+	int32 TurnsLeft;
+	//TArray<FST_Stat> Stats;
+	FST_Stats Stats;
+	
+	
+"Stats": "(Confidence=2, Cognitive=3, Endurance=2)"
+"Traits": [	
+	"(Title=\"Compulsive liar\", Description=\"Complements everyone\\'s hair, giving everyone one the same tile a +1 confidence bonus for 1 turn.\", Effects=((Prop=Confidence,Quantity=1,Target=TileAll)))"
+],
+
+"TileSpecActios": [
+	"(TileId=\"Cave\", Type=\"Event\", ReqStats=(Confidence=6) Conditions=\"[]\", NotConditions=(\"EventCaveFoundMushroom\", \"EventSomething\"), Events=(\"EventLouisGrantFoundSomething\"]))"
+]
+
+"Actions": [
+	"(Title=\"Explore\", Type=\"Event\", ReqStats=\"[Confidence, 6]\" Conditions=\"[]\", NotConditions=(\"EventCaveFoundMushroom\", \"EventSomething\"), Events=(\"EventCaveFoundMushroom\"]))",
+	"(Title=\"Do nothing\", Type=\"DoNothing\")"
+]
+
+	
+FST_Modifier HungerModifier;
+
+TArray<FST_Modifier> Modifiers;
+
+TMap<EPersonStat, FST_Stat> PersonStates;

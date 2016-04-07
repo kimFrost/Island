@@ -72,6 +72,14 @@ enum class EEffectProp : uint8
 };
 
 UENUM(BlueprintType)
+enum class EPersonStat : uint8
+{
+	Confidence UMETA(DisplayName = "Confidence"),
+	Endurance UMETA(DisplayName = "Endurance"),
+	Cognitive UMETA(DisplayName = "Cognitive")
+};
+
+UENUM(BlueprintType)
 enum class EStatStates : uint8
 {
 	Normal UMETA(DisplayName = "Normal"),

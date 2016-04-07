@@ -145,10 +145,12 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	*/
 
 	//~~ Add stat keys to the hunger modifier ~~//
+	/*
 	HungerModifier.Stats.Add({ "Endurance", 0 });
 	HungerModifier.Stats.Add({ "Confidence", 0 });
 	HungerModifier.Stats.Add({ "Cognitive", 0 });
 	HungerModifier.Description = "Hunger modifier";
+	*/
 
 }
 

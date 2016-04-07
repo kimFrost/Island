@@ -56,8 +56,15 @@ public:
 
 	TArray<FST_Modifier> Modifiers;
 
+
 	UPROPERTY(BlueprintReadOnly, Category = "Person")
-	FVector GetStats;
+	FST_Stats PersonStates;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Person")
+	FST_StatState PersonStatStates;
+
+	UFUNCTION(BlueprintCallable, Category = "Person")
+	void UpdateStatsObj();
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")

@@ -145,9 +145,9 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	*/
 
 	//~~ Add stat keys to the hunger modifier ~~//
-	HungerModifier.Stats.Add("Endurance", 0);
-	HungerModifier.Stats.Add("Confidence", 0);
-	HungerModifier.Stats.Add("Cognitive", 0);
+	HungerModifier.Stats.Add({ "Endurance", 0 });
+	HungerModifier.Stats.Add({ "Confidence", 0 });
+	HungerModifier.Stats.Add({ "Cognitive", 0 });
 	HungerModifier.Description = "Hunger modifier";
 
 }
@@ -484,6 +484,49 @@ void AIslandPerson::ParseTraits()
 	//TilePlacedOn->PeopleOnTile
 }
 
+
+/******************** UpdateStatsObj *************************/
+void AIslandPerson::UpdateStatsObj()
+{
+	/*
+	//~~ Set base stats ~~//
+	PersonStates = PersonRawData.Stats;
+
+	//~~ Loop all modifiers ~~//
+	for (auto& Modifier : Modifiers)
+	{
+		//Modifier.Stats
+
+	}
+
+	for (auto& Stat : HungerModifier.Stats)
+	{
+		bool StatModified = false;
+		FString StatName = Stat.Key;
+		int32 ModifierAmount = Stat.Value;
+		if (ModifierAmount != 0)
+		{
+			StatModified = true;
+			PersonStates[StatName] += ModifierAmount;
+
+		}
+		if (StatModified)
+		{
+
+		}
+	}
+	*/
+
+	
+
+	//PersonRawData
+	//FST_Stats PersonStates;
+	//FST_StatState PersonStatStates;
+
+
+}
+
+
 /******************** OnAnyTileSelected *************************/
 void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)
 {
@@ -501,6 +544,8 @@ void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)
 /******************** OnTurnSwitched *************************/
 void AIslandPerson::OnTurnSwitched(float Turn)
 {
+
+	/*
 	if (!bEatenThisTurn)
 	{
 		TurnsStaving++;
@@ -535,6 +580,7 @@ void AIslandPerson::OnTurnSwitched(float Turn)
 			Modifiers.RemoveAt(i);
 		}
 	}
+	*/
 
 	// Convert tmaps to tarray
 

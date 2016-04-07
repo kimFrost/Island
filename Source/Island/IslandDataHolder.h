@@ -71,6 +71,15 @@ enum class EEffectProp : uint8
 	Cognitive UMETA(DisplayName = "Cognitive")
 };
 
+UENUM(BlueprintType)
+enum class EStatStates : uint8
+{
+	Normal UMETA(DisplayName = "Normal"),
+	Boosted UMETA(DisplayName = "Boosted"),
+	Weakened UMETA(DisplayName = "Weakened"),
+	Nullified UMETA(DisplayName = "Nullified")
+};
+
 
 
 //~~~~~ DATA IMPORT ~~~~~//
@@ -136,21 +145,38 @@ public:
 
 
 USTRUCT(BlueprintType)
+struct FST_Stat : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_Stat(FString Stat = "", int32 Level = 0)
+		: Stat(Stat)
+		, Level(Level)
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	FString Stat;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	int32 Level;
+};
+
+
+
+USTRUCT(BlueprintType)
 struct FST_Stats : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 public:
 	FST_Stats()
-		: Confidence(1)
-		, Endurance(1)
-		, Cognitive(1)
+		: Confidence(FST_Stat{ "Confidence", 1 })
+		, Endurance(FST_Stat{ "Endurance", 1 })
+		, Cognitive(FST_Stat{ "Cognitive", 1 })
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	int32 Confidence;
+	FST_Stat Confidence;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	int32 Endurance;
+	FST_Stat Endurance;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	int32 Cognitive;
+	FST_Stat Cognitive;
 };
 
 
@@ -228,7 +254,6 @@ public:
 };
 
 
-
 USTRUCT(BlueprintType)
 struct FST_Card : public FTableRowBase
 {
@@ -257,7 +282,6 @@ public:
 };
 
 //TAssetPtr<UTexture> AchievementIcon; "Texture2d'/Game/Textures/AchievementIcon2'"
-
 
 
 USTRUCT(BlueprintType)
@@ -303,11 +327,11 @@ public:
 		, Description(TEXT(""))
 		, Amount(0)
 		, TurnsLeft(-1)
+		, Stats(TArray<FST_Stat>())
 	{}
-	TMap<FString, int32> Stats;
 	TMap<FString, int32> Needs;
-	//TArray<FST_Map> Stats;
-	//TArray<FST_Map> Needs;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
 	FString Id;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
@@ -316,8 +340,29 @@ public:
 	int32 Amount;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
 	int32 TurnsLeft;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
+	//TArray<FST_Stat> Stats;
+	FST_Stats Stats;
 };
 
+
+USTRUCT(BlueprintType)
+struct FST_StatState
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_StatState()
+		: Confidence(EStatStates::Normal)
+		, Endurance(EStatStates::Normal)
+		, Cognitive(EStatStates::Normal)
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	EStatStates Confidence;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	EStatStates Endurance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	EStatStates Cognitive;
+};
 
 
 

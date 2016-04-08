@@ -159,7 +159,7 @@ struct FST_Stat : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 public:
 	FST_Stat(EPersonStat Stat = EPersonStat::None, int32 Level = 0)
-		: Stat(EPersonStat::None)
+		: Stat(Stat)
 		, Level(Level)
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")

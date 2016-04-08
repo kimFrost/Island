@@ -145,12 +145,10 @@ AIslandPerson::AIslandPerson(const FObjectInitializer &ObjectInitializer) : Supe
 	*/
 
 	//~~ Add stat keys to the hunger modifier ~~//
-	/*
-	HungerModifier.Stats.Add({ "Endurance", 0 });
-	HungerModifier.Stats.Add({ "Confidence", 0 });
-	HungerModifier.Stats.Add({ "Cognitive", 0 });
+	HungerModifier.Stats.Add({ EPersonStat::Endurance, 0 });
+	HungerModifier.Stats.Add({ EPersonStat::Confidence, 0 });
+	HungerModifier.Stats.Add({ EPersonStat::Cognitive, 0 });
 	HungerModifier.Description = "Hunger modifier";
-	*/
 
 }
 
@@ -497,7 +495,6 @@ void AIslandPerson::UpdateStats()
 		PersonStates.Add(Stat.Stat, Stat.Level);
 	}
 
-	/*
 	//~~ Loop all modifiers ~~//
 	for (auto& Modifier : Modifiers)
 	{
@@ -508,8 +505,8 @@ void AIslandPerson::UpdateStats()
 	for (auto& Stat : HungerModifier.Stats)
 	{
 		bool StatModified = false;
-		FString StatName = Stat.Key;
-		int32 ModifierAmount = Stat.Value;
+		EPersonStat StatName = Stat.Stat;
+		int32 ModifierAmount = Stat.Level;
 		if (ModifierAmount != 0)
 		{
 			StatModified = true;
@@ -521,15 +518,11 @@ void AIslandPerson::UpdateStats()
 
 		}
 	}
-	*/
-
 	
 
 	//PersonRawData
 	//FST_Stats PersonStates;
 	//FST_StatState PersonStatStates;
-
-
 }
 
 
@@ -550,15 +543,13 @@ void AIslandPerson::OnAnyPersonSelected(AIslandPerson* Person)
 /******************** OnTurnSwitched *************************/
 void AIslandPerson::OnTurnSwitched(float Turn)
 {
-
-	/*
 	if (!bEatenThisTurn)
 	{
 		TurnsStaving++;
 		// Add negative modifier to all stats
 		for (auto& Stat : HungerModifier.Stats)
 		{
-			Stat.Value -= 1;
+			Stat.Level -= 1;
 		}
 	}
 	else
@@ -567,9 +558,9 @@ void AIslandPerson::OnTurnSwitched(float Turn)
 		TurnsStaving = 0;
 		for (auto& Stat : HungerModifier.Stats)
 		{
-			if (Stat.Value < 0)
+			if (Stat.Level < 0)
 			{
-				Stat.Value += 1;
+				Stat.Level += 1;
 			}
 		}
 	}
@@ -586,12 +577,6 @@ void AIslandPerson::OnTurnSwitched(float Turn)
 			Modifiers.RemoveAt(i);
 		}
 	}
-	*/
-
-	// Convert tmaps to tarray
-
-
-
 }
 
 

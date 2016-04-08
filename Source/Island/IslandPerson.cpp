@@ -487,18 +487,15 @@ void AIslandPerson::ParseTraits()
 }
 
 
-/******************** UpdateStatsObj *************************/
-void AIslandPerson::UpdateStatsObj()
+/******************** UpdateStats *************************/
+void AIslandPerson::UpdateStats()
 {
-	
 	//~~ Set base stats ~~//
 	PersonStates.Empty();
 	for (auto& Stat : PersonRawData.Stats)
 	{
-		PersonStates.Add(EPersonStat::Cognitive, 4);
-		//PersonStates.Add(Stat.Stat, Stat.Level);
+		PersonStates.Add(Stat.Stat, Stat.Level);
 	}
-	//PersonStates = PersonRawData.Stats; // loop tarray to tmap
 
 	/*
 	//~~ Loop all modifiers ~~//
@@ -633,7 +630,8 @@ void AIslandPerson::BeginPlay()
 	}
 
 	//~~ Calc stats ~~//
-	UpdateStatsObj();
+	ParseTraits();
+	UpdateStats();
 
 
 	/*

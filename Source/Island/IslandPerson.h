@@ -66,7 +66,7 @@ public:
 	FST_StatState PersonStatStates;
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
-	void UpdateStatsObj();
+	void UpdateStats();
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	TArray<FST_Stat> GetPersonStats() const;

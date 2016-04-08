@@ -58,7 +58,8 @@ public:
 
 
 	//UPROPERTY(BlueprintReadOnly, Category = "Person")
-	TMap<EPersonStat, FST_Stat> PersonStates;
+	//TMap<EPersonStat, FST_Stat> PersonStates;
+	TMap<EPersonStat, int32> PersonStates;
 	//FST_Stats PersonStates;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Person")
@@ -67,7 +68,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	void UpdateStatsObj();
 
-	//TArray<FST_Stat> GetPersonStats()
+	UFUNCTION(BlueprintCallable, Category = "Person")
+	TArray<FST_Stat> GetPersonStats() const;
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	AIslandTile* TilePlacedOn;
@@ -168,3 +172,19 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	
 };
+
+
+
+
+//~~ Getters ~~//
+FORCEINLINE TArray<FST_Stat> AIslandPerson::GetPersonStats() const
+{
+	TArray<FST_Stat> Stats;
+	for (auto& Stat : PersonStates)
+	{
+		Stats.Add({ Stat.Key, Stat.Value });
+	}
+	return Stats;
+}
+
+//~~ Setters ~~//

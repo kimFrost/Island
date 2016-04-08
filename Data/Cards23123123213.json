@@ -1,0 +1,59 @@
+[
+	{
+		"Name": "Camp",
+		"Id": "Camp",
+		"Title": "Camp",
+		"TileScene": "",
+		"Items": [],
+		"Actions": [],
+		"IdleActions": []
+	},
+	{
+		"Name": "Cave",
+		"Id": "Cave",
+		"Title": "Cave",
+		"TileScene": "",
+		"Items": [],
+		"Actions": [
+			"(Title=\"Explore\",TileId=,Type=Explore,Conditions=,NotConditions=,ReqStats=,Events=)",
+			"(Title=\"Do nothing\",TileId=,Type=DoNothing,Conditions=(),NotConditions=,ReqStats=,Events=)"
+		],
+		"IdleActions": []
+	},
+	{
+		"Name": "Cave2",
+		"Id": "Cave2",
+		"Title": "Cave2",
+		"TileScene": "",
+		"Items": [],
+		"Actions": [
+			"(Title=\"Explore\",TileId=,Type=Event,Conditions=,NotConditions=(\"EventCaveFoundMushroom\",\"EventSomething\"),ReqStats=,Events=(\"EventCaveFoundMushroom\"))",
+			"(Title=\"Do nothing\",TileId=,Type=DoNothing,Conditions=,NotConditions=,ReqStats=,Events=)"
+		],
+		"IdleActions": []
+	},
+	{
+		"Name": "AbandonedHouse",
+		"Id": "AbandonedHouse",
+		"Title": "Abandoned house",
+		"TileScene": "",
+		"Items": [],
+		"Actions": [
+			"(Title=\"Explore\",TileId=,Type=Explore,Conditions=,NotConditions=,ReqStats=,Events=)",
+			"(Title=\"Do nothing\",TileId=,Type=DoNothing,Conditions=,NotConditions=,ReqStats=,Events=)"
+		],
+		"IdleActions": []
+	},
+	{
+		"Name": "WaterSpring",
+		"Id": "WaterSpring",
+		"Title": "Water spring",
+		"TileScene": "",
+		"Items": [],
+		"Actions": [
+			"(Title=\"Get Water\",TileId=,Type=GiveItem,Conditions=(),NotConditions=,ReqStats=((Stat=Confidence,Level=3),(Stat=Cognitive,Level=5)),Events=)",
+			"(Title=\"Do nothing\",TileId=,Type=DoNothing,Conditions=(),NotConditions=,ReqStats=,Events=)"
+		],
+		"IdleActions": []
+	}
+]

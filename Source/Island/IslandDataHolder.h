@@ -74,6 +74,7 @@ enum class EEffectProp : uint8
 UENUM(BlueprintType)
 enum class EPersonStat : uint8
 {
+	None UMETA(DisplayName = "None"),
 	Confidence UMETA(DisplayName = "Confidence"),
 	Endurance UMETA(DisplayName = "Endurance"),
 	Cognitive UMETA(DisplayName = "Cognitive")
@@ -157,18 +158,18 @@ struct FST_Stat : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 public:
-	FST_Stat(FString Stat = "", int32 Level = 0)
-		: Stat(Stat)
+	FST_Stat(EPersonStat Stat = EPersonStat::None, int32 Level = 0)
+		: Stat(EPersonStat::None)
 		, Level(Level)
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	FString Stat;
+	EPersonStat Stat;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	int32 Level;
 };
 
 
-
+/*
 USTRUCT(BlueprintType)
 struct FST_Stats : public FTableRowBase
 {
@@ -186,7 +187,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	FST_Stat Cognitive;
 };
-
+*/
 
 
 //TEnumAsByte<EElementalEnum::Type> PrimaryElementalType;
@@ -211,7 +212,7 @@ public:
 		, Type(ETileActions::DoNothing)
 		, Conditions(TArray<FString>())
 		, NotConditions(TArray<FString>())
-		, ReqStats(FST_Stats{})
+		, ReqStats(TArray<FST_Stat>())
 		, Events(TArray<FString>())
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
@@ -225,7 +226,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	TArray<FString> NotConditions;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
-	FST_Stats ReqStats;
+	TArray<FST_Stat> ReqStats;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Action")
 	TArray<FString> Events;
 };
@@ -241,7 +242,7 @@ public:
 		, Title(TEXT("No title"))
 		, Description(TEXT("No description"))
 		, Profession(TEXT("No profession"))
-		, Stats(FST_Stats{})
+		, Stats(TArray<FST_Stat>())
 		, Traits(TArray<FST_Trait>())
 		, TileSpecActios(TArray<FST_Action>())
 	{}
@@ -254,7 +255,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	FString Description;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
-	FST_Stats Stats;
+	TArray<FST_Stat> Stats;
+	//FST_Stats Stats;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
 	TArray<FST_Trait> Traits;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
@@ -349,8 +351,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
 	int32 TurnsLeft;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modifier")
-	//TArray<FST_Stat> Stats;
-	FST_Stats Stats;
+	TArray<FST_Stat> Stats;
 };
 
 

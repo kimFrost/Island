@@ -58,12 +58,13 @@ public:
 
 
 	//UPROPERTY(BlueprintReadOnly, Category = "Person")
-	//TMap<EPersonStat, FST_Stat> PersonStates;
-	TMap<EPersonStat, int32> PersonStates;
-	//FST_Stats PersonStates;
+	//TMap<EPersonStat, FST_Stat> PersonStats;
+	TMap<EPersonStat, int32> PersonStats;
+	//FST_Stats PersonStats;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Person")
-	FST_StatState PersonStatStates;
+	//UPROPERTY(BlueprintReadOnly, Category = "Person")
+	TMap<EPersonStat, EStatStates> PersonStatStates;
+	//FST_StatState PersonStatStates;
 
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	void UpdateStats();
@@ -71,6 +72,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Person")
 	TArray<FST_Stat> GetPersonStats() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Person")
+	EStatStates GetStatState(EPersonStat Stat) const;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Person")
@@ -180,11 +183,17 @@ public:
 FORCEINLINE TArray<FST_Stat> AIslandPerson::GetPersonStats() const
 {
 	TArray<FST_Stat> Stats;
-	for (auto& Stat : PersonStates)
+	for (auto& Stat : PersonStats)
 	{
 		Stats.Add({ Stat.Key, Stat.Value });
 	}
 	return Stats;
 }
+
+FORCEINLINE EStatStates AIslandPerson::GetStatState(EPersonStat Stat) const
+{
+	return PersonStatStates[Stat];
+}
+
 
 //~~ Setters ~~//

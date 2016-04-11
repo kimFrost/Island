@@ -488,12 +488,14 @@ void AIslandPerson::ParseTraits()
 /******************** UpdateStats *************************/
 void AIslandPerson::UpdateStats()
 {
-	//~~ Set base stats ~~//
-	PersonStates.Empty();
+	//~~ Set base stats and states ~~//
+	PersonStats.Empty();
 	for (auto& Stat : PersonRawData.Stats)
 	{
-		PersonStates.Add(Stat.Stat, Stat.Level);
+		PersonStats.Add(Stat.Stat, Stat.Level);
+		PersonStatStates.Add(Stat.Stat, EStatStates::Normal);
 	}
+
 
 	//~~ Loop all modifiers ~~//
 	for (auto& Modifier : Modifiers)
@@ -510,19 +512,20 @@ void AIslandPerson::UpdateStats()
 		if (ModifierAmount != 0)
 		{
 			StatModified = true;
-			PersonStates[StatName] += ModifierAmount;
-
+			PersonStats[StatName] += ModifierAmount;
 		}
 		if (StatModified)
 		{
 
 		}
+		//PersonStatStates[StatName] = EStatStates::
 	}
 	
 
 	//PersonRawData
-	//FST_Stats PersonStates;
+	//FST_Stats PersonStats;
 	//FST_StatState PersonStatStates;
+	//TMap<EPersonStat, EStatStates> PersonStatStates; 
 }
 
 

@@ -513,12 +513,23 @@ void AIslandPerson::UpdateStats()
 		{
 			StatModified = true;
 			PersonStats[StatName] += ModifierAmount;
+
+			PersonStatStates[StatName] = EStatStates::Weakened; 
+
+			if (PersonStats[StatName] > 0)
+			{
+
+			}
 		}
 		if (StatModified)
 		{
-
+			
 		}
-		//PersonStatStates[StatName] = EStatStates::
+	}
+
+	for (auto& Stat : PersonStats)
+	{
+		//Stat.Key
 	}
 	
 
@@ -588,11 +599,13 @@ void AIslandPerson::OnNewTurn(float Turn)
 {
 	//~~ Parse person traits and their effects ~~//
 	ParseTraits();
+	UpdateStats();
 
 	//~~ Reset needs ~~//
 	bEatenThisTurn = false;
 	//~~ Reset movement points ~~//
 	MovePointsLeft = 2;
+
 
 	if (Selected)
 	{

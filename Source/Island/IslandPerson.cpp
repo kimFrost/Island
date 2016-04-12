@@ -445,34 +445,94 @@ void AIslandPerson::ParseTraits()
 			//Trait.Target
 			for (auto& Effect : Trait.Effects)
 			{
-				//Effect.Prop
-				//Effect.Quantity
-				//Effect.Target
+				TArray<AIslandPerson*> Targets;
+				//~~ Target ~~//
 				switch (Effect.Target)
 				{
 					case EEffectTarget::Self:
 					{
-
+						Targets.Add(this);
+						break;
+					}
+					case EEffectTarget::Tile:
+					{
+						// Add modifier to tile itself ?? Could be fun. Ex. Tile is on fire.
 						break;
 					}
 					case EEffectTarget::TileOne:
 					{
-
+						if (TilePlacedOn && TilePlacedOn->PeopleOnTile.Num() > 0)
+						{
+							Targets.Add(TilePlacedOn->PeopleOnTile[FMath::RandRange(0, TilePlacedOn->PeopleOnTile.Num() - 1)]);
+						}
 						break;
 					}
 					case EEffectTarget::TileAll:
 					{
-
+						if (TilePlacedOn)
+						{
+							for (auto& Person : TilePlacedOn->PeopleOnTile)
+							{
+								Targets.Add(Person);
+							}
+						}
 						break;
 					}
 					default:
 						break;
 				}
+				//~~ Prop ~~//
 				switch (Effect.Prop)
 				{
+					case EEffectProp::Cognitive:
+					{
+						for (auto& Target : Targets)
+						{
+							if (Target)
+							{
+								FST_Modifier Modifier;
+								Modifier.Amount = Effect.Quantity;
+								Modifier.TurnsLeft = Effect.Turns;
+								Modifier.Id = Trait.Title;
+								Modifier.Description = Trait.Description;
+								Modifier.Stats.Add({ EPersonStat::Cognitive, Effect.Quantity});
+								Target->Modifiers.Add(Modifier);
+							}
+						}
+						break;
+					}
 					case EEffectProp::Confidence:
 					{
-
+						for (auto& Target : Targets)
+						{
+							if (Target)
+							{
+								FST_Modifier Modifier;
+								Modifier.Amount = Effect.Quantity;
+								Modifier.TurnsLeft = Effect.Turns;
+								Modifier.Id = Trait.Title;
+								Modifier.Description = Trait.Description;
+								Modifier.Stats.Add({ EPersonStat::Confidence, Effect.Quantity });
+								Target->Modifiers.Add(Modifier);
+							}
+						}
+						break;
+					}
+					case EEffectProp::Endurance:
+					{
+						for (auto& Target : Targets)
+						{
+							if (Target)
+							{
+								FST_Modifier Modifier;
+								Modifier.Amount = Effect.Quantity;
+								Modifier.TurnsLeft = Effect.Turns;
+								Modifier.Id = Trait.Title;
+								Modifier.Description = Trait.Description;
+								Modifier.Stats.Add({ EPersonStat::Endurance, Effect.Quantity });
+								Target->Modifiers.Add(Modifier);
+							}
+						}
 						break;
 					}
 					default:
@@ -513,13 +573,11 @@ void AIslandPerson::UpdateStats()
 		{
 			StatModified = true;
 			PersonStats[StatName] += ModifierAmount;
-
-			PersonStatStates[StatName] = EStatStates::Weakened; 
-
-			if (PersonStats[StatName] > 0)
+			if (PersonStats[StatName] < 1) 
 			{
-
+				PersonStats[StatName] = 1;
 			}
+			PersonStatStates[StatName] = EStatStates::Weakened; 
 		}
 		if (StatModified)
 		{

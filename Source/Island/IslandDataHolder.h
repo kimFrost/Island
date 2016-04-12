@@ -58,6 +58,7 @@ UENUM(BlueprintType)
 enum class EEffectTarget : uint8
 {
 	Self UMETA(DisplayName = "Self"),
+	Tile UMETA(DisplayName = "The Tile"),
 	TileAll UMETA(DisplayName = "All on tile"),
 	TileOne UMETA(DisplayName = "One on tile")
 };

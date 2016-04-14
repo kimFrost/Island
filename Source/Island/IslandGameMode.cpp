@@ -35,7 +35,8 @@ AIslandGameMode::AIslandGameMode(const FObjectInitializer &ObjectInitializer) : 
 	static ConstructorHelpers::FClassFinder<AIslandPlayerController> PlayerControllerBPClass(TEXT("/Game/Blueprints/PlayerController/BP_PlayerController"));
 	if (PlayerControllerBPClass.Class)
 	{
-		PlayerControllerClass = PlayerControllerBPClass.Class;
+		//PlayerControllerClass = PlayerControllerBPClass.Class;
+		PlayerControllerClass = AIslandPlayerController::StaticClass();
 	}
 	else
 	{
@@ -47,6 +48,7 @@ AIslandGameMode::AIslandGameMode(const FObjectInitializer &ObjectInitializer) : 
 	if (CharacterBPClass.Class)
 	{
 		DefaultPawnClass = CharacterBPClass.Class;
+		//DefaultPawnClass = AIslandCharacter::StaticClass();
 	}
 	else
 	{

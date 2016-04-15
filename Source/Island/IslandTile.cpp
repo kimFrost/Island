@@ -248,6 +248,9 @@ TArray<FST_Action> AIslandTile::GetTileAvailableActions(AIslandPerson* Person)
 
 	Actions = TileCard.Actions;
 
+	//?? Hidden path search? ??//
+
+
 	// TileCard.Conditions
 
 	// TileCard.NotConditions

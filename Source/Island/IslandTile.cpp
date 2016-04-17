@@ -64,7 +64,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	
 
 	//static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Selected/M_SelectedTest_Inst.M_SelectedTest_Inst'"));
-	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Meshes/Tile/EdgeLine_Inst.EdgeLine_Inst'"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Meshes/Tile/M_TileEdgeLine_Inst.M_TileEdgeLine_Inst'"));
 	if (BaseMesh && MaterialInstanceObj.Succeeded())
 	{
 		//Material = MaterialInstanceObj.Object;
@@ -80,10 +80,15 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 		//DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
 
 		//BaseMesh->SetMaterial(0, MaterialInstanceObj.Object);
-		BaseMesh->SetMaterial(1, MaterialInstanceObj.Object);
+		
 		//DynamicMaterial = BaseMesh->CreateAndSetMaterialInstanceDynamic(0);
-		DynamicMaterial = BaseMesh->CreateDynamicMaterialInstance(0);
-		DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::White);
+		//DynamicMaterial = BaseMesh->CreateDynamicMaterialInstance(0);
+		//DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::White);
+
+
+		//BaseMesh->SetMaterial(1, MaterialInstanceObj.Object);
+		//DynamicMaterial = BaseMesh->CreateDynamicMaterialInstance(1);
+		//DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Gray);
 	}
 
 
@@ -176,17 +181,43 @@ FVector AIslandTile::PlacePerson(AIslandPerson* Person, bool Teleport, bool Stor
 /******************** ShowTile *************************/
 void AIslandTile::ShowTile()
 {
-	RootComponent->SetVisibility(true, true);
-	bTileHidden = false;
+	if (bTileHidden)
+	{
+		RootComponent->SetVisibility(true, true);
+		bTileHidden = false;
+
+		OnTileRevealed.Broadcast(this);
+
+		UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
+		if (GameInstance)
+		{
+			GameInstance->OnTileRevealed.Broadcast(this);
+		}
+
+		//Paths.Num() // remove trees along path
+	}
 }
 
 
 /******************** HideTile *************************/
 void AIslandTile::HideTile()
 {
-	RootComponent->SetVisibility(false, true);
-	bTileHidden = true;
+	if (!bTileHidden)
+	{
+		RootComponent->SetVisibility(false, true);
+		bTileHidden = true;
+	}
 }
+
+
+
+/******************** OnTileRevealed *************************/
+/*
+void AIslandTile::OnTileRevealed_Implementation()
+{
+	// No logic here. Used for blueprint event binding
+}
+*/
 
 
 /******************** CheckTile *************************/
@@ -194,16 +225,6 @@ void AIslandTile::CheckTile()
 {
 	if (!TileExplored)
 	{
-		UIslandGameInstance* GameInstance = Cast<UIslandGameInstance>(GetGameInstance());
-		if (GameInstance)
-		{
-			// Trigger tile event reveal
-			if (bTileHidden)
-			{
-				GameInstance->OnTileRevealed.Broadcast(this);
-			}
-		}
-		
 		TileExplored = true;
 		ShowTile();
 
@@ -330,7 +351,7 @@ void AIslandTile::DeselectTile()
 {
 	if (DynamicMaterial)
 	{
-		DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::White);
+		DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Black);
 		Selected = false;
 		MoveToIndicatorMesh->SetVisibility(false);
 	}

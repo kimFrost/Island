@@ -9,6 +9,8 @@
 
 
 
+//~~~~~ Delegates/Event dispatcher ~~~~~//
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileRevealed, AIslandTile*, Tile);
 
 
 UCLASS()
@@ -111,6 +113,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Tile")
 	void DeselectTile();
 
+	//UFUNCTION(BlueprintNativeEvent, Category = "Tile")
+	//void OnTileRevealed();
+	//virtual void OnTileRevealed_Implementation();
+
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void TileClicked();
 
@@ -120,10 +126,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void TileHoverEnd();
 
+
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void OnAnyTileClicked(AIslandTile* Tile);
 
 public:
+
+
+	/*********** DELEGATES **************/
+
+	UPROPERTY(BlueprintAssignable, Category = "Tile")
+	FTileRevealed OnTileRevealed;
+
 
 	/*********** OVERRIDES **************/
 

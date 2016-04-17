@@ -672,6 +672,15 @@ void AIslandPerson::OnNewTurn(float Turn)
 }
 
 
+void AIslandPerson::TimerExpired()
+{
+	if (TilePlacedOn)
+	{
+		TilePlacedOn->CheckTile();
+	}
+}
+
+
 // Called when the game starts or when spawned
 void AIslandPerson::BeginPlay()
 {
@@ -683,10 +692,17 @@ void AIslandPerson::BeginPlay()
 		GameInstance->OnTurnSwitched.AddDynamic(this, &AIslandPerson::OnTurnSwitched);
 		GameInstance->OnNewTurn.AddDynamic(this, &AIslandPerson::OnNewTurn);
 	}
+
+	//~~ Timer used to prevent check being made before beginplay bidings is done on tile ~~//
+	FTimerHandle FuzeTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(FuzeTimerHandle, this, &AIslandPerson::TimerExpired, 1.f);
+
+	/*
 	if (TilePlacedOn)
 	{
 		TilePlacedOn->CheckTile();
 	}
+	*/
 
 	//~~ Calc stats ~~//
 	ParseTraits();

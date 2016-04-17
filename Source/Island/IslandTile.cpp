@@ -51,15 +51,20 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 	// Basemesh ~~//
 
+	//StaticMesh'/Game/Meshes/Tile/tile.tile'
+
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>BaseMeshObj(TEXT("StaticMesh'/Game/Meshes/Box_Brush_StaticMesh.Box_Brush_StaticMesh'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>BaseMeshObj(TEXT("StaticMesh'/Game/Meshes/Tile/tile.tile'"));
 	if (BaseMeshObj.Succeeded())
 	{
 		BaseMesh->SetStaticMesh(BaseMeshObj.Object);
 	}
 	BaseMesh->AttachParent = RootComponent;
 
-	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Selected/M_SelectedTest_Inst.M_SelectedTest_Inst'"));
+	
+
+	//static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Materials/Selected/M_SelectedTest_Inst.M_SelectedTest_Inst'"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInstance>MaterialInstanceObj(TEXT("MaterialInstanceConstant'/Game/Meshes/Tile/EdgeLine_Inst.EdgeLine_Inst'"));
 	if (BaseMesh && MaterialInstanceObj.Succeeded())
 	{
 		//Material = MaterialInstanceObj.Object;
@@ -74,10 +79,11 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 		//BaseMesh->SetMaterial(0, DynamicMaterial);
 		//DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
 
-		BaseMesh->SetMaterial(0, MaterialInstanceObj.Object);
+		//BaseMesh->SetMaterial(0, MaterialInstanceObj.Object);
+		BaseMesh->SetMaterial(1, MaterialInstanceObj.Object);
 		//DynamicMaterial = BaseMesh->CreateAndSetMaterialInstanceDynamic(0);
 		DynamicMaterial = BaseMesh->CreateDynamicMaterialInstance(0);
-		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+		DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::White);
 	}
 
 
@@ -312,7 +318,7 @@ void AIslandTile::SelectTile()
 {
 	if (DynamicMaterial)
 	{
-		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::Yellow);
+		DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::Yellow);
 		Selected = true;
 		MoveToIndicatorMesh->SetVisibility(true);
 	}
@@ -324,7 +330,7 @@ void AIslandTile::DeselectTile()
 {
 	if (DynamicMaterial)
 	{
-		DynamicMaterial->SetVectorParameterValue("ParamColor", FLinearColor::White);
+		DynamicMaterial->SetVectorParameterValue("Color", FLinearColor::White);
 		Selected = false;
 		MoveToIndicatorMesh->SetVisibility(false);
 	}

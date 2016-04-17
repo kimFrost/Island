@@ -62,6 +62,8 @@ AIslandCharacter::AIslandCharacter(const FObjectInitializer &ObjectInitializer) 
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 	//FollowCamera->RelativeRotation = FRotator(-60.f, 0.f, 0.f);
 
+	//FollowCamera->ProjectionMode = ECameraProjectionMode::Orthographic;
+	//FollowCamera->OrthoWidth = 2000.f;
 
 }
 

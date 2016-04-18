@@ -277,6 +277,7 @@ public:
 		, Items(TArray<FString>())
 		, Actions(TArray<FST_Action>())
 		, IdleActions(TArray<FST_Action>())
+		, bBlockPath(false)
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	FString Id;
@@ -290,6 +291,8 @@ public:
 	TArray<FST_Action> Actions;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
 	TArray<FST_Action> IdleActions;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card")
+	bool bBlockPath;
 };
 
 //TAssetPtr<UTexture> AchievementIcon; "Texture2d'/Game/Textures/AchievementIcon2'"

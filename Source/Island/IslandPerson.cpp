@@ -267,6 +267,10 @@ void AIslandPerson::UpdatePathingOptions() {
 			for (int32 m = 0; m < Frontier.Num(); m++)
 			{
 				AIslandTile* Tile = Frontier[m];
+
+				//~~ If tile has a gate/trap then prevent travel any further until its is open/disarmed ~~//
+				//if (Tile->TileCard.) {}
+
 				//~~ Loop though all Paths connected to this tile to create the next frontier ~~//
 				for (int32 l = 0; l < Tile->Paths.Num(); l++)
 				{
@@ -276,6 +280,7 @@ void AIslandPerson::UpdatePathingOptions() {
 					{
 						continue; //~~ Skip path ~~//
 					}
+					
 					// If not oneway or if oneway and This til is A (A=>B)
 					if ((Path->bOneWay && Path->TileA == Tile) || !Path->bOneWay)
 					{

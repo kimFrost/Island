@@ -21,7 +21,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 	OnBeginCursorOver.AddDynamic(this, &AIslandTile::TileHoverBegin);
 	OnEndCursorOver.AddDynamic(this, &AIslandTile::TileHoverEnd);
 
-	PeopleLocationDisplacement = FVector(300, 300, 0);
+	PeopleLocationDisplacement = FVector(300, 300, 50);
 
 	TileExplored = false;
 	bTileHidden = true;
@@ -427,6 +427,11 @@ void AIslandTile::BeginPlay()
 	if (bTileHidden)
 	{
 		HideTile();
+	}
+	//~~ If any people placed on tile ~~//
+	if (PeopleOnTile.Num() > 0)
+	{
+		CheckTile();
 	}
 }
 

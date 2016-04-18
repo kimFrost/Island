@@ -694,9 +694,8 @@ void AIslandPerson::BeginPlay()
 	}
 
 	//~~ Timer used to prevent check being made before beginplay bidings is done on tile ~~//
-	FTimerHandle FuzeTimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(FuzeTimerHandle, this, &AIslandPerson::TimerExpired, 1.f);
-
+	//FTimerHandle FuzeTimerHandle;
+	//GetWorld()->GetTimerManager().SetTimer(FuzeTimerHandle, this, &AIslandPerson::TimerExpired, 1.f);
 	/*
 	if (TilePlacedOn)
 	{

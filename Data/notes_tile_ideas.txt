@@ -1,0 +1,31 @@
+Tile on turn end bonuses.
+
+Civilation V allocation idea. But instead of population, you move your characters to the tiles being worked.
+
+Zombieland change tile into something else. Forrest -> Chop down -> Farmlands
+
+Tile change/upgrade by actions
+
+
+Modifiers calculated based on macros [shelter, varmth, security, storage]
+
+
+
+Camp:
+(Shelter, varmth(req fire/wood), security, storage)
+All negative modifiers -1 turn;
+- Restock with food from storage
+
+
+Forrest:
+(No shelter)
+-1 x all stats modifier
+
+
+Farmlands
++1 negative modifier to all stats
++ 2 lands
+
+
+Abandoned Hut
+(Shelter)

@@ -41,10 +41,10 @@ public:
 	FVector PeopleLocationDisplacement;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
-	bool TileExplored;
+	bool bTileHidden;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
-	bool bTileHidden;
+	bool bTileExplored;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
 	bool TileCanBeBypassed;

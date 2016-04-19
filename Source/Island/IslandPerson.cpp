@@ -269,7 +269,9 @@ void AIslandPerson::UpdatePathingOptions() {
 				AIslandTile* Tile = Frontier[m];
 
 				//~~ If tile has a gate/trap then prevent travel any further until its is open/disarmed ~~//
-				//if (Tile->TileCard.) {}
+				if (Tile->TileCard.bBlockPath) {
+					continue; //~~ Skip Tile ~~//
+				}
 
 				//~~ Loop though all Paths connected to this tile to create the next frontier ~~//
 				for (int32 l = 0; l < Tile->Paths.Num(); l++)

@@ -23,7 +23,7 @@ AIslandTile::AIslandTile(const FObjectInitializer &ObjectInitializer) : Super(Ob
 
 	PeopleLocationDisplacement = FVector(300, 300, 50);
 
-	TileExplored = false;
+	bTileExplored = false;
 	bTileHidden = true;
 	TileCanBeBypassed = false;
 
@@ -223,9 +223,9 @@ void AIslandTile::OnTileRevealed_Implementation()
 /******************** CheckTile *************************/
 void AIslandTile::CheckTile()
 {
-	if (!TileExplored)
+	if (!bTileExplored)
 	{
-		TileExplored = true;
+		bTileExplored = true;
 		ShowTile();
 
 		for (int32 i = 0; i < Paths.Num(); i++)
